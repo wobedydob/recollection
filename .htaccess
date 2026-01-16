@@ -1,0 +1,18 @@
+RewriteEngine On
+DirectorySlash Off
+
+# Route all API requests to front controller (except direct .php files)
+RewriteCond %{REQUEST_URI} ^/api
+RewriteCond %{REQUEST_URI} !\.(php)$
+RewriteRule ^api(.*)$ api/index.php [L]
+
+# Serve static files from public if they exist
+RewriteCond %{REQUEST_URI} !^/api/
+RewriteCond %{DOCUMENT_ROOT}/public%{REQUEST_URI} -f
+RewriteRule ^(.*)$ public/$1 [L]
+
+# SPA fallback - serve index.html for all other requests
+RewriteCond %{REQUEST_URI} !^/api/
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ public/index.html [L]

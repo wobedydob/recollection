@@ -1,0 +1,17 @@
+RewriteEngine On
+
+# Auth routes
+RewriteRule ^auth/register$ auth/register.php [L]
+RewriteRule ^auth/login$ auth/login.php [L]
+RewriteRule ^auth/logout$ auth/logout.php [L]
+RewriteRule ^auth/me$ auth/me.php [L]
+RewriteRule ^auth/profile$ auth/profile.php [L]
+RewriteRule ^auth/password$ auth/password.php [L]
+
+# Ideas routes
+RewriteRule ^ideas$ ideas/index.php [L]
+RewriteRule ^ideas/([a-zA-Z0-9-]+)$ ideas/item.php?id=$1 [L]
+
+# Tags routes
+RewriteRule ^tags$ tags/index.php [L]
+RewriteRule ^tags/([a-zA-Z0-9-]+)$ tags/item.php?id=$1 [L]

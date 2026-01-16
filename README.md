@@ -1,6 +1,6 @@
 # ✨ Recollection
 
-A cute little memory box for all your wonderful ideas! Built with love using Nuxt 3.
+A cute little memory box for all your wonderful ideas! Built with PHP + Nuxt 3.
 
 ## 💭 What is this?
 
@@ -14,31 +14,46 @@ Recollection is a cozy place to store your thoughts, ideas, dreams, and random s
 - **User accounts** - Your ideas stay private and synced
 - **Cute design** - Pastel colors, smooth animations, and a sprinkle of magic
 
+## 📁 Project Structure
+
+```
+recollection/
+├── api/                  # PHP Backend API
+│   ├── auth/             # Authentication endpoints
+│   ├── ideas/            # Ideas CRUD
+│   └── tags/             # Tags CRUD
+├── frontend/             # Nuxt 3 Frontend (source)
+│   ├── app/
+│   └── package.json
+├── public/               # Built frontend (served by Apache)
+├── .htaccess             # Apache routing
+├── .env                  # Environment config
+├── database.sql          # Database schema
+└── build.sh              # Build script
+```
+
 ## 🚀 Getting Started
 
 ### Prerequisites
 
-- Node.js 22.12+
+- PHP 7.4+ with PDO MySQL
 - MySQL database
+- Apache with mod_rewrite
+- Node.js 22+ (for building frontend)
 
 ### Installation
 
-1. Clone the repo and install dependencies:
-   ```bash
-   npm install
-   ```
-
-2. Set up your environment variables:
+1. Clone the repo and set up environment:
    ```bash
    cp .env.example .env
    ```
 
-   Then edit `.env` with your database credentials:
+2. Edit `.env` with your database credentials:
    ```
    DB_HOST=localhost
    DB_USER=your_user
    DB_PASSWORD=your_password
-   DB_NAME=database_name
+   DB_NAME=recollection
    JWT_SECRET=your-secret-key-here
    ```
 
@@ -47,19 +62,34 @@ Recollection is a cozy place to store your thoughts, ideas, dreams, and random s
    mysql -u root -p < database.sql
    ```
 
-4. Start the dev server:
+4. Install frontend dependencies and build:
    ```bash
-   npm run dev
+   cd frontend
+   npm install
+   cd ..
+   ./build.sh
    ```
 
-5. Open http://localhost:3000 and start collecting memories! 🎉
+5. Set up Apache virtual host pointing to the project root.
+
+6. Open your site and start collecting memories! 🎉
+
+### Development
+
+To work on the frontend with hot-reload:
+```bash
+cd frontend
+npm run dev
+```
+
+The dev server runs on http://localhost:3000 and proxies API calls to your Apache.
 
 ## 🛠️ Tech Stack
 
-- **Nuxt 3** - Vue framework with SSR
+- **PHP** - Backend API
+- **Nuxt 3** - Vue frontend (SPA mode)
 - **MySQL** - Database
 - **JWT** - Authentication with httpOnly cookies
-- **TypeScript** - Type safety
 
 ## 🇳🇱 Language
 

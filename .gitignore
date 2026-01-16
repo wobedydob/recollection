@@ -1,13 +1,16 @@
 # Nuxt dev/build outputs
-.output
-.data
-.nuxt
-.nitro
-.cache
-dist
+frontend/.output
+frontend/.data
+frontend/.nuxt
+frontend/.nitro
+frontend/.cache
+
+# Built frontend (generated)
+public/*
+!public/.gitkeep
 
 # Node dependencies
-node_modules
+frontend/node_modules
 
 # Logs
 logs
@@ -18,6 +21,9 @@ logs
 .fleet
 .idea
 .claude
+
+# Release output
+.release
 
 # Local env files
 .env
