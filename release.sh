@@ -1,71 +1,67 @@
 #!/bin/bash
 
-# Release script for Recollection
-# Builds the frontend with .env.strato (if available) and packages everything for deployment
+# Release script for Recollection (Laravel)
+# Creates a deployment package for production
 
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
-# Check if .env.strato exists and use it for the build
-ENV_SWAPPED=false
-if [ -f ".env.strato" ]; then
-    echo "Found .env.strato - using STRATO environment for build"
-
-    # Backup current .env if it exists
-    if [ -f ".env" ]; then
-        mv .env .env.backup
-    fi
-
-    # Use .env.strato as .env for the build
-    cp .env.strato .env
-    ENV_SWAPPED=true
-else
-    echo "No .env.strato found - using default .env"
-fi
-
-# Run the build
+echo "Building release package..."
 echo ""
-./build.sh
 
-# Restore original .env if we swapped it
-if [ "$ENV_SWAPPED" = true ]; then
-    rm .env
-    if [ -f ".env.backup" ]; then
-        mv .env.backup .env
-    fi
-fi
+# 1. Install production dependencies
+echo "Installing production dependencies..."
+php /etc/php/composer/composer2.phar install --no-dev --optimize-autoloader
 
-# Create release directory
+# 2. Create release directory
 echo ""
 echo "Creating release package..."
 rm -rf .release
 mkdir -p .release
 
-# Copy API files
-cp -r api .release/
-
-# Copy public folder (built frontend)
+# Copy Laravel application files
+cp -r app .release/
+cp -r bootstrap .release/
+cp -r config .release/
+cp -r database .release/
 cp -r public .release/
+cp -r resources .release/
+cp -r routes .release/
+cp -r vendor .release/
 
-# Copy root files
-cp .htaccess .release/
-cp index.php .release/
+# Create storage structure
+mkdir -p .release/storage/app/public
+mkdir -p .release/storage/framework/cache/data
+mkdir -p .release/storage/framework/sessions
+mkdir -p .release/storage/framework/views
+mkdir -p .release/storage/logs
+touch .release/storage/logs/.gitkeep
 
-# Copy .env.strato as .env for the release (or .env.example as template)
-if [ -f ".env.strato" ]; then
-    cp .env.strato .release/.env
-    echo "Included .env.strato as .env in release"
+# Copy essential files
+cp artisan .release/
+cp composer.json .release/
+cp composer.lock .release/
+
+# Copy production .env
+if [ -f ".env.production" ]; then
+    cp .env.production .release/.env
+    echo "Included .env.production as .env"
 else
     cp .env.example .release/.env.example
-    echo "Included .env.example - remember to create .env on the server"
+    echo "WARNING: No .env.production found - create .env on server"
 fi
 
 echo ""
 echo "Release package created in .release/"
 echo ""
-echo "Contents:"
-ls -la .release/
+du -sh .release/
 echo ""
-echo "Upload the contents of .release/ to your STRATO hosting root."
+echo "=== DEPLOYMENT ==="
+echo "1. Upload .release/ contents to your server"
+echo "2. Set document root to 'public/' folder"
+echo "3. Run: php artisan migrate"
+echo "4. Run: php artisan key:generate"
+echo "5. Set permissions: chmod -R 775 storage bootstrap/cache"
+echo ""
