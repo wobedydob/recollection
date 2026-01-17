@@ -10,6 +10,8 @@
 
 .auth-card {
   @include card;
+  width: 100%;
+  max-width: $modal-max-width;
 }
 
 .auth-title {
@@ -117,6 +119,7 @@
 
 .profile-card {
   @include card;
+  width: 100%;
   max-width: $profile-max-width;
 
   @include mobile {
