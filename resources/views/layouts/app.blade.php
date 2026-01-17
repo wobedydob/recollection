@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nl">
+<html lang="nl" data-theme="{{ auth()->user()->theme ?? 'light' }}">
 @php
     $modules = config('modules');
     $currentModule = null;

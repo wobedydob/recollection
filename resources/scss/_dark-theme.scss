@@ -1,0 +1,591 @@
+// ==========================================================================
+// Dark Theme - Overrides for dark mode
+// ==========================================================================
+
+@use 'variables' as *;
+
+// --------------------------------------------------------------------------
+// Dark Theme Color Variables
+// --------------------------------------------------------------------------
+
+$dark-bg-primary: #1e1a2e;
+$dark-bg-secondary: #2a2540;
+$dark-bg-card: #352f4a;
+$dark-bg-input: #3d3654;
+$dark-bg-hover: #453d5a;
+
+$dark-text-primary: #f0e8f5;
+$dark-text-secondary: #d5c8e0;
+$dark-text-muted: #a898b8;
+$dark-text-light: #8878a0;
+
+$dark-border: #4a4260;
+$dark-border-light: #3d3654;
+
+$dark-gradient-bg: linear-gradient(135deg, #1e1a2e 0%, #2a2540 50%, #1e2535 100%);
+
+// --------------------------------------------------------------------------
+// Dark Theme Overrides
+// --------------------------------------------------------------------------
+
+[data-theme="dark"] {
+  // Base body
+  body {
+    background: $dark-gradient-bg;
+    color: $dark-text-primary;
+  }
+
+  // --------------------------------------------------------------------------
+  // Header
+  // --------------------------------------------------------------------------
+
+  .header {
+    background: rgba($dark-bg-secondary, 0.9);
+    border-bottom-color: $dark-border;
+  }
+
+  .app-switcher-btn {
+    background: $dark-bg-card;
+    border-color: $dark-border;
+    color: $dark-text-secondary;
+
+    &:hover {
+      background: $dark-bg-hover;
+      border-color: $color-border-hover;
+    }
+  }
+
+  .app-name {
+    color: $dark-text-secondary;
+  }
+
+  .app-dropdown {
+    background: $dark-bg-card;
+    border-color: $dark-border;
+  }
+
+  .app-dropdown-item {
+    color: $dark-text-secondary;
+
+    &:hover {
+      background: $dark-bg-hover;
+    }
+
+    &.active {
+      background: $dark-bg-input;
+    }
+  }
+
+  .app-dropdown-name {
+    color: $dark-text-primary;
+  }
+
+  .app-dropdown-desc {
+    color: $dark-text-muted;
+  }
+
+  .user-btn {
+    background: $dark-bg-card;
+    border-color: $dark-border;
+
+    &:hover {
+      border-color: $color-border-hover;
+    }
+  }
+
+  .user-name {
+    color: $dark-text-secondary;
+  }
+
+  .dropdown-arrow {
+    color: $dark-text-muted;
+  }
+
+  .menu-dropdown {
+    background: $dark-bg-card;
+    border-color: $dark-border;
+  }
+
+  .menu-item {
+    color: $dark-text-secondary;
+
+    &:hover {
+      background: $dark-bg-hover;
+    }
+
+    &.logout {
+      border-top-color: $dark-border;
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Cards & Containers
+  // --------------------------------------------------------------------------
+
+  .idea-card,
+  .todo-list-card,
+  .todo-item-card,
+  .auth-card,
+  .profile-card {
+    background: $dark-bg-card;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  }
+
+  .todo-header-box,
+  .add-list-form,
+  .idea-form {
+    background: rgba($dark-bg-card, 0.8);
+    border-color: $dark-border;
+  }
+
+  // --------------------------------------------------------------------------
+  // Text Colors
+  // --------------------------------------------------------------------------
+
+  .page-title,
+  .section-title,
+  .todo-title,
+  .profile-name,
+  .idea-title,
+  .todo-list-name,
+  .todo-item-title {
+    color: $dark-text-primary;
+  }
+
+  .page-subtitle,
+  .profile-email,
+  .profile-member,
+  .todo-count,
+  .todo-list-count,
+  .idea-content,
+  .todo-item-description {
+    color: $dark-text-secondary;
+  }
+
+  .idea-date {
+    color: $dark-text-muted;
+  }
+
+  .input-hint {
+    color: $dark-text-muted;
+  }
+
+  // --------------------------------------------------------------------------
+  // Forms & Inputs
+  // --------------------------------------------------------------------------
+
+  .input,
+  .list-input,
+  .todo-input,
+  .todo-description-input,
+  .title-edit-input,
+  .idea-textarea,
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  textarea {
+    background: $dark-bg-input;
+    border-color: $dark-border;
+    color: $dark-text-primary;
+
+    &::placeholder {
+      color: $dark-text-muted;
+    }
+
+    &:focus {
+      border-color: $color-border-hover;
+    }
+
+    &:disabled {
+      background: $dark-bg-secondary;
+      color: $dark-text-muted;
+    }
+  }
+
+  .label {
+    color: $dark-text-secondary;
+  }
+
+  // --------------------------------------------------------------------------
+  // Buttons
+  // --------------------------------------------------------------------------
+
+  .btn-secondary {
+    background: $dark-bg-input;
+    color: $dark-text-secondary;
+
+    &:hover {
+      background: $dark-bg-hover;
+    }
+  }
+
+  .title-edit-btn {
+    color: $dark-text-muted;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+
+  .edit-btn {
+    background: $dark-bg-input;
+    color: $dark-text-muted;
+
+    &:hover {
+      background: $dark-bg-hover;
+      color: $color-primary;
+    }
+  }
+
+  .logout-btn {
+    border-color: $dark-border;
+
+    &:hover {
+      background: rgba($color-danger, 0.2);
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Modals
+  // --------------------------------------------------------------------------
+
+  .modal-overlay {
+    background: rgba(0, 0, 0, 0.6);
+  }
+
+  .modal {
+    background: $dark-bg-card;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+  }
+
+  .modal-title {
+    color: $dark-text-primary;
+  }
+
+  // Color picker
+  .color-option {
+    &.selected {
+      border-color: $dark-text-secondary;
+    }
+  }
+
+  .check {
+    color: $dark-text-primary;
+  }
+
+  // Close button
+  .close-btn {
+    background: rgba($color-danger, 0.2);
+    color: #f0a0a0;
+
+    &:hover {
+      background: rgba($color-danger, 0.3);
+    }
+  }
+
+  // Emoji picker
+  .emoji-input {
+    background: $dark-bg-input;
+    border-color: $dark-border;
+    color: $dark-text-primary;
+
+    &:focus {
+      border-color: $color-border-hover;
+    }
+  }
+
+  .emoji-option {
+    background: $dark-bg-input;
+    border-color: $dark-border;
+
+    &:hover {
+      border-color: $color-border-hover;
+    }
+
+    &.selected {
+      border-color: $color-accent-purple;
+      background: $dark-bg-hover;
+    }
+  }
+
+  // Preview section
+  .preview {
+    background: $dark-bg-input;
+  }
+
+  // --------------------------------------------------------------------------
+  // Tags
+  // --------------------------------------------------------------------------
+
+  .tag,
+  .tag-pill,
+  .tag-preview,
+  .idea-tag {
+    color: #444;
+  }
+
+  .tag-dropdown {
+    background: $dark-bg-card;
+    border-color: $dark-border;
+  }
+
+  .tag-option {
+    color: $dark-text-secondary;
+
+    &:hover {
+      background: $dark-bg-hover;
+    }
+  }
+
+  .selected-tags {
+    background: $dark-bg-input;
+    border-color: $dark-border;
+  }
+
+  .tag-remove {
+    color: rgba(0, 0, 0, 0.4);
+
+    &:hover {
+      color: rgba(0, 0, 0, 0.7);
+    }
+  }
+
+  .dropdown-toggle {
+    background: $dark-bg-input;
+    border-color: $dark-border;
+    color: $dark-text-muted;
+
+    &:hover:not(:disabled) {
+      background: $dark-bg-hover;
+    }
+  }
+
+  .filter-tag {
+    background: $dark-bg-card;
+    border-color: $dark-border;
+    color: $dark-text-secondary;
+
+    &:hover {
+      background: $dark-bg-hover;
+      border-color: $color-border-hover;
+    }
+  }
+
+  .filter-label {
+    color: $dark-text-muted;
+  }
+
+  .tag-list-item {
+    background: $dark-bg-input;
+  }
+
+  .tag-list-name {
+    color: $dark-text-primary;
+  }
+
+  .tag-edit-btn {
+    color: $dark-text-muted;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+
+  .manage-tags-btn {
+    color: $dark-text-muted;
+
+    &:hover {
+      color: $dark-text-secondary;
+      background: $dark-bg-hover;
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Messages
+  // --------------------------------------------------------------------------
+
+  .success-message {
+    background: rgba($color-success, 0.15);
+    color: #a8d9ab;
+  }
+
+  .error-message {
+    background: rgba($color-error, 0.15);
+    color: #f0a0a0;
+  }
+
+  // --------------------------------------------------------------------------
+  // Empty States
+  // --------------------------------------------------------------------------
+
+  .empty-state {
+    color: $dark-text-muted;
+  }
+
+  // --------------------------------------------------------------------------
+  // Loader
+  // --------------------------------------------------------------------------
+
+  .loader-text {
+    color: $dark-text-muted;
+  }
+
+  // --------------------------------------------------------------------------
+  // Profile Page
+  // --------------------------------------------------------------------------
+
+  .profile-header {
+    border-bottom-color: $dark-border;
+  }
+
+  .profile-nav-label {
+    color: $dark-text-muted;
+  }
+
+  .profile-nav-btn {
+    background: $dark-bg-input;
+
+    &:hover {
+      background: $dark-bg-hover;
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Home Page
+  // --------------------------------------------------------------------------
+
+  .module-tile {
+    background: rgba($dark-bg-card, 0.9);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3);
+
+    &:hover {
+      box-shadow: 0 15px 50px rgba(0, 0, 0, 0.4);
+    }
+  }
+
+  .module-name {
+    color: $dark-text-primary;
+  }
+
+  .module-description {
+    color: $dark-text-secondary;
+  }
+
+  .home-subtitle {
+    color: $dark-text-secondary;
+  }
+
+  // --------------------------------------------------------------------------
+  // Error Pages
+  // --------------------------------------------------------------------------
+
+  .error-page {
+    background: $dark-gradient-bg;
+  }
+
+  .error-card {
+    background: $dark-bg-card;
+  }
+
+  .error-title {
+    color: $dark-text-primary;
+  }
+
+  .error-message {
+    color: $dark-text-secondary;
+  }
+
+  // --------------------------------------------------------------------------
+  // Checklist Specific
+  // --------------------------------------------------------------------------
+
+  .todo-checkbox {
+    border-color: $dark-border;
+
+    &:hover {
+      border-color: $color-primary;
+      background: $dark-bg-hover;
+    }
+  }
+
+  .priority-selector {
+    background: $dark-bg-input;
+  }
+
+  .priority-option {
+    &.priority-low.active {
+      background: rgba($color-success, 0.2);
+    }
+
+    &.priority-medium.active {
+      background: rgba($color-warning, 0.2);
+    }
+
+    &.priority-high.active {
+      background: rgba($color-danger, 0.2);
+    }
+  }
+
+  .list-settings {
+    border-top-color: $dark-border;
+  }
+
+  .delete-list-btn {
+    color: $dark-text-muted;
+
+    &:hover {
+      color: $color-danger;
+    }
+  }
+
+  .back-link-header {
+    color: $dark-text-muted;
+
+    &:hover {
+      color: $color-primary;
+    }
+  }
+
+  // --------------------------------------------------------------------------
+  // Theme Toggle Styles
+  // --------------------------------------------------------------------------
+
+  .theme-toggle .theme-icon {
+    transition: transform 0.3s ease;
+  }
+
+  .settings-section {
+    border-top-color: $dark-border;
+  }
+
+  .setting-label {
+    color: $dark-text-secondary;
+  }
+
+  .theme-switcher {
+    background: $dark-bg-input;
+  }
+
+  .theme-option {
+    color: $dark-text-muted;
+
+    &.active {
+      background: $dark-bg-hover;
+      color: $dark-text-primary;
+    }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Theme Transition
+// --------------------------------------------------------------------------
+
+html {
+  // Smooth transition when switching themes
+  &,
+  & body,
+  & * {
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.2s ease;
+  }
+}

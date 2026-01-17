@@ -195,3 +195,55 @@
     color: $color-error;
   }
 }
+
+// --------------------------------------------------------------------------
+// Settings Section
+// --------------------------------------------------------------------------
+
+.settings-section {
+  margin-top: $spacing-2xl;
+  padding-top: $spacing-xl;
+  border-top: 1px solid $color-border-light;
+}
+
+.setting-item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: $spacing-lg;
+}
+
+.setting-label {
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  color: $color-text-secondary;
+}
+
+.theme-switcher {
+  display: flex;
+  background: $color-bg-subtle;
+  border-radius: $radius-md;
+  padding: 0.25rem;
+  gap: 0.25rem;
+}
+
+.theme-option {
+  padding: $spacing-sm $spacing-base;
+  border: none;
+  border-radius: $radius-sm;
+  background: transparent;
+  font-size: $font-size-sm;
+  color: $color-text-muted;
+  cursor: pointer;
+  transition: $transition-base;
+
+  &:hover {
+    color: $color-text-secondary;
+  }
+
+  &.active {
+    background: $color-bg-white;
+    color: $color-text-primary;
+    box-shadow: $shadow-sm;
+  }
+}

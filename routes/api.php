@@ -17,6 +17,7 @@ Route::get('/auth/me', [AuthController::class, 'me']);
 Route::middleware('auth:sanctum')->group(function () {
     Route::put('/auth/profile', [AuthController::class, 'updateProfile']);
     Route::put('/auth/password', [AuthController::class, 'updatePassword']);
+    Route::patch('/auth/theme', [AuthController::class, 'updateTheme']);
 
     // Memory Box - Ideas
     Route::prefix('memory-box')->group(function () {

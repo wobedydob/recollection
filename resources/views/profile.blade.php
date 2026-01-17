@@ -110,6 +110,30 @@
             </button>
         </form>
 
+        <div class="settings-section">
+            <h2 class="section-title">Instellingen</h2>
+
+            <div class="setting-item">
+                <span class="setting-label">Thema</span>
+                <div class="theme-switcher">
+                    <button
+                        type="button"
+                        class="theme-option {{ auth()->user()->theme !== 'dark' ? 'active' : '' }}"
+                        onclick="setTheme('light')"
+                    >
+                        ☀️ Licht
+                    </button>
+                    <button
+                        type="button"
+                        class="theme-option {{ auth()->user()->theme === 'dark' ? 'active' : '' }}"
+                        onclick="setTheme('dark')"
+                    >
+                        🌙 Donker
+                    </button>
+                </div>
+            </div>
+        </div>
+
         <div class="profile-actions">
             <div class="profile-nav-links">
                 <span class="profile-nav-label">Terug naar:</span>
