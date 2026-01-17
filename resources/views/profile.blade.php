@@ -15,7 +15,7 @@
         <form method="POST" action="{{ route('profile.update') }}" class="profile-form">
             @csrf
             @method('PUT')
-            <h2 class="section-title">Profiel Bewerken</h2>
+            <h2 class="section-title">Profiel bewerken</h2>
 
             @if(session('profile_success'))
                 <div class="success-message">{{ session('profile_success') }}</div>
@@ -47,14 +47,14 @@
             </div>
 
             <button type="submit" class="save-btn">
-                Wijzigingen Opslaan
+                Wijzigingen opslaan
             </button>
         </form>
 
         <form method="POST" action="{{ route('profile.password') }}" class="password-form">
             @csrf
             @method('PUT')
-            <h2 class="section-title">Wachtwoord Wijzigen</h2>
+            <h2 class="section-title">Wachtwoord wijzigen</h2>
 
             @if(session('password_success'))
                 <div class="success-message">{{ session('password_success') }}</div>
@@ -106,7 +106,7 @@
             </div>
 
             <button type="submit" class="save-btn" :disabled="!passwordValid || newPasswordsMatch === false">
-                Wachtwoord Wijzigen
+                Wachtwoord wijzigen
             </button>
         </form>
 
