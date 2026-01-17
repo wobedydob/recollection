@@ -17,6 +17,10 @@
 
 .form-group {
   @include flex-column($spacing-sm);
+
+  & + & {
+    margin-top: $spacing-lg;
+  }
 }
 
 // --------------------------------------------------------------------------

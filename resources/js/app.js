@@ -3,6 +3,8 @@ import { createApp } from 'vue';
 import PasswordInput from './components/PasswordInput.vue';
 import PasswordStrength from './components/PasswordStrength.vue';
 import IdeasApp from './components/IdeasApp.vue';
+import TodoApp from './components/TodoApp.vue';
+import TodoListDetail from './components/TodoListDetail.vue';
 
 // Auto-initialize Vue components on page load
 document.addEventListener('DOMContentLoaded', () => {
@@ -10,6 +12,19 @@ document.addEventListener('DOMContentLoaded', () => {
     const ideasEl = document.getElementById('ideas-app');
     if (ideasEl) {
         createApp(IdeasApp).mount(ideasEl);
+    }
+
+    // Initialize TodoApp if the element exists
+    const todoEl = document.getElementById('todo-app');
+    if (todoEl) {
+        createApp(TodoApp).mount(todoEl);
+    }
+
+    // Initialize TodoListDetail if the element exists
+    const todoDetailEl = document.getElementById('todo-list-detail');
+    if (todoDetailEl) {
+        const listId = parseInt(todoDetailEl.dataset.listId, 10);
+        createApp(TodoListDetail, { listId }).mount(todoDetailEl);
     }
 
     // Initialize password components on auth pages
@@ -49,11 +64,18 @@ document.addEventListener('DOMContentLoaded', () => {
         app.mount(form);
     });
 
-    // Close dropdown when clicking outside
+    // Close dropdowns when clicking outside
     document.addEventListener('click', (e) => {
-        const dropdown = document.querySelector('.user-dropdown.show');
-        if (dropdown && !e.target.closest('.nav-user')) {
-            dropdown.classList.remove('show');
+        // Close user menu dropdown
+        const userDropdown = document.querySelector('.menu-dropdown.show');
+        if (userDropdown && !e.target.closest('.user-menu')) {
+            userDropdown.classList.remove('show');
+        }
+
+        // Close app switcher dropdown
+        const appDropdown = document.querySelector('.app-dropdown.show');
+        if (appDropdown && !e.target.closest('.app-switcher')) {
+            appDropdown.classList.remove('show');
         }
     });
 });

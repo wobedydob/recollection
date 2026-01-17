@@ -1,6 +1,7 @@
 <template>
     <div class="ideas-app">
         <!-- Create Idea Form -->
+        <Transition name="form-fade" appear>
         <form class="idea-form" @submit.prevent="createIdea">
             <textarea
                 v-model="newIdea"
@@ -60,6 +61,7 @@
                 {{ isSubmitting ? 'Opslaan...' : 'Opslaan in Memory Box' }}
             </button>
         </form>
+        </Transition>
 
         <!-- Filter Section -->
         <Transition name="ideas-appear">
@@ -91,32 +93,30 @@
         </div>
 
         <!-- Ideas List -->
-        <Transition name="ideas-appear">
-            <div v-if="!isLoading && filteredIdeas.length > 0" class="ideas-list" :key="filterTag || 'all'">
-                <div v-for="idea in filteredIdeas" :key="idea.id" class="idea-card">
-                    <div class="card-actions">
-                        <button class="edit-btn" @click="startEdit(idea)" title="Bewerken">✎</button>
-                        <button class="delete-btn" @click="confirmDelete(idea)" title="Verwijderen">×</button>
+        <TransitionGroup name="todo-task" tag="div" class="ideas-list" appear v-if="!isLoading && filteredIdeas.length > 0" :key="filterTag || 'all'">
+            <div v-for="idea in filteredIdeas" :key="idea.id" class="idea-card">
+                <div class="card-actions">
+                    <button class="edit-btn" @click="startEdit(idea)" title="Bewerken">✎</button>
+                    <button class="delete-btn" @click="confirmDelete(idea)" title="Verwijderen">×</button>
+                </div>
+                <p class="idea-content">{{ idea.content }}</p>
+                <div class="idea-footer">
+                    <div class="idea-tags">
+                        <button
+                            v-for="tag in idea.tags"
+                            :key="tag.id"
+                            class="idea-tag"
+                            :style="{ backgroundColor: tag.color }"
+                            @click="setFilter(tag.id)"
+                        >
+                            <span class="tag-emoji">{{ tag.emoji }}</span>
+                            {{ tag.name }}
+                        </button>
                     </div>
-                    <p class="idea-content">{{ idea.content }}</p>
-                    <div class="idea-footer">
-                        <div class="idea-tags">
-                            <button
-                                v-for="tag in idea.tags"
-                                :key="tag.id"
-                                class="idea-tag"
-                                :style="{ backgroundColor: tag.color }"
-                                @click="setFilter(tag.id)"
-                            >
-                                <span class="tag-emoji">{{ tag.emoji }}</span>
-                                {{ tag.name }}
-                            </button>
-                        </div>
-                        <span class="idea-date">{{ formatDate(idea.created_at) }}</span>
-                    </div>
+                    <span class="idea-date">{{ formatDate(idea.created_at) }}</span>
                 </div>
             </div>
-        </Transition>
+        </TransitionGroup>
 
         <!-- Empty State -->
         <Transition name="ideas-appear">
@@ -471,8 +471,8 @@ export default {
             this.isLoading = true;
             try {
                 const [ideasRes, tagsRes] = await Promise.all([
-                    fetch('/api/ideas', { credentials: 'include' }),
-                    fetch('/api/tags', { credentials: 'include' })
+                    fetch('/api/memorybox/ideas', { credentials: 'include' }),
+                    fetch('/api/memorybox/tags', { credentials: 'include' })
                 ]);
                 const ideasData = await ideasRes.json();
                 const tagsData = await tagsRes.json();
@@ -517,7 +517,7 @@ export default {
             if (!this.newIdea.trim() || this.isSubmitting) return;
             this.isSubmitting = true;
             try {
-                const res = await fetch('/api/ideas', {
+                const res = await fetch('/api/memorybox/ideas', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -572,7 +572,7 @@ export default {
         async saveEdit() {
             if (!this.editContent.trim()) return;
             try {
-                const res = await fetch(`/api/ideas/${this.editingIdea.id}`, {
+                const res = await fetch(`/api/memorybox/ideas/${this.editingIdea.id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -602,7 +602,7 @@ export default {
         },
         async deleteIdea() {
             try {
-                const res = await fetch(`/api/ideas/${this.deletingIdea.id}`, {
+                const res = await fetch(`/api/memorybox/ideas/${this.deletingIdea.id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
@@ -620,7 +620,7 @@ export default {
         async createTag() {
             if (!this.newTag.name.trim()) return;
             try {
-                const res = await fetch('/api/tags', {
+                const res = await fetch('/api/memorybox/tags', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -648,7 +648,7 @@ export default {
         },
         async deleteTag(tag) {
             try {
-                const res = await fetch(`/api/tags/${tag.id}`, {
+                const res = await fetch(`/api/memorybox/tags/${tag.id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
@@ -676,7 +676,7 @@ export default {
         async updateTag() {
             if (!this.editingTag || !this.editingTag.name.trim()) return;
             try {
-                const res = await fetch(`/api/tags/${this.editingTag.id}`, {
+                const res = await fetch(`/api/memorybox/tags/${this.editingTag.id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',

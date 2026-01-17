@@ -65,3 +65,102 @@
 .ideas-appear-leave-to {
   opacity: 0;
 }
+
+// --------------------------------------------------------------------------
+// Vue Transitions - Todo Items
+// --------------------------------------------------------------------------
+
+.todo-item-enter-active,
+.todo-item-appear-active {
+  transition: all 0.3s ease;
+}
+
+.todo-item-leave-active {
+  transition: all 0.3s ease;
+  position: absolute;
+  width: 100%;
+}
+
+.todo-item-enter-from,
+.todo-item-appear-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.todo-item-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.todo-item-move {
+  transition: transform 0.4s ease;
+}
+
+// --------------------------------------------------------------------------
+// Vue Transitions - Form Grow (scale in)
+// --------------------------------------------------------------------------
+
+.form-fade-enter-active,
+.form-fade-appear-active {
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+.form-fade-leave-active {
+  transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.form-fade-enter-from,
+.form-fade-appear-from {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.form-fade-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+// --------------------------------------------------------------------------
+// Vue Transitions - Todo Tasks (delayed with animation)
+// --------------------------------------------------------------------------
+
+@keyframes todo-task-in {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.todo-task-appear-active {
+  animation: todo-task-in 0.4s ease forwards;
+  animation-delay: 0.35s;
+  opacity: 0;
+}
+
+.todo-task-enter-active {
+  animation: todo-task-in 0.4s ease forwards;
+}
+
+.todo-task-enter-from {
+  opacity: 0;
+  transform: translateY(20px);
+}
+
+.todo-task-leave-active {
+  transition: all 0.3s ease;
+  position: absolute;
+  width: 100%;
+}
+
+.todo-task-leave-to {
+  opacity: 0;
+  transform: scale(0.95);
+}
+
+.todo-task-move {
+  transition: transform 0.4s ease;
+}

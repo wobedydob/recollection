@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\TodoListController;
 use Illuminate\Support\Facades\Route;
 
 // Guest routes (login, register)
@@ -13,12 +14,21 @@ Route::middleware('guest')->group(function () {
 
 // Authenticated routes
 Route::middleware('auth')->group(function () {
+    // Home
     Route::get('/', function () {
-        return redirect()->route('ideas.index');
-    });
-    Route::get('/ideas', function () {
+        return view('home');
+    })->name('home');
+
+    // Memory Box
+    Route::get('/memorybox', function () {
         return view('ideas.index');
-    })->name('ideas.index');
+    })->name('memorybox.index');
+
+    // TODO
+    Route::get('/todo', [TodoListController::class, 'index'])->name('todo.index');
+    Route::get('/todo/{list}', [TodoListController::class, 'show'])->name('todo.show');
+
+    // Profile
     Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
     Route::put('/profile', [AuthController::class, 'webUpdateProfile'])->name('profile.update');
     Route::put('/profile/password', [AuthController::class, 'webUpdatePassword'])->name('profile.password');
