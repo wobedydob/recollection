@@ -1,61 +1,46 @@
-# ✨ Recollectie
+# Recollectie
 
-A cute little memory box for all your wonderful ideas! Built with love using Laravel and Vue 3.
+A cozy personal productivity app for storing ideas and managing tasks. Built with Laravel and Vue 3.
 
-## 💭 What is this?
+## What is this?
 
-Recollectie is a cozy place to store your thoughts, ideas, dreams, and random sparks of inspiration. Tag them with pretty colors and emojis, filter through them later, and never lose a brilliant idea again!
+Recollectie is a personal space with two modules:
 
-## 🌸 Features
+- **Memory Box** - Store your thoughts, ideas, dreams, and random sparks of inspiration. Tag them with pretty colors and emojis, filter through them later, and never lose a brilliant idea again.
+- **Checklist** - Manage your tasks with multiple lists, priorities, and a clean interface.
 
-- **Write ideas** - Jot down whatever's on your mind
-- **Colorful tags** - Organize with beautiful pastel-colored tags and emojis
-- **Filter & find** - Quickly filter ideas by tag with smooth loading animations
-- **User accounts** - Your ideas stay private and synced
-- **Password security** - Visual strength meter and requirements checker
-- **Cute design** - Pastel colors, smooth animations, and a sprinkle of magic
+## Features
 
-## 🏗️ Project Structure
+### Memory Box
+- Write and store ideas
+- Organize with colorful tags and emojis
+- Filter ideas by tag
 
-```
-recollection/
-├── app/
-│   ├── Http/Controllers/   # Controllers
-│   │   ├── AuthController.php
-│   │   ├── IdeaController.php
-│   │   └── TagController.php
-│   └── Models/             # Eloquent models
-│       ├── User.php
-│       ├── Idea.php
-│       └── Tag.php
-├── database/
-│   └── migrations/         # Database migrations
-├── resources/
-│   ├── css/
-│   │   └── app.css         # Pastel theme styles
-│   ├── js/
-│   │   ├── app.js          # Vue initialization
-│   │   └── components/     # Vue components
-│   │       ├── IdeasApp.vue
-│   │       ├── PasswordInput.vue
-│   │       └── PasswordStrength.vue
-│   └── views/
-│       ├── layouts/        # Blade layouts
-│       │   ├── app.blade.php
-│       │   └── guest.blade.php
-│       ├── auth/           # Auth pages
-│       │   ├── login.blade.php
-│       │   └── register.blade.php
-│       ├── ideas/
-│       │   └── index.blade.php
-│       └── profile.blade.php
-├── routes/
-│   ├── api.php             # API routes (for Vue components)
-│   └── web.php             # Web routes
-└── vite.config.js          # Vite + Vue configuration
-```
+### Checklist
+- Create multiple task lists
+- Add tasks with descriptions and priorities
+- Mark tasks as complete
 
-## 🚀 Getting Started
+### Personalization
+- **Color themes** - Choose from pink, blue, green, or orange
+- **Dark mode** - Light and dark theme support
+- **User accounts** - Your data stays private and synced
+
+### Account
+- Secure authentication with password strength meter
+- Profile management
+- Account deletion
+
+## Tech Stack
+
+- **Laravel 11** - PHP framework with session authentication
+- **Vue 3** - Interactive components
+- **Vite** - Fast development and build tooling
+- **SCSS** - Modular styling with CSS custom properties for theming
+- **Blade** - Server-rendered templates
+- **SQLite/MySQL** - Database with utf8mb4 for emoji support
+
+## Getting Started
 
 ### Prerequisites
 
@@ -103,7 +88,7 @@ recollection/
    php artisan serve
    ```
 
-7. Open http://localhost:8000 and start collecting memories! 🎉
+7. Open http://localhost:8000
 
 ### Development
 
@@ -118,18 +103,23 @@ Then in another terminal:
 php artisan serve
 ```
 
-## 🛠️ Tech Stack
+## Deployment
 
-- **Laravel 11** - PHP framework with session authentication
-- **Vue 3** - Interactive components (ideas list, password strength)
-- **Vite** - Fast development and build tooling
-- **Blade** - Server-rendered templates
-- **SQLite/MySQL** - Database with utf8mb4 for emoji support
+```bash
+git pull origin master
+composer install --no-dev --optimize-autoloader
+npm ci
+npm run build
+php artisan migrate --force
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+```
 
-## 🇳🇱 Language
+## Language
 
-The interface is in Dutch because it was made with love for someone special!
+The interface is in Dutch.
 
-## 📝 License
+## License
 
-Do whatever you want with it! Just spread some joy ✨
+Do whatever you want with it!
