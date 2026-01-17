@@ -26,16 +26,16 @@ $color-text-lighter: #a595b5;
 $color-text-lightest: #b8a5c5;
 
 // Border colors
-$color-border: #e8d5f0;
-$color-border-hover: #c9a7d8;
-$color-border-light: #f0e5f5;
+$color-border: var(--color-border);
+$color-border-hover: var(--color-border-hover);
+$color-border-light: var(--color-border-light);
 
 // Background colors
 $color-bg-white: #fff;
-$color-bg-light: #f8f0fc;
-$color-bg-lighter: #faf5fc;
-$color-bg-subtle: #f8f5fa;
-$color-bg-hover: #f0e5f5;
+$color-bg-light: var(--color-bg-light);
+$color-bg-lighter: var(--color-bg-lighter);
+$color-bg-subtle: var(--color-bg-subtle);
+$color-bg-hover: var(--color-bg-hover);
 
 // State colors
 $color-success: #81c784;
@@ -56,18 +56,18 @@ $color-warning: #f5a623;
 $color-warning-light: #fff8e5;
 
 // Main brand color alias
-$color-primary: $color-primary-purple;
-$color-primary-dark: $color-accent-purple;
+$color-primary: var(--color-primary);
+$color-primary-dark: var(--color-accent-2);
 
 // --------------------------------------------------------------------------
 // Gradients
 // --------------------------------------------------------------------------
 
-$gradient-primary: linear-gradient(135deg, $color-primary-pink 0%, $color-primary-purple 50%, $color-primary-blue 100%);
-$gradient-title: linear-gradient(135deg, $color-accent-pink 0%, $color-accent-purple 50%, $color-accent-blue 100%);
-$gradient-title-short: linear-gradient(135deg, $color-accent-pink 0%, $color-accent-purple 100%);
-$gradient-background: linear-gradient(135deg, #fdf2f8 0%, #f5f0ff 50%, #f0f7ff 100%);
-$gradient-avatar: linear-gradient(135deg, $color-primary-pink 0%, $color-primary-purple 100%);
+$gradient-primary: var(--gradient-primary);
+$gradient-title: linear-gradient(135deg, var(--color-accent-1) 0%, var(--color-accent-2) 50%, var(--color-accent-3) 100%);
+$gradient-title-short: linear-gradient(135deg, var(--color-accent-1) 0%, var(--color-accent-2) 100%);
+$gradient-background: var(--gradient-bg);
+$gradient-avatar: linear-gradient(135deg, var(--color-primary-1) 0%, var(--color-primary-2) 100%);
 
 // --------------------------------------------------------------------------
 // Typography

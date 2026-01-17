@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nl" data-theme="{{ auth()->user()->theme ?? 'light' }}">
+<html lang="nl" data-theme="{{ auth()->user()->theme ?? 'light' }}" data-color="{{ auth()->user()->color_theme ?? 'pink' }}">
 @php
     $modules = config('modules');
     $currentModule = null;

@@ -25,6 +25,25 @@ $dark-border-light: #3d3654;
 $dark-gradient-bg: linear-gradient(135deg, #1e1a2e 0%, #2a2540 50%, #1e2535 100%);
 
 // --------------------------------------------------------------------------
+// Dark Theme Color Theme Overrides
+// --------------------------------------------------------------------------
+
+[data-theme="dark"] {
+  --gradient-bg: linear-gradient(135deg, #1e1a2e 0%, #2a2540 50%, #1e2535 100%);
+}
+
+[data-theme="dark"][data-color="blue"] {
+  --gradient-bg: linear-gradient(135deg, #0f172a 0%, #1e293b 50%, #1e1b4b 100%);
+}
+
+[data-theme="dark"][data-color="green"] {
+  --gradient-bg: linear-gradient(135deg, #052e16 0%, #064e3b 50%, #134e4a 100%);
+}
+
+[data-theme="dark"][data-color="orange"] {
+  --gradient-bg: linear-gradient(135deg, #431407 0%, #7c2d12 50%, #78350f 100%);
+}
+// --------------------------------------------------------------------------
 // Dark Theme Overrides
 // --------------------------------------------------------------------------
 

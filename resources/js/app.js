@@ -52,6 +52,31 @@ window.setTheme = async function(theme) {
     }
 };
 
+window.setColorTheme = async function(colorTheme) {
+    document.documentElement.dataset.color = colorTheme;
+    localStorage.setItem('color_theme', colorTheme);
+
+    // Update active state on buttons
+    document.querySelectorAll('.color-theme-option').forEach(btn => {
+        btn.classList.toggle('active', btn.classList.contains(colorTheme));
+    });
+
+    // Persist to database
+    try {
+        await fetch('/api/auth/color-theme', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            credentials: 'include',
+            body: JSON.stringify({ color_theme: colorTheme })
+        });
+    } catch (e) {
+        console.error('Failed to save color theme preference:', e);
+    }
+};
+
 // Auto-initialize Vue components on page load
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize IdeasApp if the element exists

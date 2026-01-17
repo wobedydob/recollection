@@ -261,6 +261,19 @@ class AuthController extends Controller
         return response()->json(['theme' => $theme]);
     }
 
+    public function updateColorTheme(Request $request): JsonResponse
+    {
+        $colorTheme = $request->input('color_theme');
+
+        if (!in_array($colorTheme, ['pink', 'blue', 'green', 'orange'])) {
+            return response()->json(['message' => 'Ongeldig kleurthema'], 400);
+        }
+
+        $request->user()->update(['color_theme' => $colorTheme]);
+
+        return response()->json(['color_theme' => $colorTheme]);
+    }
+
     private function formatUser(User $user): array
     {
         return [

@@ -247,3 +247,49 @@
     box-shadow: $shadow-sm;
   }
 }
+
+// --------------------------------------------------------------------------
+// Color Theme Selector
+// --------------------------------------------------------------------------
+
+.color-theme-switcher {
+  display: flex;
+  gap: $spacing-sm;
+}
+
+.color-theme-option {
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border-radius: $radius-circle;
+  border: none;
+  cursor: pointer;
+  transition: $transition-base;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+  &.pink {
+    background: linear-gradient(135deg, #f0a5c0, #c9a7d8);
+  }
+
+  &.blue {
+    background: linear-gradient(135deg, #7dd3fc, #60a5fa);
+  }
+
+  &.green {
+    background: linear-gradient(135deg, #86efac, #6ee7b7);
+  }
+
+  &.orange {
+    background: linear-gradient(135deg, #fdba74, #fb923c);
+  }
+
+  &:hover {
+    transform: scale(1.15);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  &.active {
+    transform: scale(1.15);
+    box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.3);
+  }
+}

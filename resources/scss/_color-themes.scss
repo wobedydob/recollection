@@ -1,0 +1,96 @@
+// ==========================================================================
+// Color Themes - CSS Custom Properties for themeable colors
+// ==========================================================================
+
+// --------------------------------------------------------------------------
+// Default (Pink) - applied to :root
+// --------------------------------------------------------------------------
+
+:root {
+  --color-primary-1: #f0a5c0;
+  --color-primary-2: #c9a7d8;
+  --color-primary-3: #a5c0f0;
+  --color-accent-1: #e879a0;
+  --color-accent-2: #a87cc9;
+  --color-accent-3: #79a0e8;
+  --gradient-primary: linear-gradient(135deg, var(--color-primary-1) 0%, var(--color-primary-2) 50%, var(--color-primary-3) 100%);
+  --gradient-bg: linear-gradient(135deg, #fdf2f8 0%, #f5f0ff 50%, #f0f7ff 100%);
+  --color-border: #e8d5f0;
+  --color-border-hover: #c9a7d8;
+  --color-border-light: #f0e5f5;
+  --color-primary: #c9a7d8;
+  --color-bg-light: #f8f0fc;
+  --color-bg-lighter: #faf5fc;
+  --color-bg-subtle: #f8f5fa;
+  --color-bg-hover: #f0e5f5;
+  --color-modal-overlay: rgba(100, 80, 120, 0.4);
+}
+
+// --------------------------------------------------------------------------
+// Blue theme
+// --------------------------------------------------------------------------
+
+[data-color="blue"] {
+  --color-primary-1: #7dd3fc;
+  --color-primary-2: #60a5fa;
+  --color-primary-3: #818cf8;
+  --color-accent-1: #38bdf8;
+  --color-accent-2: #3b82f6;
+  --color-accent-3: #6366f1;
+  --gradient-bg: linear-gradient(135deg, #f0f9ff 0%, #eff6ff 50%, #eef2ff 100%);
+  --color-border: #bfdbfe;
+  --color-border-hover: #60a5fa;
+  --color-border-light: #dbeafe;
+  --color-primary: #3b82f6;
+  --color-bg-light: #eff6ff;
+  --color-bg-lighter: #f8faff;
+  --color-bg-subtle: #f0f7ff;
+  --color-bg-hover: #dbeafe;
+  --color-modal-overlay: rgba(30, 64, 175, 0.4);
+}
+
+// --------------------------------------------------------------------------
+// Green theme
+// --------------------------------------------------------------------------
+
+[data-color="green"] {
+  --color-primary-1: #86efac;
+  --color-primary-2: #6ee7b7;
+  --color-primary-3: #5eead4;
+  --color-accent-1: #4ade80;
+  --color-accent-2: #34d399;
+  --color-accent-3: #2dd4bf;
+  --gradient-bg: linear-gradient(135deg, #f0fdf4 0%, #ecfdf5 50%, #f0fdfa 100%);
+  --color-border: #bbf7d0;
+  --color-border-hover: #6ee7b7;
+  --color-border-light: #dcfce7;
+  --color-primary: #10b981;
+  --color-bg-light: #ecfdf5;
+  --color-bg-lighter: #f5fdf9;
+  --color-bg-subtle: #f0fdf6;
+  --color-bg-hover: #d1fae5;
+  --color-modal-overlay: rgba(6, 78, 59, 0.4);
+}
+
+// --------------------------------------------------------------------------
+// Orange theme
+// --------------------------------------------------------------------------
+
+[data-color="orange"] {
+  --color-primary-1: #fdba74;
+  --color-primary-2: #fb923c;
+  --color-primary-3: #f97316;
+  --color-accent-1: #f59e0b;
+  --color-accent-2: #ea580c;
+  --color-accent-3: #dc2626;
+  --gradient-bg: linear-gradient(135deg, #fff7ed 0%, #ffedd5 50%, #fef3c7 100%);
+  --color-border: #fed7aa;
+  --color-border-hover: #fb923c;
+  --color-border-light: #ffedd5;
+  --color-primary: #ea580c;
+  --color-bg-light: #fff7ed;
+  --color-bg-lighter: #fffaf5;
+  --color-bg-subtle: #fff9f0;
+  --color-bg-hover: #ffedd5;
+  --color-modal-overlay: rgba(124, 45, 18, 0.4);
+}

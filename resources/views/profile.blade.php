@@ -132,6 +132,20 @@
                     </button>
                 </div>
             </div>
+
+            <div class="setting-item">
+                <span class="setting-label">Kleur</span>
+                <div class="color-theme-switcher">
+                    <button type="button" class="color-theme-option pink {{ auth()->user()->color_theme === 'pink' || !auth()->user()->color_theme ? 'active' : '' }}" onclick="setColorTheme('pink')" title="Roze">
+                    </button>
+                    <button type="button" class="color-theme-option blue {{ auth()->user()->color_theme === 'blue' ? 'active' : '' }}" onclick="setColorTheme('blue')" title="Blauw">
+                    </button>
+                    <button type="button" class="color-theme-option green {{ auth()->user()->color_theme === 'green' ? 'active' : '' }}" onclick="setColorTheme('green')" title="Groen">
+                    </button>
+                    <button type="button" class="color-theme-option orange {{ auth()->user()->color_theme === 'orange' ? 'active' : '' }}" onclick="setColorTheme('orange')" title="Oranje">
+                    </button>
+                </div>
+            </div>
         </div>
 
         <div class="profile-actions">

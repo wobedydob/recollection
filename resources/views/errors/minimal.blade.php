@@ -11,7 +11,9 @@
         // Apply saved theme immediately to prevent flash
         (function() {
             const theme = localStorage.getItem('theme') || 'light';
+            const colorTheme = localStorage.getItem('color_theme') || 'pink';
             document.documentElement.setAttribute('data-theme', theme);
+            document.documentElement.setAttribute('data-color', colorTheme);
         })();
     </script>
 </head>
