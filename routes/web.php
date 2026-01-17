@@ -32,5 +32,6 @@ Route::middleware('auth')->group(function () {
     Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
     Route::put('/profile', [AuthController::class, 'webUpdateProfile'])->name('profile.update');
     Route::put('/profile/password', [AuthController::class, 'webUpdatePassword'])->name('profile.password');
+    Route::delete('/profile', [AuthController::class, 'webDeleteAccount'])->name('profile.delete');
     Route::post('/logout', [AuthController::class, 'webLogout'])->name('logout');
 });

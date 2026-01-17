@@ -53,7 +53,7 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('ideas.index');
+        return redirect()->route('home');
     }
 
     public function webLogin(Request $request): RedirectResponse
@@ -73,7 +73,7 @@ class AuthController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('ideas.index'));
+        return redirect()->intended(route('home'));
     }
 
     public function webLogout(Request $request): RedirectResponse
@@ -272,6 +272,19 @@ class AuthController extends Controller
         $request->user()->update(['color_theme' => $colorTheme]);
 
         return response()->json(['color_theme' => $colorTheme]);
+    }
+
+    public function webDeleteAccount(Request $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        $user->delete();
+
+        return redirect()->route('login')->with('account_deleted', 'Je account is verwijderd.');
     }
 
     private function formatUser(User $user): array

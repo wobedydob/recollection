@@ -160,6 +160,39 @@
                 <button type="submit" class="logout-btn">Uitloggen</button>
             </form>
         </div>
+
+        <div class="danger-zone">
+            <h2 class="section-title danger-title">Gevarenzone</h2>
+            <p class="danger-description">Als je je account verwijdert, worden al je gegevens permanent verwijderd. Dit kan niet ongedaan worden gemaakt.</p>
+            <button type="button" class="delete-account-btn" onclick="confirmDeleteAccount()">Account verwijderen</button>
+        </div>
     </div>
 </div>
+
+<div class="modal-overlay" id="delete-account-modal" style="display: none;">
+    <div class="modal">
+        <button type="button" class="close-btn" onclick="closeDeleteModal()">×</button>
+        <h2 class="modal-title">Account verwijderen?</h2>
+        <p class="modal-text">Weet je zeker dat je je account wilt verwijderen? Al je gegevens worden permanent verwijderd. Dit kan niet ongedaan worden gemaakt.</p>
+        <div class="modal-actions">
+            <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Annuleren</button>
+            <form method="POST" action="{{ route('profile.delete') }}" style="flex: 1;">
+                @csrf
+                @method('DELETE')
+                <button type="submit" class="btn btn-danger btn-full">Ja, verwijder mijn account</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+@push('scripts')
+<script>
+function confirmDeleteAccount() {
+    document.getElementById('delete-account-modal').style.display = 'flex';
+}
+function closeDeleteModal() {
+    document.getElementById('delete-account-modal').style.display = 'none';
+}
+</script>
+@endpush
 @endsection
