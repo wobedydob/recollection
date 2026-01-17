@@ -24,6 +24,12 @@
   font-weight: $font-weight-bold;
   @include gradient-text($gradient-title);
   text-decoration: none;
+
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
 }
 
 // --------------------------------------------------------------------------
@@ -219,6 +225,12 @@
   text-decoration: none;
   cursor: pointer;
   transition: background 0.15s ease;
+
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
 
   &:hover {
     background: $color-bg-light;

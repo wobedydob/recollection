@@ -1,0 +1,94 @@
+// ==========================================================================
+// Error Page Styles
+// ==========================================================================
+
+@use '../index' as *;
+
+.error-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: $spacing-xl;
+  background: $gradient-background;
+}
+
+.error-card {
+  background: $color-bg-white;
+  border-radius: $radius-xl;
+  padding: $spacing-3xl $spacing-2xl;
+  text-align: center;
+  max-width: 400px;
+  width: 100%;
+  box-shadow: $shadow-lg;
+}
+
+.error-logo {
+  display: inline-block;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  background: $gradient-primary;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  text-decoration: none;
+  margin-bottom: $spacing-xl;
+
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
+}
+
+.error-icon {
+  font-size: 4rem;
+  margin-bottom: $spacing-base;
+  line-height: 1;
+}
+
+.error-code {
+  font-size: 5rem;
+  font-weight: $font-weight-bold;
+  background: $gradient-primary;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  margin: 0;
+  line-height: 1;
+}
+
+.error-title {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin: $spacing-base 0 $spacing-sm;
+}
+
+.error-message {
+  font-size: $font-size-base;
+  color: $color-text-secondary;
+  margin: 0 0 $spacing-xl;
+  line-height: $line-height-base;
+}
+
+.error-home-btn {
+  display: inline-block;
+  padding: $spacing-md $spacing-xl;
+  background: $gradient-primary;
+  color: $color-bg-white;
+  font-size: $font-size-base;
+  font-weight: $font-weight-medium;
+  text-decoration: none;
+  border-radius: $radius-md;
+  box-shadow: $shadow-button;
+  transition: $transition-base;
+
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+    transform: translateY(-2px);
+    box-shadow: $shadow-button-hover;
+  }
+}

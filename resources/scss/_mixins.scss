@@ -76,6 +76,13 @@
   font-weight: $font-weight-semibold;
   cursor: pointer;
   transition: $transition-base;
+  text-decoration: none;
+
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
 }
 
 @mixin btn-primary {
@@ -113,6 +120,13 @@
   border-radius: $radius-circle;
   cursor: pointer;
   transition: $transition-base;
+  text-decoration: none;
+
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
 }
 
 @mixin btn-icon-danger {
