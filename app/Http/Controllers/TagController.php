@@ -47,6 +47,42 @@ class TagController extends Controller
         return response()->json(['tag' => $this->formatTag($tag)]);
     }
 
+    public function update(Request $request, int $id): JsonResponse
+    {
+        $tag = $request->user()->tags()->find($id);
+
+        if (!$tag) {
+            return response()->json(['message' => 'Tag niet gevonden'], 404);
+        }
+
+        $name = $request->input('name');
+        $color = $request->input('color');
+        $emoji = $request->input('emoji');
+
+        if ($name !== null) {
+            $name = trim($name);
+            if (!$name) {
+                return response()->json(['message' => 'Naam is verplicht'], 400);
+            }
+            if (strlen($name) > 25) {
+                return response()->json(['message' => 'Naam mag maximaal 25 tekens zijn'], 400);
+            }
+            $tag->name = $name;
+        }
+
+        if ($color !== null) {
+            $tag->color = $color;
+        }
+
+        if ($emoji !== null) {
+            $tag->emoji = $emoji ?: null;
+        }
+
+        $tag->save();
+
+        return response()->json(['tag' => $this->formatTag($tag)]);
+    }
+
     public function destroy(Request $request, int $id): JsonResponse
     {
         $tag = $request->user()->tags()->find($id);

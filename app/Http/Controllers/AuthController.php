@@ -4,12 +4,127 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\View\View;
 
 class AuthController extends Controller
 {
+    // Web Views
+    public function showLogin(): View
+    {
+        return view('auth.login');
+    }
+
+    public function showRegister(): View
+    {
+        return view('auth.register');
+    }
+
+    public function showProfile(): View
+    {
+        return view('profile');
+    }
+
+    // Web Form Handlers
+    public function webRegister(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users,email',
+            'password' => 'required|min:6|confirmed',
+        ], [
+            'name.required' => 'Naam is verplicht',
+            'email.required' => 'E-mailadres is verplicht',
+            'email.email' => 'Ongeldig e-mailadres',
+            'email.unique' => 'E-mailadres is al in gebruik',
+            'password.required' => 'Wachtwoord is verplicht',
+            'password.min' => 'Wachtwoord moet minimaal 6 tekens zijn',
+            'password.confirmed' => 'Wachtwoorden komen niet overeen',
+        ]);
+
+        $user = User::create([
+            'email' => $request->input('email'),
+            'password' => $request->input('password'),
+            'name' => $request->input('name'),
+        ]);
+
+        Auth::login($user);
+
+        return redirect()->route('ideas.index');
+    }
+
+    public function webLogin(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ], [
+            'email.required' => 'E-mailadres is verplicht',
+            'email.email' => 'Ongeldig e-mailadres',
+            'password.required' => 'Wachtwoord is verplicht',
+        ]);
+
+        if (!Auth::attempt($request->only('email', 'password'))) {
+            return back()->withErrors(['email' => 'Ongeldige inloggegevens'])->withInput();
+        }
+
+        $request->session()->regenerate();
+
+        return redirect()->intended(route('ideas.index'));
+    }
+
+    public function webLogout(Request $request): RedirectResponse
+    {
+        Auth::guard('web')->logout();
+        $request->session()->invalidate();
+        $request->session()->regenerateToken();
+
+        return redirect()->route('login');
+    }
+
+    public function webUpdateProfile(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+        ], [
+            'name.required' => 'Naam is verplicht',
+        ]);
+
+        $user = $request->user();
+        $user->name = trim($request->input('name'));
+        $user->save();
+
+        return back()->with('profile_success', 'Profiel succesvol bijgewerkt!');
+    }
+
+    public function webUpdatePassword(Request $request): RedirectResponse
+    {
+        $request->validate([
+            'current_password' => 'required',
+            'password' => 'required|min:6|confirmed',
+        ], [
+            'current_password.required' => 'Huidig wachtwoord is verplicht',
+            'password.required' => 'Nieuw wachtwoord is verplicht',
+            'password.min' => 'Nieuw wachtwoord moet minimaal 6 tekens zijn',
+            'password.confirmed' => 'Wachtwoorden komen niet overeen',
+        ]);
+
+        $user = $request->user();
+
+        if (!Hash::check($request->input('current_password'), $user->password)) {
+            return back()->withErrors(['current_password' => 'Huidig wachtwoord is onjuist']);
+        }
+
+        $user->password = $request->input('password');
+        $user->save();
+
+        return back()->with('password_success', 'Wachtwoord succesvol gewijzigd!');
+    }
+
+    // API Methods (kept for Vue components)
     public function register(Request $request): JsonResponse
     {
         $email = trim($request->input('email', ''));
