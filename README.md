@@ -1,4 +1,4 @@
-# Recollectie
+# Recollection
 
 A cozy personal productivity app for storing ideas and managing tasks. Built with Laravel and Vue 3.
 
