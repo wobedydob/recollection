@@ -1,0 +1,102 @@
+// ==========================================================================
+// Home Page Styles
+// ==========================================================================
+
+@use '../index' as *;
+
+.home-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: $spacing-2xl $spacing-base;
+}
+
+// --------------------------------------------------------------------------
+// Header
+// --------------------------------------------------------------------------
+
+.home-header {
+  text-align: center;
+  margin-bottom: $spacing-3xl;
+}
+
+.home-title {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  @include gradient-text($gradient-title);
+  margin: 0 0 $spacing-sm 0;
+
+  @include mobile {
+    font-size: $font-size-xl;
+  }
+}
+
+.home-subtitle {
+  font-size: $font-size-lg;
+  color: $color-text-secondary;
+  margin: 0;
+}
+
+// --------------------------------------------------------------------------
+// Module Tiles
+// --------------------------------------------------------------------------
+
+.module-tiles {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: $spacing-xl;
+}
+
+.module-tile {
+  @include card($spacing-2xl, $radius-xl);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  text-decoration: none;
+  transition: $transition-base;
+  cursor: pointer;
+
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: $shadow-lg;
+
+    .module-icon {
+      transform: scale(1.1);
+    }
+
+    .module-name {
+      color: $color-primary;
+    }
+  }
+
+  &:active {
+    transform: translateY(-2px);
+  }
+}
+
+.module-icon {
+  font-size: 3.5rem;
+  margin-bottom: $spacing-base;
+  transition: $transition-base;
+}
+
+.module-name {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  margin: 0 0 $spacing-sm 0;
+}
+
+.module-description {
+  font-size: $font-size-base;
+  color: $color-text-secondary;
+  margin: 0;
+  line-height: $line-height-base;
+}

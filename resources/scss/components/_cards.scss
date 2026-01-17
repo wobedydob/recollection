@@ -197,3 +197,39 @@
     text-decoration: underline;
   }
 }
+
+.profile-nav-links {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.profile-nav-label {
+  color: $color-text-lighter;
+  font-size: $font-size-sm;
+  margin-right: $spacing-xs;
+}
+
+.profile-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: $radius-md;
+  background: $color-bg-subtle;
+  font-size: 1.25rem;
+  transition: $transition-base;
+
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
+
+  &:hover {
+    background: $color-bg-hover;
+    transform: scale(1.05);
+  }
+}

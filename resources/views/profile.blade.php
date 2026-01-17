@@ -111,7 +111,12 @@
         </form>
 
         <div class="profile-actions">
-            <a href="{{ route('ideas.index') }}" class="back-link">Terug naar Memory Box</a>
+            <div class="profile-nav-links">
+                <span class="profile-nav-label">Terug naar:</span>
+                <a href="{{ route('home') }}" class="profile-nav-btn" title="Home">🏠</a>
+                <a href="{{ route('memorybox.index') }}" class="profile-nav-btn" title="Memory Box">✨</a>
+                <a href="{{ route('todo.index') }}" class="profile-nav-btn" title="TODO">📋</a>
+            </div>
             <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                 @csrf
                 <button type="submit" class="logout-btn">Uitloggen</button>

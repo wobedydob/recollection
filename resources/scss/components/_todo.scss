@@ -1,0 +1,602 @@
+// ==========================================================================
+// TODO Component Styles
+// ==========================================================================
+
+@use '../index' as *;
+
+// --------------------------------------------------------------------------
+// Todo App Container (Overview)
+// --------------------------------------------------------------------------
+
+.todo-app {
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding: 0 $spacing-base;
+}
+
+// --------------------------------------------------------------------------
+// Add List Form (Overview)
+// --------------------------------------------------------------------------
+
+.add-list-form {
+  display: flex;
+  gap: $spacing-md;
+  margin-bottom: $spacing-2xl;
+  background: rgba($color-bg-white, 0.7);
+  backdrop-filter: blur(10px);
+  padding: $spacing-xl;
+  border-radius: $radius-xl;
+  border: 2px solid rgba($color-border, 0.5);
+}
+
+.list-input {
+  flex: 1;
+  padding: $spacing-md $spacing-base;
+  border: 2px solid $color-border;
+  border-radius: $radius-md;
+  font-size: $font-size-base;
+  color: $color-text-primary;
+  background: $color-bg-white;
+  transition: $transition-border;
+
+  &:focus {
+    outline: none;
+    border-color: $color-border-hover;
+  }
+
+  &::placeholder {
+    color: $color-text-lightest;
+  }
+}
+
+.add-list-btn {
+  @include btn-icon(2.75rem);
+  background: $gradient-primary;
+  color: $color-bg-white;
+  font-size: 1.5rem;
+  font-weight: $font-weight-bold;
+  box-shadow: $shadow-button;
+
+  &:hover:not(:disabled) {
+    transform: scale(1.05);
+    box-shadow: $shadow-button-hover;
+  }
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Todo Lists Grid (Overview Page)
+// --------------------------------------------------------------------------
+
+.todo-lists-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+  gap: $spacing-lg;
+  position: relative;
+}
+
+.todo-list-card-link {
+  text-decoration: none;
+
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
+}
+
+.todo-list-card {
+  background: $color-bg-white;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-base;
+  transition: $transition-base;
+
+  .todo-list-card-link & {
+    cursor: pointer;
+
+    &:hover {
+      transform: translateY(-2px);
+      box-shadow: $shadow-lg;
+
+      .todo-list-name {
+        color: $color-primary;
+      }
+    }
+  }
+}
+
+.todo-list-card-header {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-sm;
+}
+
+.todo-list-emoji {
+  font-size: 1.5rem;
+}
+
+.todo-list-name {
+  margin: 0;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+  transition: $transition-base;
+}
+
+.todo-list-count {
+  margin: 0;
+  font-size: $font-size-sm;
+  color: $color-text-lighter;
+}
+
+// --------------------------------------------------------------------------
+// Todo Detail Page
+// --------------------------------------------------------------------------
+
+.todo-detail {
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding: 0 $spacing-base;
+}
+
+.back-link-header {
+  display: inline-block;
+  font-size: $font-size-sm;
+  color: $color-text-secondary;
+  text-decoration: none;
+  margin-bottom: $spacing-base;
+  transition: $transition-base;
+
+  &,
+  &:hover,
+  &:focus,
+  &:active {
+    text-decoration: none;
+  }
+
+  &:hover {
+    color: $color-primary;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Todo Header Box (Title + Count + Form)
+// --------------------------------------------------------------------------
+
+.todo-header-box {
+  background: rgba($color-bg-white, 0.7);
+  backdrop-filter: blur(10px);
+  padding: $spacing-xl;
+  border-radius: $radius-xl;
+  border: 2px solid rgba($color-border, 0.5);
+  margin-bottom: $spacing-xl;
+}
+
+.todo-title-section {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+}
+
+.todo-title {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  margin: 0;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+}
+
+.title-emoji {
+  font-size: $font-size-2xl;
+}
+
+.title-edit-btn {
+  @include btn-icon(2rem);
+  background: transparent;
+  color: $color-text-lighter;
+  font-size: 1rem;
+  opacity: 0.5;
+  transition: $transition-base;
+
+  &:hover {
+    opacity: 1;
+    color: $color-primary;
+  }
+}
+
+.title-edit-input {
+  padding: $spacing-sm $spacing-md;
+  border: 2px solid $color-border-hover;
+  border-radius: $radius-sm;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $color-text-primary;
+  flex: 1;
+  max-width: 300px;
+
+  &:focus {
+    outline: none;
+  }
+}
+
+.title-save-btn,
+.title-cancel-btn {
+  @include btn-icon(2rem);
+  font-size: 1rem;
+}
+
+.title-save-btn {
+  background: $color-success-light;
+  color: $color-success;
+
+  &:hover {
+    background: $color-bg-light;
+    color: $color-success-text;
+  }
+}
+
+.title-cancel-btn {
+  background: $color-danger-light;
+  color: $color-danger;
+
+  &:hover {
+    background: $color-danger-hover;
+    color: $color-error-text;
+  }
+}
+
+.todo-count {
+  margin: $spacing-xs 0 $spacing-lg 0;
+  font-size: $font-size-sm;
+  color: $color-text-lighter;
+}
+
+.todo-completed-count {
+  color: $color-success;
+}
+
+.todo-all-done {
+  color: $color-accent-purple;
+  font-weight: $font-weight-medium;
+}
+
+// --------------------------------------------------------------------------
+// Todo Form (Inside Header Box)
+// --------------------------------------------------------------------------
+
+.todo-form-inner {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-md;
+}
+
+.todo-edit-modal {
+  min-width: 450px;
+  padding: $spacing-2xl $spacing-2xl $spacing-xl;
+
+  .modal-title {
+    margin-bottom: $spacing-2xl;
+  }
+
+  .todo-form-inner {
+    gap: $spacing-lg;
+    margin-bottom: $spacing-xl;
+  }
+
+  .todo-form-row {
+    gap: $spacing-lg;
+  }
+}
+
+.todo-form-row {
+  display: flex;
+  gap: $spacing-md;
+  align-items: center;
+}
+
+.todo-input {
+  flex: 1;
+  padding: $spacing-md $spacing-base;
+  border: 2px solid $color-border;
+  border-radius: $radius-md;
+  font-size: $font-size-base;
+  color: $color-text-primary;
+  background: $color-bg-white;
+  transition: $transition-border;
+
+  &:focus {
+    outline: none;
+    border-color: $color-border-hover;
+  }
+
+  &::placeholder {
+    color: $color-text-lightest;
+  }
+}
+
+.todo-description-input {
+  width: 100%;
+  padding: $spacing-sm $spacing-base;
+  border: 2px solid $color-border;
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  color: $color-text-primary;
+  background: $color-bg-white;
+  transition: $transition-border;
+  resize: vertical;
+  min-height: 2.5rem;
+  font-family: inherit;
+
+  &:focus {
+    outline: none;
+    border-color: $color-border-hover;
+  }
+
+  &::placeholder {
+    color: $color-text-lightest;
+  }
+}
+
+.priority-selector {
+  display: flex;
+  align-items: center;
+  gap: 0.25rem;
+  background: $color-bg-light;
+  padding: 0.25rem;
+  border-radius: $radius-md;
+  height: 2.75rem;
+}
+
+.priority-option {
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  cursor: pointer;
+  transition: $transition-base;
+  opacity: 0.5;
+  background: transparent;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  &:hover {
+    opacity: 0.8;
+  }
+
+  &.active {
+    opacity: 1;
+  }
+
+  &.priority-low {
+    color: $color-success;
+
+    &.active {
+      background: $color-success-light;
+    }
+  }
+
+  &.priority-medium {
+    color: #b8860b;
+
+    &.active {
+      background: $color-warning-light;
+    }
+  }
+
+  &.priority-high {
+    color: $color-danger;
+
+    &.active {
+      background: #fecaca;
+    }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Todo Items List (Detail Page)
+// --------------------------------------------------------------------------
+
+.todo-items-list {
+  @include flex-column($spacing-lg);
+  position: relative;
+}
+
+// --------------------------------------------------------------------------
+// Todo Item Card
+// --------------------------------------------------------------------------
+
+.todo-item-card {
+  position: relative;
+  background: $color-bg-white;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-base;
+  @include card-hover;
+
+  &.completed {
+    opacity: 0.7;
+
+    .todo-item-title {
+      text-decoration: line-through;
+      color: $color-text-lighter;
+    }
+  }
+
+  &.priority-high {
+    border-left: 4px solid $color-danger;
+  }
+
+  &.priority-medium {
+    border-left: 4px solid $color-warning;
+  }
+
+  &.priority-low {
+    border-left: 4px solid $color-success;
+  }
+
+  .card-actions {
+    position: absolute;
+    top: $spacing-md;
+    right: $spacing-md;
+    display: flex;
+    gap: 0.375rem;
+    @include hidden-action;
+  }
+
+  &:hover .card-actions {
+    @include visible-on-hover;
+  }
+}
+
+.todo-item-main {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  cursor: pointer;
+  margin-bottom: $spacing-sm;
+}
+
+.todo-checkbox {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid $color-border;
+  border-radius: $radius-xs;
+  @include flex-center;
+  transition: $transition-base;
+  flex-shrink: 0;
+
+  &:hover {
+    border-color: $color-primary;
+    background: $color-bg-subtle;
+  }
+
+  &.checked {
+    background: $color-success-light;
+    border-color: $color-success;
+  }
+
+  .check-icon {
+    font-size: 0.875rem;
+    color: $color-success;
+    font-weight: $font-weight-bold;
+  }
+}
+
+.todo-item-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.todo-item-title {
+  font-size: $font-size-base;
+  color: $color-text-primary;
+  line-height: $line-height-base;
+}
+
+.todo-item-description {
+  margin: $spacing-xs 0 0 0;
+  font-size: $font-size-sm;
+  color: $color-text-lighter;
+  line-height: $line-height-base;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.todo-item-footer {
+  display: flex;
+  align-items: center;
+  gap: $spacing-md;
+  margin-left: calc(1.5rem + $spacing-md);
+}
+
+.priority-badge {
+  font-size: $font-size-xs;
+  padding: 2px $spacing-sm;
+  border-radius: $radius-xs;
+  font-weight: $font-weight-medium;
+
+  &.priority-low {
+    background: $color-success-light;
+    color: $color-success-text;
+  }
+
+  &.priority-medium {
+    background: $color-warning-light;
+    color: #b8860b;
+  }
+
+  &.priority-high {
+    background: $color-danger-light;
+    color: $color-danger;
+  }
+}
+
+.due-date {
+  font-size: $font-size-xs;
+  color: $color-text-lightest;
+}
+
+// --------------------------------------------------------------------------
+// List Settings
+// --------------------------------------------------------------------------
+
+.list-settings {
+  margin-top: $spacing-3xl;
+  padding-top: $spacing-xl;
+  border-top: 1px solid $color-border-light;
+  text-align: center;
+}
+
+.delete-list-btn {
+  background: none;
+  border: none;
+  color: $color-text-lighter;
+  font-size: $font-size-sm;
+  cursor: pointer;
+  padding: $spacing-sm $spacing-base;
+  transition: $transition-base;
+
+  &:hover {
+    color: $color-danger;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Action Buttons (shared)
+// --------------------------------------------------------------------------
+
+.edit-btn {
+  @include btn-icon(1.5rem);
+  background: $color-bg-subtle;
+  color: $color-text-tertiary;
+  font-size: 0.75rem;
+
+  &:hover {
+    background: $color-bg-hover;
+    color: $color-primary;
+  }
+}
+
+.delete-btn {
+  @include btn-icon(1.5rem);
+  background: $color-danger-light;
+  color: $color-danger;
+  font-size: 0.875rem;
+
+  &:hover {
+    background: $color-danger-hover;
+    color: $color-error-text;
+  }
+}
