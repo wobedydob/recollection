@@ -1,0 +1,50 @@
+// ==========================================================================
+// Loader Component
+// ==========================================================================
+
+@use '../index' as *;
+
+// --------------------------------------------------------------------------
+// Loader Container
+// --------------------------------------------------------------------------
+
+.loader-container {
+  @include flex-column($spacing-base);
+  align-items: center;
+  padding: $spacing-4xl $spacing-base;
+}
+
+// --------------------------------------------------------------------------
+// Spinner
+// --------------------------------------------------------------------------
+
+.loader {
+  width: 40px;
+  height: 40px;
+  border: 3px solid $color-border;
+  border-top-color: $color-border-hover;
+  border-radius: $radius-circle;
+  animation: spin 0.8s linear infinite;
+}
+
+.loader-text {
+  color: $color-text-lighter;
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+// --------------------------------------------------------------------------
+// Empty State
+// --------------------------------------------------------------------------
+
+.empty-state {
+  text-align: center;
+  padding: $spacing-4xl $spacing-base;
+  color: $color-text-lighter;
+}
+
+.empty-icon {
+  font-size: 3rem;
+  margin-bottom: $spacing-base;
+  animation: float 3s ease-in-out infinite;
+}

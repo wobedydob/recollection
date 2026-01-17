@@ -1,0 +1,125 @@
+// ==========================================================================
+// Header Component
+// ==========================================================================
+
+@use '../index' as *;
+
+.header {
+  @include flex-between;
+  padding: $spacing-base $spacing-xl;
+  background: rgba($color-bg-white, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba($color-border, 0.5);
+  position: sticky;
+  top: 0;
+  z-index: $z-sticky;
+}
+
+// --------------------------------------------------------------------------
+// Logo
+// --------------------------------------------------------------------------
+
+.logo {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  @include gradient-text($gradient-title);
+  text-decoration: none;
+}
+
+// --------------------------------------------------------------------------
+// User Menu
+// --------------------------------------------------------------------------
+
+.user-menu {
+  position: relative;
+}
+
+.user-btn {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+  padding: 0.375rem $spacing-md 0.375rem 0.375rem;
+  background: $color-bg-white;
+  border: 2px solid $color-border;
+  border-radius: $radius-pill;
+  cursor: pointer;
+  transition: $transition-base;
+
+  &:hover {
+    border-color: $color-border-hover;
+  }
+}
+
+.user-avatar {
+  width: 1.75rem;
+  height: 1.75rem;
+  background: $gradient-avatar;
+  border-radius: $radius-circle;
+  @include flex-center;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $color-bg-white;
+}
+
+.user-name {
+  font-size: 0.9rem;
+  color: $color-text-secondary;
+  max-width: 120px;
+  @include text-truncate;
+
+  @include mobile {
+    display: none;
+  }
+}
+
+.dropdown-arrow {
+  font-size: 0.6rem;
+  color: $color-text-lighter;
+}
+
+// --------------------------------------------------------------------------
+// Menu Dropdown
+// --------------------------------------------------------------------------
+
+.menu-dropdown {
+  @include dropdown-base;
+  @include dropdown-hidden;
+  top: 100%;
+  right: 0;
+  margin-top: $spacing-sm;
+  border-radius: $radius-sm;
+  overflow: hidden;
+  min-width: 140px;
+
+  &.show {
+    @include dropdown-visible;
+  }
+}
+
+.menu-item {
+  display: block;
+  width: 100%;
+  padding: $spacing-md $spacing-base;
+  background: none;
+  border: none;
+  text-align: left;
+  font-size: 0.9rem;
+  color: $color-text-secondary;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 0.15s ease;
+
+  &:hover {
+    background: $color-bg-light;
+  }
+
+  &.logout {
+    color: $color-danger;
+    border-top: 1px solid $color-border-light;
+    font-family: inherit;
+
+    &:hover {
+      background: $color-danger-light;
+    }
+  }
+}

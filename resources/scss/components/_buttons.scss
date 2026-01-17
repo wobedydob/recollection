@@ -1,0 +1,119 @@
+// ==========================================================================
+// Buttons Component
+// ==========================================================================
+
+@use '../index' as *;
+
+// --------------------------------------------------------------------------
+// Base Button
+// --------------------------------------------------------------------------
+
+.btn {
+  @include btn-base;
+}
+
+.btn-primary {
+  @include btn-primary;
+}
+
+.btn-secondary {
+  @include btn-secondary;
+}
+
+.btn-full {
+  width: 100%;
+}
+
+// --------------------------------------------------------------------------
+// Submit & Save Buttons
+// --------------------------------------------------------------------------
+
+.submit-btn,
+.save-btn {
+  @include btn-primary;
+  margin-top: $spacing-sm;
+}
+
+// --------------------------------------------------------------------------
+// Icon Buttons
+// --------------------------------------------------------------------------
+
+.edit-btn,
+.delete-btn {
+  @include btn-icon;
+  font-size: $font-size-base;
+  line-height: 1;
+}
+
+.edit-btn {
+  background: #f0f5fe;
+  color: #849ad4;
+
+  &:hover {
+    background: #e0ebfc;
+    color: #5577cc;
+    transform: scale(1.1);
+  }
+}
+
+.delete-btn {
+  @include btn-icon-danger;
+}
+
+// --------------------------------------------------------------------------
+// Close Button
+// --------------------------------------------------------------------------
+
+.close-btn {
+  @include btn-icon(2rem);
+  position: absolute;
+  top: $spacing-base;
+  right: $spacing-base;
+  background: $color-danger-light;
+  color: $color-danger;
+  font-size: $font-size-lg;
+
+  &:hover {
+    background: $color-danger-hover;
+    transform: scale(1.1);
+  }
+}
+
+// --------------------------------------------------------------------------
+// Clear/Wissen Button
+// --------------------------------------------------------------------------
+
+.clear-filter {
+  padding: 0.375rem 0.875rem;
+  background: $color-danger-light;
+  border: none;
+  border-radius: $radius-pill;
+  font-size: 0.875rem;
+  color: $color-danger;
+  cursor: pointer;
+  transition: $transition-base;
+
+  &:hover {
+    background: $color-danger-hover;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Logout Button
+// --------------------------------------------------------------------------
+
+.logout-btn {
+  padding: $spacing-sm $spacing-base;
+  background: transparent;
+  border: 1px solid $color-border;
+  border-radius: $radius-pill;
+  color: $color-danger;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: $transition-base;
+
+  &:hover {
+    background: $color-danger-light;
+    border-color: #f0c0c0;
+  }
+}

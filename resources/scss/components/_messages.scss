@@ -1,0 +1,38 @@
+// ==========================================================================
+// Messages Component
+// ==========================================================================
+
+@use '../index' as *;
+
+// --------------------------------------------------------------------------
+// Base Message Style
+// --------------------------------------------------------------------------
+
+%message-base {
+  padding: $spacing-md $spacing-base;
+  border-radius: $radius-sm;
+  font-size: 0.9rem;
+  text-align: center;
+}
+
+// --------------------------------------------------------------------------
+// Error Message
+// --------------------------------------------------------------------------
+
+.error-message {
+  @extend %message-base;
+  background: $color-error-light;
+  border: 1px solid $color-error-border;
+  color: $color-error-text;
+}
+
+// --------------------------------------------------------------------------
+// Success Message
+// --------------------------------------------------------------------------
+
+.success-message {
+  @extend %message-base;
+  background: $color-success-light;
+  border: 1px solid $color-success-border;
+  color: $color-success-text;
+}

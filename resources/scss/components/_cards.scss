@@ -1,0 +1,195 @@
+// ==========================================================================
+// Cards Component
+// ==========================================================================
+
+@use '../index' as *;
+
+// --------------------------------------------------------------------------
+// Auth Card
+// --------------------------------------------------------------------------
+
+.auth-card {
+  @include card;
+}
+
+.auth-title {
+  margin: 0 0 $spacing-sm 0;
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  @include gradient-text($gradient-title);
+  text-align: center;
+}
+
+.auth-subtitle {
+  margin: 0 0 $spacing-2xl 0;
+  color: $color-text-light;
+  text-align: center;
+}
+
+.auth-footer {
+  margin: $spacing-xl 0 0 0;
+  text-align: center;
+  color: $color-text-light;
+  font-size: 0.9rem;
+}
+
+.auth-link {
+  color: $color-accent-purple;
+  text-decoration: none;
+  font-weight: $font-weight-medium;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Idea Card
+// --------------------------------------------------------------------------
+
+.idea-form {
+  @include flex-column($spacing-base);
+  background: rgba($color-bg-white, 0.7);
+  backdrop-filter: blur(10px);
+  padding: $spacing-xl;
+  border-radius: $radius-xl;
+  border: 2px solid rgba($color-border, 0.5);
+  margin-bottom: $spacing-xl;
+}
+
+.ideas-list {
+  @include flex-column($spacing-lg);
+}
+
+.idea-card {
+  position: relative;
+  background: $color-bg-white;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  box-shadow: $shadow-base;
+  @include card-hover;
+}
+
+.card-actions {
+  position: absolute;
+  top: $spacing-md;
+  right: $spacing-md;
+  display: flex;
+  gap: 0.375rem;
+  @include hidden-action;
+
+  .idea-card:hover & {
+    @include visible-on-hover;
+  }
+}
+
+.idea-content {
+  color: $color-text-primary;
+  line-height: $line-height-base;
+  margin: 0 0 $spacing-base 0;
+  white-space: pre-wrap;
+  word-break: break-word;
+}
+
+.idea-footer {
+  @include flex-between;
+  align-items: flex-end;
+  gap: $spacing-base;
+}
+
+.idea-date {
+  font-size: $font-size-xs;
+  color: $color-text-lightest;
+  white-space: nowrap;
+}
+
+// --------------------------------------------------------------------------
+// Profile Card
+// --------------------------------------------------------------------------
+
+.profile-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: $spacing-2xl $spacing-base;
+}
+
+.profile-card {
+  @include card;
+  max-width: $profile-max-width;
+
+  @include mobile {
+    padding: $spacing-xl;
+  }
+}
+
+.profile-header {
+  display: flex;
+  align-items: center;
+  gap: $spacing-xl;
+  padding-bottom: $spacing-2xl;
+  border-bottom: 2px solid $color-border-light;
+  margin-bottom: $spacing-2xl;
+
+  @include mobile {
+    flex-direction: column;
+    text-align: center;
+  }
+}
+
+.avatar {
+  width: 5rem;
+  height: 5rem;
+  background: $gradient-primary;
+  border-radius: $radius-circle;
+  @include flex-center;
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-semibold;
+  color: $color-bg-white;
+}
+
+.profile-info {
+  flex: 1;
+}
+
+.profile-name {
+  margin: 0 0 $spacing-xs 0;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.profile-email {
+  margin: 0 0 $spacing-xs 0;
+  color: $color-text-muted;
+}
+
+.profile-member {
+  margin: 0;
+  font-size: $font-size-sm;
+  color: $color-text-lighter;
+}
+
+.password-form {
+  margin-top: $spacing-2xl;
+  padding-top: $spacing-2xl;
+  border-top: 2px solid $color-border-light;
+}
+
+.profile-actions {
+  @include flex-between;
+  margin-top: $spacing-2xl;
+  padding-top: $spacing-2xl;
+  border-top: 2px solid $color-border-light;
+}
+
+.back-link {
+  color: $color-accent-purple;
+  text-decoration: none;
+  font-weight: $font-weight-medium;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}

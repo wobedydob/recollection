@@ -1,0 +1,152 @@
+// ==========================================================================
+// Modals Component
+// ==========================================================================
+
+@use '../index' as *;
+
+// --------------------------------------------------------------------------
+// Overlay
+// --------------------------------------------------------------------------
+
+.modal-overlay {
+  @include modal-overlay;
+}
+
+// --------------------------------------------------------------------------
+// Modal Base
+// --------------------------------------------------------------------------
+
+.modal {
+  @include modal-base;
+}
+
+.tag-modal {
+  // Tag modal uses gradient title
+}
+
+// --------------------------------------------------------------------------
+// Modal Titles
+// --------------------------------------------------------------------------
+
+.modal-title {
+  margin: 0 0 $spacing-xl 0;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.modal-title-gradient {
+  margin: 0 0 $spacing-xl 0;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-semibold;
+  @include gradient-text($gradient-title-short);
+}
+
+// --------------------------------------------------------------------------
+// Modal Actions
+// --------------------------------------------------------------------------
+
+.modal-actions {
+  display: flex;
+  gap: $spacing-md;
+  margin-top: $spacing-xl;
+
+  .btn {
+    flex: 1;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Color Picker
+// --------------------------------------------------------------------------
+
+.color-grid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: $spacing-sm;
+}
+
+.color-option {
+  aspect-ratio: 1;
+  border: 3px solid transparent;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  transition: $transition-base;
+  @include flex-center;
+
+  &:hover {
+    transform: scale(1.1);
+  }
+
+  &.selected {
+    border-color: $color-text-tertiary;
+    transform: scale(1.05);
+  }
+}
+
+.check {
+  color: $color-text-primary;
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+// --------------------------------------------------------------------------
+// Emoji Picker
+// --------------------------------------------------------------------------
+
+.emoji-section {
+  @include flex-column($spacing-sm);
+}
+
+.emoji-input {
+  width: 80px;
+  padding: $spacing-sm $spacing-md;
+  border: 2px solid $color-border;
+  border-radius: $radius-sm;
+  font-size: $font-size-lg;
+  text-align: center;
+
+  &:focus {
+    outline: none;
+    border-color: $color-border-hover;
+  }
+}
+
+.emoji-suggestions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.375rem;
+}
+
+.emoji-option {
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 2px solid $color-border;
+  background: $color-bg-white;
+  border-radius: $radius-xs;
+  font-size: $font-size-md;
+  cursor: pointer;
+  transition: $transition-fast;
+  @include flex-center;
+
+  &:hover {
+    border-color: $color-border-hover;
+    transform: scale(1.1);
+  }
+
+  &.selected {
+    border-color: $color-accent-purple;
+    background: $color-bg-light;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Preview
+// --------------------------------------------------------------------------
+
+.preview {
+  padding: $spacing-base;
+  background: $color-bg-lighter;
+  border-radius: $radius-sm;
+  text-align: center;
+}

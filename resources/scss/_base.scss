@@ -1,0 +1,88 @@
+// ==========================================================================
+// Base Styles - Reset, typography, and global elements
+// ==========================================================================
+
+@use 'index' as *;
+
+// --------------------------------------------------------------------------
+// Reset
+// --------------------------------------------------------------------------
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// --------------------------------------------------------------------------
+// Body
+// --------------------------------------------------------------------------
+
+body {
+  font-family: $font-family-base;
+  background: $gradient-background;
+  min-height: 100vh;
+  color: $color-text-primary;
+}
+
+// --------------------------------------------------------------------------
+// Links
+// --------------------------------------------------------------------------
+
+a {
+  color: $color-accent-purple;
+  text-decoration: none;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Layout Containers
+// --------------------------------------------------------------------------
+
+.main-content {
+  max-width: $container-max-width;
+  margin: 0 auto;
+  padding: $spacing-2xl $spacing-base;
+}
+
+.guest-page {
+  min-height: 100vh;
+  @include flex-center;
+  padding: $spacing-2xl $spacing-base;
+}
+
+// --------------------------------------------------------------------------
+// Page Header
+// --------------------------------------------------------------------------
+
+.page-header {
+  text-align: center;
+  margin-bottom: $spacing-2xl;
+}
+
+.page-title {
+  font-size: $font-size-3xl;
+  font-weight: $font-weight-bold;
+  @include gradient-text($gradient-title);
+  margin: 0 0 $spacing-sm 0;
+}
+
+.page-subtitle {
+  color: $color-text-light;
+  margin: 0;
+  font-size: $font-size-base;
+}
+
+// --------------------------------------------------------------------------
+// Section Titles
+// --------------------------------------------------------------------------
+
+.section-title {
+  margin: 0 0 $spacing-sm 0;
+  font-size: $font-size-md;
+  font-weight: $font-weight-semibold;
+  color: $color-text-tertiary;
+}

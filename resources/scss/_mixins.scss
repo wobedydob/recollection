@@ -1,0 +1,291 @@
+// ==========================================================================
+// Mixins - Reusable patterns
+// ==========================================================================
+
+@use 'variables' as *;
+
+// --------------------------------------------------------------------------
+// Typography
+// --------------------------------------------------------------------------
+
+@mixin gradient-text($gradient: $gradient-title) {
+  background: $gradient;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+@mixin text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// --------------------------------------------------------------------------
+// Layout
+// --------------------------------------------------------------------------
+
+@mixin flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+@mixin flex-column($gap: $spacing-base) {
+  display: flex;
+  flex-direction: column;
+  gap: $gap;
+}
+
+// --------------------------------------------------------------------------
+// Cards & Containers
+// --------------------------------------------------------------------------
+
+@mixin card($padding: $spacing-2xl, $radius: $radius-xl) {
+  background: rgba($color-bg-white, 0.9);
+  backdrop-filter: blur(10px);
+  border-radius: $radius;
+  padding: $padding;
+  box-shadow: $shadow-card;
+}
+
+@mixin card-hover {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+
+  &:hover {
+    transform: translateY(-2px);
+    box-shadow: $shadow-lg;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Buttons
+// --------------------------------------------------------------------------
+
+@mixin btn-base {
+  padding: 0.875rem $spacing-xl;
+  border: none;
+  border-radius: $radius-pill;
+  font-size: $font-size-base;
+  font-weight: $font-weight-semibold;
+  cursor: pointer;
+  transition: $transition-base;
+}
+
+@mixin btn-primary {
+  @include btn-base;
+  background: $gradient-primary;
+  color: $color-bg-white;
+  box-shadow: $shadow-button;
+
+  &:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: $shadow-button-hover;
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+@mixin btn-secondary {
+  @include btn-base;
+  background: $color-bg-subtle;
+  color: $color-text-tertiary;
+
+  &:hover {
+    background: $color-bg-hover;
+  }
+}
+
+@mixin btn-icon($size: 1.75rem) {
+  width: $size;
+  height: $size;
+  @include flex-center;
+  border: none;
+  border-radius: $radius-circle;
+  cursor: pointer;
+  transition: $transition-base;
+}
+
+@mixin btn-icon-danger {
+  @include btn-icon;
+  background: $color-danger-light;
+  color: $color-danger;
+
+  &:hover {
+    background: $color-danger-hover;
+    color: $color-error-text;
+    transform: scale(1.1);
+  }
+}
+
+// --------------------------------------------------------------------------
+// Form Elements
+// --------------------------------------------------------------------------
+
+@mixin input-base {
+  width: 100%;
+  padding: 0.875rem $spacing-base;
+  border: 2px solid $color-border;
+  border-radius: $radius-sm;
+  font-size: $font-size-base;
+  color: $color-text-primary;
+  background: $color-bg-white;
+  transition: $transition-border;
+
+  &:focus {
+    outline: none;
+    border-color: $color-border-hover;
+  }
+
+  &::placeholder {
+    color: $color-text-lightest;
+  }
+
+  &:disabled {
+    background: $color-bg-subtle;
+    color: $color-text-light;
+  }
+}
+
+@mixin label-base {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: $font-weight-medium;
+  color: $color-text-tertiary;
+  margin-bottom: $spacing-sm;
+}
+
+// --------------------------------------------------------------------------
+// Tags & Pills
+// --------------------------------------------------------------------------
+
+@mixin tag-base {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: 0.25rem 0.65rem;
+  border-radius: $radius-pill;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: #444;
+}
+
+@mixin tag-pill {
+  @include tag-base;
+  padding: 0.3rem 0.7rem;
+  font-size: $font-size-sm;
+}
+
+// --------------------------------------------------------------------------
+// Dropdowns
+// --------------------------------------------------------------------------
+
+@mixin dropdown-base {
+  position: absolute;
+  background: $color-bg-white;
+  border: 2px solid $color-border;
+  border-radius: $radius-sm;
+  box-shadow: $shadow-md;
+  z-index: $z-dropdown;
+}
+
+@mixin dropdown-hidden {
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-5px);
+  transition: $transition-fast;
+}
+
+@mixin dropdown-visible {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+// --------------------------------------------------------------------------
+// Modals
+// --------------------------------------------------------------------------
+
+@mixin modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(100, 80, 120, 0.4);
+  backdrop-filter: blur(4px);
+  @include flex-center;
+  padding: $spacing-base;
+  z-index: $z-modal;
+  animation: fade-in 0.2s ease;
+}
+
+@mixin modal-base {
+  background: $color-bg-white;
+  border-radius: $radius-xl;
+  padding: $spacing-2xl;
+  width: 90%;
+  max-width: $modal-max-width;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow: $shadow-modal;
+  animation: slide-up 0.25s ease;
+}
+
+// --------------------------------------------------------------------------
+// Utilities
+// --------------------------------------------------------------------------
+
+@mixin hover-lift {
+  transition: $transition-base;
+
+  &:hover {
+    transform: translateY(-2px);
+  }
+}
+
+@mixin hover-scale($scale: 1.1) {
+  transition: $transition-base;
+
+  &:hover {
+    transform: scale($scale);
+  }
+}
+
+@mixin hidden-action {
+  opacity: 0;
+  transition: $transition-opacity;
+}
+
+@mixin visible-on-hover {
+  opacity: 1;
+}
+
+// --------------------------------------------------------------------------
+// Responsive
+// --------------------------------------------------------------------------
+
+@mixin mobile {
+  @media (max-width: $breakpoint-sm) {
+    @content;
+  }
+}
+
+@mixin tablet {
+  @media (max-width: $breakpoint-md) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media (min-width: $breakpoint-lg) {
+    @content;
+  }
+}
