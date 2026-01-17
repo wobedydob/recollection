@@ -2,7 +2,7 @@
 
 @section('content')
 <div class="page-header">
-    <h1 class="page-title">TODO</h1>
+    <h1 class="page-title">Checklist</h1>
     <p class="page-subtitle">Beheer je taken</p>
 </div>
 

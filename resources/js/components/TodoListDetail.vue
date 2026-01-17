@@ -2,7 +2,7 @@
     <div class="todo-detail">
         <!-- Back Link -->
         <Transition name="form-fade" appear>
-            <a href="/todo" class="back-link-header">← Terug naar lijsten</a>
+            <a href="/checklist" class="back-link-header">← Terug naar lijsten</a>
         </Transition>
 
         <!-- Loading State -->
@@ -258,16 +258,16 @@ export default {
         async loadList() {
             this.isLoading = true;
             try {
-                const res = await fetch(`/api/todo/lists/${this.listId}`, { credentials: 'include' });
+                const res = await fetch(`/api/checklist/lists/${this.listId}`, { credentials: 'include' });
                 if (res.ok) {
                     const data = await res.json();
                     this.list = data.list;
                 } else {
-                    window.location.href = '/todo';
+                    window.location.href = '/checklist';
                 }
             } catch (e) {
                 console.error('Failed to load list:', e);
-                window.location.href = '/todo';
+                window.location.href = '/checklist';
             } finally {
                 this.isLoading = false;
             }
@@ -282,7 +282,7 @@ export default {
         async saveTitle() {
             if (!this.editName.trim()) return;
             try {
-                const res = await fetch(`/api/todo/lists/${this.list.id}`, {
+                const res = await fetch(`/api/checklist/lists/${this.list.id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -309,7 +309,7 @@ export default {
         },
         async deleteList() {
             try {
-                const res = await fetch(`/api/todo/lists/${this.list.id}`, {
+                const res = await fetch(`/api/checklist/lists/${this.list.id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
@@ -317,7 +317,7 @@ export default {
                     credentials: 'include'
                 });
                 if (res.ok) {
-                    window.location.href = '/todo';
+                    window.location.href = '/checklist';
                 }
             } catch (e) {
                 console.error('Failed to delete list:', e);
@@ -326,7 +326,7 @@ export default {
         async addItem() {
             if (!this.newItemTitle.trim()) return;
             try {
-                const res = await fetch(`/api/todo/lists/${this.list.id}/items`, {
+                const res = await fetch(`/api/checklist/lists/${this.list.id}/items`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -368,7 +368,7 @@ export default {
         async saveEditItem() {
             if (!this.editItemTitle.trim()) return;
             try {
-                const res = await fetch(`/api/todo/items/${this.editingItem.id}`, {
+                const res = await fetch(`/api/checklist/items/${this.editingItem.id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -395,7 +395,7 @@ export default {
         },
         async deleteItem(itemId) {
             try {
-                const res = await fetch(`/api/todo/items/${itemId}`, {
+                const res = await fetch(`/api/checklist/items/${itemId}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
@@ -411,7 +411,7 @@ export default {
         },
         async toggleItem(itemId) {
             try {
-                const res = await fetch(`/api/todo/items/${itemId}/toggle`, {
+                const res = await fetch(`/api/checklist/items/${itemId}/toggle`, {
                     method: 'PATCH',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content

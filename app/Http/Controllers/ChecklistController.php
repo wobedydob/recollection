@@ -7,7 +7,7 @@ use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\View\View;
 
-class TodoListController extends Controller
+class ChecklistController extends Controller
 {
     public function index(): View
     {

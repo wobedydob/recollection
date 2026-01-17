@@ -7,7 +7,7 @@ use App\Models\TodoList;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 
-class TodoItemController extends Controller
+class ChecklistItemController extends Controller
 {
     public function index(Request $request, TodoList $list): JsonResponse
     {

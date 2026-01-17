@@ -115,7 +115,7 @@
                 <span class="profile-nav-label">Terug naar:</span>
                 <a href="{{ route('home') }}" class="profile-nav-btn" title="Home">🏠</a>
                 <a href="{{ route('memorybox.index') }}" class="profile-nav-btn" title="Memory Box">✨</a>
-                <a href="{{ route('todo.index') }}" class="profile-nav-btn" title="TODO">📋</a>
+                <a href="{{ route('checklist.index') }}" class="profile-nav-btn" title="Checklist">📋</a>
             </div>
             <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                 @csrf

@@ -7,10 +7,10 @@ return [
         'route' => 'memorybox.index',
         'description' => 'Een fijne plek voor je ideetjes',
     ],
-    'todo' => [
-        'name' => 'TODO',
+    'checklist' => [
+        'name' => 'Checklist',
         'icon' => '📋',
-        'route' => 'todo.index',
+        'route' => 'checklist.index',
         'description' => 'Beheer je taken',
     ],
 ];

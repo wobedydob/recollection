@@ -25,7 +25,7 @@
             <a
                 v-for="list in lists"
                 :key="list.id"
-                :href="`/todo/${list.id}`"
+                :href="`/checklist/${list.id}`"
                 class="todo-list-card-link"
             >
                 <div class="todo-list-card">
@@ -67,7 +67,7 @@ export default {
         async loadLists() {
             this.isLoading = true;
             try {
-                const res = await fetch('/api/todo/lists', { credentials: 'include' });
+                const res = await fetch('/api/checklist/lists', { credentials: 'include' });
                 const data = await res.json();
                 this.lists = Array.isArray(data.lists) ? data.lists : [];
             } catch (e) {
@@ -80,7 +80,7 @@ export default {
         async createList() {
             if (!this.newListName.trim()) return;
             try {
-                const res = await fetch('/api/todo/lists', {
+                const res = await fetch('/api/checklist/lists', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -92,7 +92,7 @@ export default {
                 if (res.ok) {
                     const data = await res.json();
                     // Redirect to the new list
-                    window.location.href = `/todo/${data.list.id}`;
+                    window.location.href = `/checklist/${data.list.id}`;
                 }
             } catch (e) {
                 console.error('Failed to create list:', e);

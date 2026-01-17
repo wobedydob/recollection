@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\TodoListController;
+use App\Http\Controllers\ChecklistController;
 use Illuminate\Support\Facades\Route;
 
 // Guest routes (login, register)
@@ -20,13 +20,13 @@ Route::middleware('auth')->group(function () {
     })->name('home');
 
     // Memory Box
-    Route::get('/memorybox', function () {
+    Route::get('/memory-box', function () {
         return view('ideas.index');
     })->name('memorybox.index');
 
-    // TODO
-    Route::get('/todo', [TodoListController::class, 'index'])->name('todo.index');
-    Route::get('/todo/{list}', [TodoListController::class, 'show'])->name('todo.show');
+    // Checklist
+    Route::get('/checklist', [ChecklistController::class, 'index'])->name('checklist.index');
+    Route::get('/checklist/{list}', [ChecklistController::class, 'show'])->name('checklist.show');
 
     // Profile
     Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');

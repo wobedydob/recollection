@@ -471,8 +471,8 @@ export default {
             this.isLoading = true;
             try {
                 const [ideasRes, tagsRes] = await Promise.all([
-                    fetch('/api/memorybox/ideas', { credentials: 'include' }),
-                    fetch('/api/memorybox/tags', { credentials: 'include' })
+                    fetch('/api/memory-box/ideas', { credentials: 'include' }),
+                    fetch('/api/memory-box/tags', { credentials: 'include' })
                 ]);
                 const ideasData = await ideasRes.json();
                 const tagsData = await tagsRes.json();
@@ -517,7 +517,7 @@ export default {
             if (!this.newIdea.trim() || this.isSubmitting) return;
             this.isSubmitting = true;
             try {
-                const res = await fetch('/api/memorybox/ideas', {
+                const res = await fetch('/api/memory-box/ideas', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -572,7 +572,7 @@ export default {
         async saveEdit() {
             if (!this.editContent.trim()) return;
             try {
-                const res = await fetch(`/api/memorybox/ideas/${this.editingIdea.id}`, {
+                const res = await fetch(`/api/memory-box/ideas/${this.editingIdea.id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
@@ -602,7 +602,7 @@ export default {
         },
         async deleteIdea() {
             try {
-                const res = await fetch(`/api/memorybox/ideas/${this.deletingIdea.id}`, {
+                const res = await fetch(`/api/memory-box/ideas/${this.deletingIdea.id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
@@ -620,7 +620,7 @@ export default {
         async createTag() {
             if (!this.newTag.name.trim()) return;
             try {
-                const res = await fetch('/api/memorybox/tags', {
+                const res = await fetch('/api/memory-box/tags', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json',
@@ -648,7 +648,7 @@ export default {
         },
         async deleteTag(tag) {
             try {
-                const res = await fetch(`/api/memorybox/tags/${tag.id}`, {
+                const res = await fetch(`/api/memory-box/tags/${tag.id}`, {
                     method: 'DELETE',
                     headers: {
                         'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
@@ -676,7 +676,7 @@ export default {
         async updateTag() {
             if (!this.editingTag || !this.editingTag.name.trim()) return;
             try {
-                const res = await fetch(`/api/memorybox/tags/${this.editingTag.id}`, {
+                const res = await fetch(`/api/memory-box/tags/${this.editingTag.id}`, {
                     method: 'PUT',
                     headers: {
                         'Content-Type': 'application/json',
