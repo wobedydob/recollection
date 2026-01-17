@@ -1,15 +1,15 @@
-# Recollection
+# ✨ Recollection
 
 A cozy personal productivity app for storing ideas and managing tasks. Built with Laravel and Vue 3.
 
-## What is this?
+## 💭 What is this?
 
 Recollectie is a personal space with two modules:
 
-- **Memory Box** - Store your thoughts, ideas, dreams, and random sparks of inspiration. Tag them with pretty colors and emojis, filter through them later, and never lose a brilliant idea again.
-- **Checklist** - Manage your tasks with multiple lists, priorities, and a clean interface.
+- **✨ Memory Box** - Store your thoughts, ideas, dreams, and random sparks of inspiration. Tag them with pretty colors and emojis, filter through them later, and never lose a brilliant idea again.
+- **📋 Checklist** - Manage your tasks with multiple lists, priorities, and a clean interface.
 
-## Features
+## 🌸 Features
 
 ### Memory Box
 - Write and store ideas
@@ -22,16 +22,16 @@ Recollectie is a personal space with two modules:
 - Mark tasks as complete
 
 ### Personalization
-- **Color themes** - Choose from pink, blue, green, or orange
-- **Dark mode** - Light and dark theme support
-- **User accounts** - Your data stays private and synced
+- **🎨 Color themes** - Choose from pink, blue, green, or orange
+- **🌙 Dark mode** - Light and dark theme support
+- **🔒 User accounts** - Your data stays private and synced
 
 ### Account
 - Secure authentication with password strength meter
 - Profile management
 - Account deletion
 
-## Tech Stack
+## 🛠️ Tech Stack
 
 - **Laravel 11** - PHP framework with session authentication
 - **Vue 3** - Interactive components
@@ -40,7 +40,7 @@ Recollectie is a personal space with two modules:
 - **Blade** - Server-rendered templates
 - **SQLite/MySQL** - Database with utf8mb4 for emoji support
 
-## Getting Started
+## 🚀 Getting Started
 
 ### Prerequisites
 
@@ -88,7 +88,7 @@ Recollectie is a personal space with two modules:
    php artisan serve
    ```
 
-7. Open http://localhost:8000
+7. Open http://localhost:8000 and start collecting memories! 🎉
 
 ### Development
 
@@ -103,7 +103,7 @@ Then in another terminal:
 php artisan serve
 ```
 
-## Deployment
+## 📦 Deployment
 
 ```bash
 git pull origin master
@@ -116,10 +116,10 @@ php artisan route:cache
 php artisan view:cache
 ```
 
-## Language
+## 🇳🇱 Language
 
 The interface is in Dutch.
 
-## License
+## 📝 License
 
-Do whatever you want with it!
+Do whatever you want with it! ✨
