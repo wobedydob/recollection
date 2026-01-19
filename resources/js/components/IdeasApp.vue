@@ -61,21 +61,21 @@
         <!-- Filter Section -->
         <Transition name="ideas-appear">
             <div v-if="!isLoading && tags.length > 0" class="filter-section">
-            <span class="filter-label">Filter op tag:</span>
+            <span class="filter-label">Filter op tags:</span>
             <div class="filter-tags">
                 <button
                     v-for="tag in tags"
                     :key="tag.id"
                     class="filter-tag"
-                    :class="{ active: filterTag === tag.id }"
-                    :style="{ backgroundColor: filterTag === tag.id ? tag.color : '' }"
+                    :class="{ active: filterTags.includes(tag.id) }"
+                    :style="{ backgroundColor: filterTags.includes(tag.id) ? tag.color : '' }"
                     @click="setFilter(tag.id)"
                 >
                     <span>{{ tag.emoji }}</span>
                     {{ tag.name }}
                 </button>
             </div>
-            <button v-if="filterTag" class="clear-filter" @click="clearFilter">
+            <button v-if="filterTags.length > 0" class="clear-filter" @click="clearFilter">
                 Wissen
             </button>
             </div>
@@ -88,7 +88,7 @@
         </div>
 
         <!-- Ideas List -->
-        <TransitionGroup name="todo-task" tag="div" class="ideas-list" appear v-if="!isLoading && filteredIdeas.length > 0" :key="filterTag || 'all'">
+        <TransitionGroup name="todo-task" tag="div" class="ideas-list" appear v-if="!isLoading && filteredIdeas.length > 0" :key="filterTags.join(',') || 'all'">
             <div v-for="idea in filteredIdeas" :key="idea.id" class="idea-card">
                 <div class="card-actions">
                     <button class="edit-btn" @click="startEdit(idea)" title="Bewerken">✎</button>
@@ -117,7 +117,7 @@
         <Transition name="ideas-appear">
             <div v-if="!isLoading && filteredIdeas.length === 0" class="empty-state">
                 <div class="empty-icon">✨</div>
-                <p v-if="activeFilterTag">Geen ideeën met tag "{{ activeFilterTag.name }}"</p>
+                <p v-if="activeFilterTags.length > 0">Geen ideeën met {{ activeFilterTags.length === 1 ? 'tag' : 'tags' }} "{{ activeFilterTags.map(t => t.name).join('", "') }}"</p>
                 <p v-else>Je memory box is leeg.<br/>Voeg hierboven je eerste idee toe!</p>
             </div>
         </Transition>
@@ -428,7 +428,7 @@ export default {
             tags: [],
             newIdea: '',
             selectedTags: [],
-            filterTag: null,
+            filterTags: [],
             isLoading: true,
             isSubmitting: false,
             editingIdea: null,
@@ -455,15 +455,15 @@ export default {
     computed: {
         filteredIdeas() {
             const ideas = Array.isArray(this.ideas) ? this.ideas : [];
-            if (!this.filterTag) return ideas;
+            if (this.filterTags.length === 0) return ideas;
             return ideas.filter(idea =>
-                idea.tags && idea.tags.some(tag => tag.id === this.filterTag)
+                idea.tags && idea.tags.some(tag => this.filterTags.includes(tag.id))
             );
         },
-        activeFilterTag() {
-            if (!this.filterTag) return null;
+        activeFilterTags() {
+            if (this.filterTags.length === 0) return [];
             const tags = Array.isArray(this.tags) ? this.tags : [];
-            return tags.find(t => t.id === this.filterTag);
+            return tags.filter(t => this.filterTags.includes(t.id));
         },
         selectedTagObjects() {
             const tags = Array.isArray(this.tags) ? this.tags : [];
@@ -588,12 +588,17 @@ export default {
         },
         setFilter(tagId) {
             this.isLoading = true;
-            this.filterTag = this.filterTag === tagId ? null : tagId;
+            const idx = this.filterTags.indexOf(tagId);
+            if (idx === -1) {
+                this.filterTags.push(tagId);
+            } else {
+                this.filterTags.splice(idx, 1);
+            }
             setTimeout(() => { this.isLoading = false; }, 150);
         },
         clearFilter() {
             this.isLoading = true;
-            this.filterTag = null;
+            this.filterTags = [];
             setTimeout(() => { this.isLoading = false; }, 150);
         },
         startEdit(idea) {

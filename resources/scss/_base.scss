@@ -15,6 +15,41 @@
 }
 
 // --------------------------------------------------------------------------
+// Scrollbar
+// --------------------------------------------------------------------------
+
+// Firefox
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--scrollbar-thumb) var(--scrollbar-track);
+}
+
+// WebKit (Chrome, Safari, Edge)
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--scrollbar-track);
+  border-radius: 5px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--scrollbar-thumb);
+  border-radius: 5px;
+  border: 2px solid var(--scrollbar-track);
+
+  &:hover {
+    background: var(--scrollbar-thumb-hover);
+  }
+}
+
+::-webkit-scrollbar-corner {
+  background: var(--scrollbar-track);
+}
+
+// --------------------------------------------------------------------------
 // Body
 // --------------------------------------------------------------------------
 
