@@ -94,3 +94,20 @@
   --color-bg-hover: #ffedd5;
   --color-modal-overlay: rgba(124, 45, 18, 0.4);
 }
+
+// Orange theme light mode: adjust medium priority for better contrast
+// The default yellowish medium priority blends into orange backgrounds
+[data-color="orange"]:not([data-theme="dark"]) {
+  .priority-option.priority-medium {
+    color: #92400e;
+
+    &.active {
+      background: #fef9c3;
+    }
+  }
+
+  .priority-badge.priority-medium {
+    background: #fef9c3;
+    color: #92400e;
+  }
+}
