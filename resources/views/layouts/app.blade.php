@@ -7,6 +7,8 @@
         $currentModule = 'memorybox';
     } elseif (request()->routeIs('checklist.*')) {
         $currentModule = 'checklist';
+    } elseif (request()->routeIs('suggestions.*')) {
+        $currentModule = 'suggestions';
     }
     $pageTitle = $currentModule ? 'Recollectie - ' . $modules[$currentModule]['name'] : 'Recollectie';
 @endphp

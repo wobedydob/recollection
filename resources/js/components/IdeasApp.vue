@@ -45,7 +45,7 @@
                         class="tag-multiselect-item"
                         @click="selectTag(tag.id)"
                     >
-                        <span class="tag-preview" :style="{ backgroundColor: tag.color }">
+                        <span class="tag-preview" :style="{ backgroundColor: tag.color + '20', color: tag.color }">
                             <span v-if="tag.emoji" class="tag-emoji">{{ tag.emoji }}</span>
                             {{ tag.name }}
                         </span>
@@ -68,7 +68,7 @@
                     :key="tag.id"
                     class="filter-tag"
                     :class="{ active: filterTags.includes(tag.id) }"
-                    :style="{ backgroundColor: filterTags.includes(tag.id) ? tag.color : '' }"
+                    :style="filterTags.includes(tag.id) ? { backgroundColor: tag.color + '20', color: tag.color, borderColor: tag.color + '40' } : {}"
                     @click="setFilter(tag.id)"
                 >
                     <span>{{ tag.emoji }}</span>
@@ -82,7 +82,7 @@
         </Transition>
 
         <!-- Loading State -->
-        <div v-if="isLoading" class="loader-container">
+        <div v-if="isLoading || isFiltering" class="loader-container">
             <div class="loader"></div>
             <p class="loader-text">Laden...</p>
         </div>
@@ -174,7 +174,7 @@
                             class="tag-dropdown-item"
                             @click="selectEditTag(tag.id)"
                         >
-                            <span class="tag-preview" :style="{ backgroundColor: tag.color }">
+                            <span class="tag-preview" :style="{ backgroundColor: tag.color + '20', color: tag.color }">
                                 <span v-if="tag.emoji" class="tag-emoji">{{ tag.emoji }}</span>
                                 {{ tag.name }}
                             </span>

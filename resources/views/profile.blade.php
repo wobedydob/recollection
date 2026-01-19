@@ -152,8 +152,8 @@
             <div class="profile-nav-links">
                 <span class="profile-nav-label">Terug naar:</span>
                 <a href="{{ route('home') }}" class="profile-nav-btn" title="Home">🏠</a>
-                <a href="{{ route('memorybox.index') }}" class="profile-nav-btn" title="Memory Box">✨</a>
-                <a href="{{ route('checklist.index') }}" class="profile-nav-btn" title="Checklist">📋</a>
+                <a href="{{ route('memorybox.index') }}" class="profile-nav-btn" title="{{ config('modules.memorybox.name') }}">{{ config('modules.memorybox.icon') }}</a>
+                <a href="{{ route('checklist.index') }}" class="profile-nav-btn" title="{{ config('modules.checklist.name') }}">{{ config('modules.checklist.icon') }}</a>
             </div>
             <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                 @csrf

@@ -84,7 +84,8 @@
   border: 2px solid $color-border;
   border-radius: $radius-pill;
   font-size: 0.875rem;
-  color: $color-text-secondary;
+  font-weight: $font-weight-bold;
+  color: $color-text-muted;
   cursor: pointer;
   transition: $transition-base;
 
@@ -99,9 +100,7 @@
   }
 
   &.active {
-    border-color: transparent;
-    color: #444;
-    font-weight: $font-weight-medium;
+    // Styles applied via inline styles in Vue
   }
 }
 
@@ -111,6 +110,7 @@
 
 .tag-selector-container {
   position: relative;
+  z-index: $z-dropdown;
 }
 
 .tag-selector-row {

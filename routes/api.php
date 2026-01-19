@@ -5,6 +5,7 @@ use App\Http\Controllers\IdeaController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\ChecklistController;
 use App\Http\Controllers\ChecklistItemController;
+use App\Http\Controllers\SuggestionController;
 use Illuminate\Support\Facades\Route;
 
 // Public auth routes
@@ -47,5 +48,12 @@ Route::middleware('auth:sanctum')->group(function () {
         Route::put('/items/{item}', [ChecklistItemController::class, 'update']);
         Route::delete('/items/{item}', [ChecklistItemController::class, 'destroy']);
         Route::patch('/items/{item}/toggle', [ChecklistItemController::class, 'toggle']);
+    });
+
+    // Suggestions
+    Route::prefix('suggestions')->group(function () {
+        Route::get('/', [SuggestionController::class, 'index']);
+        Route::post('/', [SuggestionController::class, 'store']);
+        Route::delete('/{id}', [SuggestionController::class, 'destroy']);
     });
 });

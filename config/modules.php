@@ -13,4 +13,10 @@ return [
         'route' => 'checklist.index',
         'description' => 'Beheer je taken',
     ],
+    'suggestions' => [
+        'name' => 'Suggestion Box',
+        'icon' => '💡',
+        'route' => 'suggestions.index',
+        'description' => 'Help ons de app te verbeteren',
+    ],
 ];

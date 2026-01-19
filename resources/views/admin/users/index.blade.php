@@ -10,11 +10,11 @@
     </div>
 
     <div class="admin-card">
-        <form method="GET" class="filter-form">
+        <div class="filter-form">
             <div class="filter-row">
                 <input
                     type="text"
-                    name="search"
+                    id="search-input"
                     class="input"
                     placeholder="Zoek op naam of e-mail..."
                     value="{{ request('search') }}"
@@ -45,14 +45,9 @@
                             Admin
                         </button>
                     </div>
-                    <input type="hidden" name="role" id="role-input" value="{{ request('role') }}" />
                 </div>
-                <button type="submit" class="btn btn-primary">Zoeken</button>
-                @if(request('search') || request('role'))
-                    <a href="{{ route('admin.users') }}" class="btn btn-secondary">Reset</a>
-                @endif
             </div>
-        </form>
+        </div>
 
         @if(session('success'))
             <div class="success-message">{{ session('success') }}</div>
@@ -103,6 +98,8 @@
 
 @push('scripts')
 <script>
+let currentRole = '{{ request('role') }}';
+
 // Show content after minimum loading time
 setTimeout(function() {
     document.getElementById('admin-loader').style.display = 'none';
@@ -114,14 +111,17 @@ function toggleDropdown() {
 }
 
 function selectRole(role) {
-    document.getElementById('role-input').value = role;
+    currentRole = role;
     const labels = { '': 'Alle rollen', 'user': 'User', 'admin': 'Admin' };
     document.querySelector('.custom-select-value').textContent = labels[role];
     document.getElementById('role-dropdown').classList.remove('show');
 
     // Update active state
     document.querySelectorAll('.custom-select-option').forEach(opt => opt.classList.remove('active'));
-    event.target.classList.add('active');
+    event.target.closest('.custom-select-option').classList.add('active');
+
+    // Search immediately on role change
+    searchUsers();
 }
 
 // Close dropdown when clicking outside
@@ -131,6 +131,94 @@ document.addEventListener('click', function(e) {
         document.getElementById('role-dropdown').classList.remove('show');
     }
 });
+
+// Debounced search on input
+let searchTimeout = null;
+document.getElementById('search-input').addEventListener('input', function() {
+    clearTimeout(searchTimeout);
+    searchTimeout = setTimeout(searchUsers, 300);
+});
+
+async function searchUsers() {
+    const search = document.getElementById('search-input').value;
+    const loader = document.getElementById('admin-loader');
+    const content = document.getElementById('admin-content');
+
+    // Show loader, hide content
+    loader.style.display = 'flex';
+    content.classList.remove('loaded');
+
+    // Build URL
+    const params = new URLSearchParams();
+    if (search) params.append('search', search);
+    if (currentRole) params.append('role', currentRole);
+
+    try {
+        const res = await fetch(`/admin/users?${params.toString()}`, {
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            credentials: 'include'
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            renderUsers(data.users);
+
+            // Update URL without reload
+            const newUrl = params.toString() ? `/admin/users?${params.toString()}` : '/admin/users';
+            history.pushState({}, '', newUrl);
+        }
+    } catch (e) {
+        console.error('Failed to search users:', e);
+    }
+
+    // Hide loader, show content
+    setTimeout(() => {
+        loader.style.display = 'none';
+        content.classList.add('loaded');
+    }, 300);
+}
+
+function renderUsers(users) {
+    const usersList = document.querySelector('.users-list');
+
+    if (users.length === 0) {
+        usersList.innerHTML = '<p class="empty-message">Geen gebruikers gevonden.</p>';
+        return;
+    }
+
+    usersList.innerHTML = users.map((user, index) => `
+        <a href="${user.show_url}" class="user-row clickable" style="animation-delay: ${0.05 + (index * 0.03)}s">
+            <div class="user-info">
+                <span class="user-avatar">${user.name.charAt(0).toUpperCase()}</span>
+                <div class="user-details">
+                    <span class="user-name">${escapeHtml(user.name)}</span>
+                    <span class="user-email">${escapeHtml(user.email)}</span>
+                </div>
+            </div>
+            <div class="user-stats">
+                <span class="stat" title="Ideeën">✨ ${user.ideas_count}</span>
+                <span class="stat" title="Checklists">📋 ${user.todo_lists_count}</span>
+            </div>
+            <div class="user-meta">
+                <span class="user-role ${user.role}">${user.role}</span>
+                <span class="user-date">${user.created_at}</span>
+            </div>
+        </a>
+    `).join('');
+
+    // Remove pagination for now (AJAX results)
+    const pagination = document.querySelector('.pagination-wrapper');
+    if (pagination) pagination.style.display = 'none';
+}
+
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+}
 </script>
 @endpush
 @endsection

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Idea;
+use App\Models\Suggestion;
 use App\Models\Tag;
 use App\Models\TodoList;
 use App\Models\TodoItem;
@@ -23,6 +24,8 @@ class AdminController extends Controller
             'tags' => Tag::count(),
             'checklists' => TodoList::count(),
             'tasks' => TodoItem::count(),
+            'suggestions' => Suggestion::count(),
+            'new_suggestions' => Suggestion::where('status', 'new')->count(),
         ];
 
         $recentUsers = User::latest()->take(5)->get();
@@ -30,7 +33,7 @@ class AdminController extends Controller
         return view('admin.dashboard', compact('stats', 'recentUsers'));
     }
 
-    public function users(Request $request): View
+    public function users(Request $request): View|\Illuminate\Http\JsonResponse
     {
         $query = User::query();
 
@@ -46,6 +49,26 @@ class AdminController extends Controller
         }
 
         $users = $query->withCount(['ideas', 'todoLists'])->latest()->paginate(20);
+
+        if ($request->expectsJson()) {
+            return response()->json([
+                'users' => $users->map(function ($user) {
+                    return [
+                        'id' => $user->id,
+                        'name' => $user->name,
+                        'email' => $user->email,
+                        'role' => $user->role,
+                        'ideas_count' => $user->ideas_count,
+                        'todo_lists_count' => $user->todo_lists_count,
+                        'created_at' => $user->created_at->translatedFormat('d M Y'),
+                        'show_url' => route('admin.users.show', $user),
+                    ];
+                }),
+                'has_more_pages' => $users->hasMorePages(),
+                'current_page' => $users->currentPage(),
+                'last_page' => $users->lastPage(),
+            ]);
+        }
 
         return view('admin.users.index', compact('users'));
     }
@@ -108,5 +131,57 @@ class AdminController extends Controller
         $user->delete();
 
         return redirect()->route('admin.users')->with('success', 'Gebruiker verwijderd.');
+    }
+
+    public function suggestions(Request $request): View
+    {
+        $query = Suggestion::with('user');
+
+        if ($status = $request->get('status')) {
+            $query->where('status', $status);
+        }
+
+        $suggestions = $query->latest()->paginate(20);
+
+        $stats = [
+            'total' => Suggestion::count(),
+            'new' => Suggestion::where('status', 'new')->count(),
+            'reviewed' => Suggestion::where('status', 'reviewed')->count(),
+            'planned' => Suggestion::where('status', 'planned')->count(),
+            'done' => Suggestion::where('status', 'done')->count(),
+        ];
+
+        return view('admin.suggestions.index', compact('suggestions', 'stats'));
+    }
+
+    public function updateSuggestionStatus(Request $request, Suggestion $suggestion)
+    {
+        $status = $request->input('status');
+
+        if (!in_array($status, ['new', 'reviewed', 'planned', 'done'])) {
+            if ($request->expectsJson()) {
+                return response()->json(['message' => 'Ongeldige status.'], 400);
+            }
+            return back()->withErrors(['status' => 'Ongeldige status.']);
+        }
+
+        $suggestion->update(['status' => $status]);
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true, 'status' => $status]);
+        }
+
+        return back()->with('success', 'Status bijgewerkt.');
+    }
+
+    public function deleteSuggestion(Request $request, Suggestion $suggestion)
+    {
+        $suggestion->delete();
+
+        if ($request->expectsJson()) {
+            return response()->json(['success' => true]);
+        }
+
+        return redirect()->route('admin.suggestions')->with('success', 'Suggestie verwijderd.');
     }
 }

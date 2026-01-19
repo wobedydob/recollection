@@ -1,0 +1,108 @@
+// ==========================================================================
+// Suggestions Component
+// ==========================================================================
+
+@use '../variables' as *;
+@use '../mixins' as *;
+
+// --------------------------------------------------------------------------
+// App Container
+// --------------------------------------------------------------------------
+
+.suggestions-app {
+  max-width: $container-max-width;
+  margin: 0 auto;
+}
+
+// --------------------------------------------------------------------------
+// Form
+// --------------------------------------------------------------------------
+
+.suggestion-form {
+  @include card;
+  @include flex-column($spacing-base);
+  margin-bottom: $spacing-2xl;
+}
+
+.suggestion-textarea {
+  width: 100%;
+  padding: $spacing-base;
+  border: 2px solid $color-border;
+  border-radius: $radius-sm;
+  font-size: $font-size-base;
+  font-family: inherit;
+  resize: vertical;
+  min-height: 100px;
+  transition: border-color 0.2s ease;
+  background: transparent;
+  color: $color-text-primary;
+
+  &::placeholder {
+    color: $color-text-lighter;
+  }
+
+  &:focus {
+    outline: none;
+    border-color: $color-border-hover;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Suggestions List
+// --------------------------------------------------------------------------
+
+.suggestions-list {
+  @include flex-column($spacing-base);
+}
+
+.suggestion-card {
+  @include card;
+  position: relative;
+}
+
+.suggestion-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-sm;
+}
+
+.suggestion-status {
+  font-size: $font-size-xs;
+  padding: $spacing-xs $spacing-sm;
+  border-radius: $radius-pill;
+  font-weight: $font-weight-medium;
+  text-transform: uppercase;
+
+  &.new {
+    background: #fce7f3;
+    color: #be185d;
+  }
+
+  &.reviewed {
+    background: #e0f2fe;
+    color: #0369a1;
+  }
+
+  &.planned {
+    background: #f3e8ff;
+    color: #7c3aed;
+  }
+
+  &.done {
+    background: #dcfce7;
+    color: #166534;
+  }
+}
+
+.suggestion-content {
+  margin: 0 0 $spacing-sm;
+  color: $color-text-primary;
+  line-height: $line-height-base;
+  word-wrap: break-word;
+}
+
+.suggestion-date {
+  font-size: $font-size-sm;
+  color: $color-text-lighter;
+}

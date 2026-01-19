@@ -57,11 +57,14 @@
   border-radius: $radius-xl;
   border: 2px solid rgba($color-border, 0.5);
   margin-bottom: $spacing-xl;
+  position: relative;
+  z-index: 10;
 }
 
 .ideas-list {
   @include flex-column($spacing-lg);
   position: relative;
+  z-index: 1;
 }
 
 .idea-card {

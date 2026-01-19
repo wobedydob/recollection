@@ -5,6 +5,7 @@ import PasswordStrength from './components/PasswordStrength.vue';
 import IdeasApp from './components/IdeasApp.vue';
 import TodoApp from './components/TodoApp.vue';
 import TodoListDetail from './components/TodoListDetail.vue';
+import SuggestionsApp from './components/SuggestionsApp.vue';
 
 // Theme Toggle Functions
 window.toggleTheme = async function() {
@@ -96,6 +97,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if (todoDetailEl) {
         const listId = parseInt(todoDetailEl.dataset.listId, 10);
         createApp(TodoListDetail, { listId }).mount(todoDetailEl);
+    }
+
+    // Initialize SuggestionsApp if the element exists
+    const suggestionsEl = document.getElementById('suggestions-app');
+    if (suggestionsEl) {
+        createApp(SuggestionsApp).mount(suggestionsEl);
     }
 
     // Initialize password components on auth pages

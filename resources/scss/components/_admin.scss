@@ -121,10 +121,103 @@
   animation: admin-fade-in 0.3s ease forwards;
   opacity: 0;
 
-  @for $i from 1 through 6 {
+  @for $i from 1 through 8 {
     &:nth-child(#{$i}) {
       animation-delay: #{0.1 + ($i * 0.05)}s;
     }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Suggestions Admin Styles
+// --------------------------------------------------------------------------
+
+.suggestions-admin-list {
+  display: flex;
+  flex-direction: column;
+  gap: $spacing-base;
+}
+
+.suggestion-admin-item {
+  background: $color-bg-lighter;
+  border-radius: $radius-sm;
+  padding: $spacing-base;
+  animation: admin-fade-in 0.3s ease forwards;
+  opacity: 0;
+
+  @for $i from 1 through 20 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{0.05 + ($i * 0.03)}s;
+    }
+  }
+}
+
+.suggestion-admin-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: $spacing-sm;
+  gap: $spacing-base;
+}
+
+.suggestion-admin-user {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.suggestion-admin-actions {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+}
+
+.status-form {
+  display: inline-flex;
+}
+
+.status-select {
+  padding: $spacing-xs $spacing-sm;
+  border: 2px solid $color-border;
+  border-radius: $radius-xs;
+  font-size: $font-size-sm;
+  background: $color-bg-white;
+  color: $color-text-primary;
+  cursor: pointer;
+
+  &:focus {
+    outline: none;
+    border-color: $color-border-hover;
+  }
+}
+
+.suggestion-admin-content {
+  margin: 0;
+  color: $color-text-primary;
+  line-height: $line-height-base;
+  word-wrap: break-word;
+}
+
+// Status indicators for dropdown
+.status-indicator {
+  width: 0.75rem;
+  height: 0.75rem;
+  border-radius: $radius-circle;
+
+  &.new {
+    background: #f472b6;
+  }
+
+  &.reviewed {
+    background: #38bdf8;
+  }
+
+  &.planned {
+    background: #a78bfa;
+  }
+
+  &.done {
+    background: #4ade80;
   }
 }
 
@@ -150,6 +243,34 @@
     flex-direction: column;
     gap: $spacing-sm;
   }
+
+  .header-actions {
+    display: flex;
+    gap: $spacing-sm;
+  }
+}
+
+// Admin actions row
+.admin-actions {
+  display: flex;
+  gap: $spacing-sm;
+  margin-bottom: $spacing-2xl;
+}
+
+// Badge for notification count
+.badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 1.25rem;
+  height: 1.25rem;
+  padding: 0 $spacing-xs;
+  background: #ef4444;
+  color: white;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  border-radius: $radius-pill;
+  margin-left: $spacing-xs;
 }
 
 .back-link {
@@ -495,6 +616,35 @@
 // Filter Form
 .filter-form {
   margin-bottom: $spacing-xl;
+
+  .filter-tags {
+    .filter-tag {
+      .status-indicator {
+        flex-shrink: 0;
+      }
+
+      &.active {
+        // Pink theme (default)
+        background: #fce7f3;
+        border-color: #f9a8d4;
+        color: #be185d;
+
+        // Blue theme
+        [data-color="blue"] & {
+          background: #e0f2fe;
+          border-color: #7dd3fc;
+          color: #0369a1;
+        }
+
+        // Green theme
+        [data-color="green"] & {
+          background: #dcfce7;
+          border-color: #86efac;
+          color: #166534;
+        }
+      }
+    }
+  }
 }
 
 .filter-row {
@@ -518,6 +668,29 @@
 .custom-select {
   position: relative;
   min-width: 140px;
+
+  &.custom-select-small {
+    min-width: 110px;
+
+    .custom-select-trigger {
+      padding: $spacing-xs $spacing-sm;
+      font-size: $font-size-sm;
+      border-width: 1px;
+    }
+
+    .custom-select-dropdown {
+      border-width: 1px;
+    }
+
+    .custom-select-option {
+      padding: $spacing-xs $spacing-sm;
+      font-size: $font-size-sm;
+    }
+
+    .custom-select-arrow {
+      font-size: 0.5rem;
+    }
+  }
 }
 
 .custom-select-trigger {

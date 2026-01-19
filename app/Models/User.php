@@ -59,4 +59,9 @@ class User extends Authenticatable
     {
         return $this->hasMany(TodoList::class);
     }
+
+    public function suggestions(): HasMany
+    {
+        return $this->hasMany(Suggestion::class);
+    }
 }

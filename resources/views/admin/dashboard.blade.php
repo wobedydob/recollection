@@ -4,7 +4,6 @@
 <div class="admin-page">
     <div class="admin-header">
         <h1 class="admin-title">Admin Dashboard</h1>
-        <a href="{{ route('admin.users') }}" class="btn btn-primary">Gebruikers beheren</a>
     </div>
 
     <div class="admin-loader" id="admin-loader">
@@ -56,6 +55,11 @@
                 <span class="stat-label">Taken</span>
             </div>
         </div>
+    </div>
+
+    <div class="admin-actions">
+        <a href="{{ route('admin.users') }}" class="btn btn-primary">Gebruikers beheren</a>
+        <a href="{{ route('admin.suggestions') }}" class="btn btn-secondary">Suggesties @if($stats['new_suggestions'] > 0)<span class="badge">{{ $stats['new_suggestions'] }}</span>@endif</a>
     </div>
 
     <div class="admin-card">

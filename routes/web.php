@@ -29,6 +29,11 @@ Route::middleware('auth')->group(function () {
     Route::get('/checklist', [ChecklistController::class, 'index'])->name('checklist.index');
     Route::get('/checklist/{list}', [ChecklistController::class, 'show'])->name('checklist.show');
 
+    // Suggestions
+    Route::get('/suggesties', function () {
+        return view('suggestions.index');
+    })->name('suggestions.index');
+
     // Profile
     Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
     Route::put('/profile', [AuthController::class, 'webUpdateProfile'])->name('profile.update');
@@ -46,4 +51,9 @@ Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(fun
     Route::get('/users/{user}/edit', [AdminController::class, 'editUser'])->name('users.edit');
     Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
     Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('users.delete');
-        });
+
+    // Suggestions
+    Route::get('/suggestions', [AdminController::class, 'suggestions'])->name('suggestions');
+    Route::patch('/suggestions/{suggestion}/status', [AdminController::class, 'updateSuggestionStatus'])->name('suggestions.status');
+    Route::delete('/suggestions/{suggestion}', [AdminController::class, 'deleteSuggestion'])->name('suggestions.delete');
+});
