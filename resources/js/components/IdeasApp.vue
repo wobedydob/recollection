@@ -10,44 +10,38 @@
                 rows="3"
             ></textarea>
             <div class="tag-selector-container">
-                <div class="selected-tags">
-                    <span
-                        v-for="tag in selectedTagObjects"
-                        :key="tag.id"
-                        class="tag-pill"
-                        :style="{ backgroundColor: tag.color }"
-                    >
-                        <span v-if="tag.emoji" class="tag-emoji">{{ tag.emoji }}</span>
-                        {{ tag.name }}
-                        <button type="button" class="tag-remove" @click="removeTag(tag.id)">×</button>
-                    </span>
-
-                    <div class="tag-actions">
-                        <button
-                            type="button"
-                            class="dropdown-toggle"
-                            @click.stop="showTagDropdown = !showTagDropdown"
-                            :disabled="availableTags.length === 0"
+                <div class="tag-selector-row">
+                    <div class="selected-tags" :class="{ clickable: availableTags.length > 0 }" @click="availableTags.length > 0 && (showTagDropdown = !showTagDropdown)">
+                        <span
+                            v-for="tag in selectedTagObjects"
+                            :key="tag.id"
+                            class="tag-pill"
+                            :style="{ backgroundColor: tag.color }"
                         >
-                            <span class="dropdown-icon">▼</span>
-                            Kies tag
-                        </button>
+                            <span v-if="tag.emoji" class="tag-emoji">{{ tag.emoji }}</span>
+                            {{ tag.name }}
+                            <button type="button" class="tag-remove" @click.stop="removeTag(tag.id)">×</button>
+                        </span>
 
-                        <button type="button" class="add-tag-btn" @click="showAddTagModal = true" title="Nieuwe tag maken">
-                            +
-                        </button>
-                        <button type="button" class="manage-tags-btn" :class="{ visible: tags.length }" @click="showManageTagsModal = true" title="Tags beheren">
-                            ⚙
-                        </button>
+                        <span v-if="selectedTagObjects.length === 0" class="tag-placeholder">
+                            {{ availableTags.length > 0 ? 'Klik om tags te selecteren' : 'Geen tags beschikbaar' }}
+                        </span>
+
+                        <span v-if="availableTags.length > 0" class="dropdown-indicator">▼</span>
                     </div>
+
+                    <button type="button" class="add-tag-btn" @click="showAddTagModal = true" title="Tags">
+                        +
+                    </button>
                 </div>
 
-                <div v-if="showTagDropdown && availableTags.length" class="tag-dropdown">
+                <!-- Tag dropdown (shows only unselected tags) -->
+                <div v-if="showTagDropdown && availableTags.length > 0" class="tag-multiselect-dropdown" @click.stop>
                     <button
                         v-for="tag in availableTags"
                         :key="tag.id"
                         type="button"
-                        class="tag-dropdown-item"
+                        class="tag-multiselect-item"
                         @click="selectTag(tag.id)"
                     >
                         <span class="tag-preview" :style="{ backgroundColor: tag.color }">
@@ -211,7 +205,29 @@
         <div v-if="showAddTagModal" class="modal-overlay" @click.self="closeTagModal">
             <div class="modal tag-modal">
                 <button class="close-btn" @click="closeTagModal">×</button>
-                <h2 class="modal-title-gradient">Nieuwe Tag Maken</h2>
+                <h2 class="modal-title-gradient">Tags</h2>
+
+                <!-- Quick select existing tags (mobile) -->
+                <div v-if="availableTags.length > 0" class="mobile-tag-select">
+                    <label class="label">Selecteer tag</label>
+                    <div class="mobile-tag-grid">
+                        <button
+                            v-for="tag in availableTags"
+                            :key="tag.id"
+                            type="button"
+                            class="mobile-tag-option"
+                            :style="{ backgroundColor: tag.color }"
+                            @click="selectTagAndClose(tag.id)"
+                        >
+                            <span v-if="tag.emoji" class="tag-emoji">{{ tag.emoji }}</span>
+                            {{ tag.name }}
+                        </button>
+                    </div>
+                </div>
+
+                <div v-if="availableTags.length > 0" class="mobile-divider">
+                    <span>of maak een nieuwe</span>
+                </div>
 
                 <form @submit.prevent="createTag" class="modal-form">
                     <div class="form-group">
@@ -283,6 +299,16 @@
                         Tag Maken
                     </button>
                 </form>
+
+                <!-- Manage tags link (mobile) -->
+                <button
+                    v-if="tags.length > 0"
+                    type="button"
+                    class="mobile-manage-link"
+                    @click="openManageFromAdd"
+                >
+                    ⚙ Tags beheren
+                </button>
             </div>
         </div>
 
@@ -457,8 +483,18 @@ export default {
     },
     async mounted() {
         await this.loadData();
+        document.addEventListener('click', this.handleClickOutside);
+    },
+    beforeUnmount() {
+        document.removeEventListener('click', this.handleClickOutside);
     },
     methods: {
+        handleClickOutside(e) {
+            const container = this.$el.querySelector('.tag-selector-container');
+            if (container && !container.contains(e.target)) {
+                this.showTagDropdown = false;
+            }
+        },
         transformIdea(idea) {
             const tags = Array.isArray(this.tags) ? this.tags : [];
             return {
@@ -491,7 +527,15 @@ export default {
             if (!this.selectedTags.includes(tagId)) {
                 this.selectedTags.push(tagId);
             }
-            this.showTagDropdown = false;
+            // Keep dropdown open for multi-select, closes automatically when all selected
+        },
+        selectTagAndClose(tagId) {
+            this.selectTag(tagId);
+            this.showAddTagModal = false;
+        },
+        openManageFromAdd() {
+            this.showAddTagModal = false;
+            this.showManageTagsModal = true;
         },
         removeTag(tagId) {
             this.selectedTags = this.selectedTags.filter(id => id !== tagId);

@@ -81,6 +81,11 @@
   overflow: hidden;
   min-width: 220px;
 
+  @include mobile {
+    min-width: 180px;
+    left: -$spacing-sm;
+  }
+
   &.show {
     @include dropdown-visible;
   }
@@ -94,6 +99,10 @@
   text-decoration: none;
   color: $color-text-secondary;
   transition: $transition-base;
+
+  @include tablet {
+    padding: $spacing-lg $spacing-base;
+  }
 
   &,
   &:hover,
@@ -208,6 +217,11 @@
   overflow: hidden;
   min-width: 140px;
 
+  @include mobile {
+    min-width: 120px;
+    right: -$spacing-sm;
+  }
+
   &.show {
     @include dropdown-visible;
   }
@@ -217,6 +231,10 @@
   display: block;
   width: 100%;
   padding: $spacing-md $spacing-base;
+
+  @include tablet {
+    padding: $spacing-lg $spacing-base;
+  }
   background: none;
   border: none;
   text-align: left;

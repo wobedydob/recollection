@@ -64,6 +64,15 @@
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   gap: $spacing-sm;
+
+  @include tablet {
+    grid-template-columns: repeat(4, 1fr);
+    gap: $spacing-md;
+  }
+
+  @include mobile {
+    grid-template-columns: repeat(3, 1fr);
+  }
 }
 
 .color-option {
@@ -100,11 +109,19 @@
 
 .emoji-input {
   width: 80px;
+  min-width: 60px;
+  max-width: 100px;
   padding: $spacing-sm $spacing-md;
   border: 2px solid $color-border;
   border-radius: $radius-sm;
   font-size: $font-size-lg;
   text-align: center;
+
+  @include tablet {
+    width: 70px;
+    padding: $spacing-md;
+    font-size: $font-size-xl;
+  }
 
   &:focus {
     outline: none;
@@ -128,6 +145,12 @@
   cursor: pointer;
   transition: $transition-fast;
   @include flex-center;
+
+  @include tablet {
+    width: 2.75rem;
+    height: 2.75rem;
+    font-size: $font-size-lg;
+  }
 
   &:hover {
     border-color: $color-border-hover;

@@ -72,6 +72,10 @@
   font-family: inherit;
   resize: vertical;
   min-height: 100px;
+
+  @include mobile {
+    min-height: 80px;
+  }
 }
 
 // --------------------------------------------------------------------------

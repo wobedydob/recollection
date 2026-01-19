@@ -48,17 +48,31 @@
   align-items: center;
   gap: $spacing-md;
   margin-bottom: $spacing-xl;
+
+  @include mobile {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: $spacing-sm;
+  }
 }
 
 .filter-label {
   font-size: 0.875rem;
   color: $color-text-muted;
+
+  @include mobile {
+    font-size: 0.8rem;
+  }
 }
 
 .filter-tags {
   display: flex;
   flex-wrap: wrap;
   gap: $spacing-sm;
+
+  @include mobile {
+    width: 100%;
+  }
 }
 
 .filter-tag {
@@ -73,6 +87,11 @@
   color: $color-text-secondary;
   cursor: pointer;
   transition: $transition-base;
+
+  @include tablet {
+    padding: 0.5rem 1rem;
+    font-size: 1rem;
+  }
 
   &:hover {
     border-color: $color-border-hover;
@@ -94,16 +113,68 @@
   position: relative;
 }
 
+.tag-selector-row {
+  display: flex;
+  align-items: center;
+  gap: $spacing-sm;
+
+  > .selected-tags {
+    flex: 1;
+    min-width: 0;
+  }
+
+  > .add-tag-btn {
+    flex-shrink: 0;
+  }
+}
+
 .selected-tags {
   display: flex;
   flex-wrap: wrap;
   gap: $spacing-sm;
-  padding: $spacing-md;
+  padding: $spacing-sm $spacing-md;
+  padding-right: $spacing-2xl;
   background: $color-bg-white;
   border: 2px solid $color-border;
   border-radius: $radius-md;
-  min-height: 3rem;
+  min-height: 2.5rem;
   align-items: center;
+  align-content: center;
+  position: relative;
+  transition: $transition-border;
+  box-sizing: border-box;
+
+  @include tablet {
+    padding: $spacing-md $spacing-base;
+    padding-right: $spacing-2xl;
+    min-height: 3rem;
+  }
+
+  &.clickable {
+    cursor: pointer;
+
+    &:hover {
+      border-color: $color-border-hover;
+    }
+  }
+}
+
+.tag-placeholder {
+  @include tag-pill;
+  background: transparent;
+  color: $color-text-lightest;
+  font-style: italic;
+  font-weight: $font-weight-normal;
+}
+
+.dropdown-indicator {
+  position: absolute;
+  right: $spacing-md;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.6rem;
+  color: $color-text-lighter;
+  pointer-events: none;
 }
 
 .tag-pill {
@@ -115,7 +186,7 @@
   border: none;
   color: rgba(0, 0, 0, 0.4);
   cursor: pointer;
-  font-size: $font-size-md;
+  font-size: inherit;
   line-height: 1;
   padding: 0;
   margin-left: 0.125rem;
@@ -167,30 +238,48 @@
   @include btn-icon(2rem);
   background: $gradient-avatar;
   color: $color-bg-white;
-  font-size: $font-size-lg;
-  font-weight: $font-weight-medium;
+  font-size: 1.25rem;
+  line-height: 1;
   box-shadow: $shadow-sm;
+  padding-bottom: 1px; // optical centering for +
 
   &:hover {
-    transform: scale(1.1);
+    transform: translateY(-2px);
     box-shadow: $shadow-button-hover;
   }
 }
 
 .manage-tags-btn {
-  @include btn-icon(2rem);
   width: 0;
+  height: 2rem;
+  min-width: 0;
+  @include flex-center;
+  border: none;
+  border-radius: $radius-circle;
+  cursor: pointer;
   background: transparent;
   color: #bbb;
+  font-size: $font-size-lg;
   opacity: 0;
   overflow: hidden;
   pointer-events: none;
-  transition: width 0.3s ease, opacity 0.3s ease, background 0.2s ease, color 0.2s ease;
+  transition: width 0.3s ease, min-width 0.3s ease, opacity 0.3s ease, background 0.2s ease, color 0.2s ease;
+
+  @include tablet {
+    height: 2.75rem;
+    font-size: $font-size-xl;
+  }
 
   &.visible {
     width: 2rem;
+    min-width: 2rem;
     opacity: 1;
     pointer-events: auto;
+
+    @include tablet {
+      width: 2.75rem;
+      min-width: 2.75rem;
+    }
   }
 
   &:hover {
@@ -226,6 +315,51 @@
   &:hover {
     transform: scale(1.05);
   }
+}
+
+// --------------------------------------------------------------------------
+// Tag Multiselect Dropdown
+// --------------------------------------------------------------------------
+
+.tag-multiselect-dropdown {
+  @include dropdown-base;
+  top: 100%;
+  left: 0;
+  right: 0;
+  margin-top: $spacing-sm;
+  border-radius: $radius-md;
+  padding: $spacing-sm;
+  max-height: 200px;
+  overflow-y: auto;
+  z-index: $z-dropdown;
+}
+
+.tag-multiselect-item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  padding: $spacing-sm $spacing-md;
+  background: none;
+  border: none;
+  border-radius: $radius-sm;
+  cursor: pointer;
+  transition: $transition-base;
+
+  &:hover {
+    background: $color-bg-light;
+  }
+}
+
+.tag-dropdown-empty {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.tag-dropdown-message {
+  font-size: $font-size-sm;
+  color: $color-text-muted;
+  padding: $spacing-sm;
 }
 
 // --------------------------------------------------------------------------
@@ -295,5 +429,80 @@
 
   &:hover {
     opacity: 1;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Mobile Tag Select (in combined tags modal)
+// --------------------------------------------------------------------------
+
+.mobile-tag-select {
+  margin-bottom: $spacing-lg;
+}
+
+.mobile-tag-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: $spacing-sm;
+  margin-top: $spacing-sm;
+}
+
+.mobile-tag-option {
+  display: inline-flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-sm $spacing-md;
+  border: none;
+  border-radius: $radius-pill;
+  font-size: $font-size-sm;
+  color: rgba(0, 0, 0, 0.7);
+  cursor: pointer;
+  transition: $transition-base;
+
+  &:hover {
+    transform: scale(1.05);
+    box-shadow: $shadow-sm;
+  }
+}
+
+.mobile-divider {
+  text-align: center;
+  margin: $spacing-lg 0;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    right: 0;
+    height: 1px;
+    background: $color-border;
+  }
+
+  span {
+    position: relative;
+    background: $color-bg-white;
+    padding: 0 $spacing-md;
+    font-size: $font-size-sm;
+    color: $color-text-muted;
+  }
+}
+
+.mobile-manage-link {
+  width: 100%;
+  margin-top: $spacing-lg;
+  padding: $spacing-md;
+  background: transparent;
+  border: 1px dashed $color-border;
+  border-radius: $radius-md;
+  color: $color-text-muted;
+  font-size: $font-size-sm;
+  cursor: pointer;
+  transition: $transition-base;
+
+  &:hover {
+    border-color: $color-border-hover;
+    color: $color-text-secondary;
   }
 }

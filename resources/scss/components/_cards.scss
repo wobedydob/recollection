@@ -151,6 +151,12 @@
   font-size: $font-size-2xl;
   font-weight: $font-weight-semibold;
   color: $color-bg-white;
+
+  @include mobile {
+    width: 4rem;
+    height: 4rem;
+    font-size: $font-size-xl;
+  }
 }
 
 .profile-info {

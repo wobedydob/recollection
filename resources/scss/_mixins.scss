@@ -53,6 +53,15 @@
   border-radius: $radius;
   padding: $padding;
   box-shadow: $shadow-card;
+
+  @include tablet {
+    padding: $spacing-xl;
+    border-radius: $radius-lg;
+  }
+
+  @include mobile {
+    padding: $spacing-lg;
+  }
 }
 
 @mixin card-hover {
@@ -115,12 +124,22 @@
 @mixin btn-icon($size: 1.75rem) {
   width: $size;
   height: $size;
+  min-width: $size;
+  min-height: $size;
   @include flex-center;
   border: none;
   border-radius: $radius-circle;
   cursor: pointer;
   transition: $transition-base;
   text-decoration: none;
+
+  // Ensure touch-friendly size on tablet/mobile (44px minimum)
+  @include tablet {
+    width: 2.75rem;
+    height: 2.75rem;
+    min-width: 2.75rem;
+    min-height: 2.75rem;
+  }
 
   &:hover,
   &:focus,
@@ -154,6 +173,12 @@
   color: $color-text-primary;
   background: $color-bg-white;
   transition: $transition-border;
+
+  // Larger touch-friendly padding on mobile/tablet
+  @include tablet {
+    padding: 1rem $spacing-lg;
+    font-size: 1rem; // 16px prevents iOS zoom on focus
+  }
 
   &:focus {
     outline: none;
@@ -251,6 +276,17 @@
   position: relative;
   box-shadow: $shadow-modal;
   animation: slide-up 0.25s ease;
+
+  @include tablet {
+    width: 95%;
+    padding: $spacing-xl;
+    border-radius: $radius-lg;
+    max-height: 85vh;
+  }
+
+  @include mobile {
+    padding: $spacing-lg;
+  }
 }
 
 // --------------------------------------------------------------------------
