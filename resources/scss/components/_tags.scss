@@ -179,6 +179,15 @@
 
 .tag-pill {
   @include tag-pill;
+
+  &.clickable {
+    cursor: pointer;
+    transition: $transition-base;
+
+    &:hover {
+      opacity: 0.8;
+    }
+  }
 }
 
 .tag-remove {

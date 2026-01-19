@@ -15,12 +15,13 @@
                         <span
                             v-for="tag in selectedTagObjects"
                             :key="tag.id"
-                            class="tag-pill"
+                            class="tag-pill clickable"
                             :style="{ backgroundColor: tag.color }"
+                            @click.stop="removeTag(tag.id)"
                         >
                             <span v-if="tag.emoji" class="tag-emoji">{{ tag.emoji }}</span>
                             {{ tag.name }}
-                            <button type="button" class="tag-remove" @click.stop="removeTag(tag.id)">×</button>
+                            <span class="tag-remove">×</span>
                         </span>
 
                         <span v-if="selectedTagObjects.length === 0" class="tag-placeholder">
