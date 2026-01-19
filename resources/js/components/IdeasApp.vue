@@ -88,7 +88,7 @@
         </div>
 
         <!-- Ideas List -->
-        <TransitionGroup name="todo-task" tag="div" class="ideas-list" appear v-if="!isLoading && filteredIdeas.length > 0" :key="filterTags.join(',') || 'all'">
+        <TransitionGroup name="todo-task" tag="div" class="ideas-list" appear v-if="!isLoading && !isFiltering && filteredIdeas.length > 0" :key="filterTags.join(',') || 'all'">
             <div v-for="idea in filteredIdeas" :key="idea.id" class="idea-card">
                 <div class="card-actions">
                     <button class="edit-btn" @click="startEdit(idea)" title="Bewerken">✎</button>
@@ -115,7 +115,7 @@
 
         <!-- Empty State -->
         <Transition name="ideas-appear">
-            <div v-if="!isLoading && filteredIdeas.length === 0" class="empty-state">
+            <div v-if="!isLoading && !isFiltering && filteredIdeas.length === 0" class="empty-state">
                 <div class="empty-icon">✨</div>
                 <p v-if="activeFilterTags.length > 0">Geen ideeën met {{ activeFilterTags.length === 1 ? 'tag' : 'tags' }} "{{ activeFilterTags.map(t => t.name).join('", "') }}"</p>
                 <p v-else>Je memory box is leeg.<br/>Voeg hierboven je eerste idee toe!</p>
@@ -430,6 +430,7 @@ export default {
             selectedTags: [],
             filterTags: [],
             isLoading: true,
+            isFiltering: false,
             isSubmitting: false,
             editingIdea: null,
             editContent: '',
@@ -587,19 +588,19 @@ export default {
             }
         },
         setFilter(tagId) {
-            this.isLoading = true;
+            this.isFiltering = true;
             const idx = this.filterTags.indexOf(tagId);
             if (idx === -1) {
                 this.filterTags.push(tagId);
             } else {
                 this.filterTags.splice(idx, 1);
             }
-            setTimeout(() => { this.isLoading = false; }, 150);
+            setTimeout(() => { this.isFiltering = false; }, 150);
         },
         clearFilter() {
-            this.isLoading = true;
+            this.isFiltering = true;
             this.filterTags = [];
-            setTimeout(() => { this.isLoading = false; }, 150);
+            setTimeout(() => { this.isFiltering = false; }, 150);
         },
         startEdit(idea) {
             this.editingIdea = idea;
