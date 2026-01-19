@@ -101,7 +101,7 @@
                             v-for="tag in idea.tags"
                             :key="tag.id"
                             class="idea-tag"
-                            :style="{ backgroundColor: tag.color }"
+                            :style="{ backgroundColor: tag.color + '20', color: tag.color }"
                             @click="setFilter(tag.id)"
                         >
                             <span class="tag-emoji">{{ tag.emoji }}</span>

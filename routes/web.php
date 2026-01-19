@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChecklistController;
 use Illuminate\Support\Facades\Route;
@@ -34,4 +35,15 @@ Route::middleware('auth')->group(function () {
     Route::put('/profile/password', [AuthController::class, 'webUpdatePassword'])->name('profile.password');
     Route::delete('/profile', [AuthController::class, 'webDeleteAccount'])->name('profile.delete');
     Route::post('/logout', [AuthController::class, 'webLogout'])->name('logout');
+
 });
+
+// Admin routes
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
+    Route::get('/users', [AdminController::class, 'users'])->name('users');
+    Route::get('/users/{user}', [AdminController::class, 'showUser'])->name('users.show');
+    Route::get('/users/{user}/edit', [AdminController::class, 'editUser'])->name('users.edit');
+    Route::put('/users/{user}', [AdminController::class, 'updateUser'])->name('users.update');
+    Route::delete('/users/{user}', [AdminController::class, 'deleteUser'])->name('users.delete');
+        });

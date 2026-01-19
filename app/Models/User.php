@@ -19,7 +19,18 @@ class User extends Authenticatable
         'avatar',
         'theme',
         'color_theme',
+        'role',
     ];
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function hasRole(string $role): bool
+    {
+        return $this->role === $role;
+    }
 
     protected $hidden = [
         'password',

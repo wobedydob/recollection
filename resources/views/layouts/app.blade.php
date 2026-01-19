@@ -53,6 +53,9 @@
                 </button>
                 <div class="menu-dropdown">
                     <a href="{{ route('profile') }}" class="menu-item">Profiel</a>
+                    @if(auth()->user()->isAdmin())
+                        <a href="{{ route('admin.dashboard') }}" class="menu-item">Admin</a>
+                    @endif
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
                         <button type="submit" class="menu-item logout">Uitloggen</button>
