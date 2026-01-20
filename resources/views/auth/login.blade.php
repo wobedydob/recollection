@@ -7,6 +7,10 @@
     <h1 class="auth-title">{{ __('auth.welcome') }}</h1>
     <p class="auth-subtitle">{{ __('auth.login_subtitle') }}</p>
 
+    @if(session('password_reset_success'))
+        <div class="success-message">{{ __('password_reset.success') }}</div>
+    @endif
+
     @if(session('error'))
         <div class="error-message">{{ session('error') }}</div>
     @endif
@@ -35,7 +39,10 @@
         </div>
 
         <div class="form-group">
-            <label for="password" class="label">{{ __('auth.password') }}</label>
+            <label for="password" class="label">
+                {{ __('auth.password') }}
+                <a href="{{ route('password.request') }}" class="forgot-link">{{ __('auth.forgot_password') }}</a>
+            </label>
             <password-input
                 name="password"
                 id="password"

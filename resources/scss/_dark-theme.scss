@@ -425,12 +425,68 @@ $dark-gradient-bg: linear-gradient(135deg, #1e1a2e 0%, #2a2540 50%, #1e2535 100%
 
   .success-message {
     background: rgba($color-success, 0.15);
+    border-color: rgba($color-success, 0.3);
     color: #a8d9ab;
   }
 
   .error-message {
     background: rgba($color-error, 0.15);
+    border-color: rgba($color-error, 0.3);
     color: #f0a0a0;
+  }
+
+  // --------------------------------------------------------------------------
+  // Verify Email Page
+  // --------------------------------------------------------------------------
+
+  .verify-instructions {
+    background: $dark-bg-input;
+    border-color: $dark-border;
+
+    p {
+      color: $dark-text-secondary;
+    }
+
+    ul {
+      color: $dark-text-muted;
+    }
+  }
+
+  .submit-btn--secondary {
+    background: transparent;
+    color: $color-primary;
+    border-color: $color-primary;
+
+    &:hover {
+      background: $color-primary;
+      color: $color-bg-white;
+    }
+  }
+
+  .auth-link-btn {
+    color: $color-primary;
+  }
+
+  // --------------------------------------------------------------------------
+  // Password Section
+  // --------------------------------------------------------------------------
+
+  .password-section {
+    border-top-color: $dark-border;
+  }
+
+  .section-description {
+    color: $dark-text-muted;
+  }
+
+  .reset-password-btn {
+    border-color: $color-primary;
+    color: $color-primary;
+
+    &:hover {
+      background: $color-primary;
+      color: $color-bg-white;
+    }
   }
 
   // --------------------------------------------------------------------------

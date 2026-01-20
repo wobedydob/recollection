@@ -14,14 +14,17 @@ Route::post('/auth/login', [AuthController::class, 'login']);
 Route::post('/auth/logout', [AuthController::class, 'logout']);
 Route::get('/auth/me', [AuthController::class, 'me']);
 
-// Protected routes
+// Protected routes (auth only - settings accessible without verification)
 Route::middleware('auth:sanctum')->group(function () {
     Route::put('/auth/profile', [AuthController::class, 'updateProfile']);
     Route::put('/auth/password', [AuthController::class, 'updatePassword']);
     Route::patch('/auth/theme', [AuthController::class, 'updateTheme']);
     Route::patch('/auth/color-theme', [AuthController::class, 'updateColorTheme']);
     Route::patch('/auth/locale', [AuthController::class, 'updateLocale']);
+});
 
+// Protected routes (auth + verified)
+Route::middleware(['auth:sanctum', 'verified'])->group(function () {
     // Memory Box - Ideas
     Route::prefix('memory-box')->group(function () {
         Route::get('/ideas', [IdeaController::class, 'index']);

@@ -51,64 +51,22 @@
             </button>
         </form>
 
-        <form method="POST" action="{{ route('profile.password') }}" class="password-form">
-            @csrf
-            @method('PUT')
-            <h2 class="section-title">{{ __('profile.change_password') }}</h2>
+        <div class="password-section">
+            <h2 class="section-title">{{ __('profile.password') }}</h2>
 
-            @if(session('password_success'))
-                <div class="success-message">{{ session('password_success') }}</div>
+            @if(session('reset_link_sent'))
+                <div class="success-message">{{ __('profile.reset_link_sent') }}</div>
             @endif
 
-            @if($errors->any())
-                <div class="error-message">{{ $errors->first() }}</div>
-            @endif
+            <p class="section-description">{{ __('profile.reset_password_description') }}</p>
 
-            <div class="form-group">
-                <label for="current_password" class="label">{{ __('profile.current_password') }}</label>
-                <password-input
-                    name="current_password"
-                    id="current_password"
-                    placeholder="{{ __('profile.current_password_placeholder') }}"
-                    v-model="currentPassword"
-                    :required="true"
-                ></password-input>
-            </div>
-
-            <div class="form-group">
-                <label for="new_password" class="label">{{ __('profile.new_password') }}</label>
-                <password-input
-                    name="password"
-                    id="new_password"
-                    placeholder="{{ __('profile.new_password_placeholder') }}"
-                    v-model="newPassword"
-                    :required="true"
-                ></password-input>
-                <password-strength
-                    :password="newPassword"
-                    @validity-change="onPasswordValidityChange"
-                ></password-strength>
-            </div>
-
-            <div class="form-group">
-                <label for="new_password_confirmation" class="label">{{ __('profile.confirm_new_password') }}</label>
-                <password-input
-                    name="password_confirmation"
-                    id="new_password_confirmation"
-                    placeholder="{{ __('profile.confirm_password_placeholder') }}"
-                    v-model="newPasswordConfirmation"
-                    :required="true"
-                    :show-match="newPasswordsMatch"
-                    :input-class="newPasswordsMatch === true ? 'match' : (newPasswordsMatch === false ? 'no-match' : '')"
-                ></password-input>
-                <p v-if="newPasswordsMatch === false" class="match-message no-match">{{ __('profile.passwords_no_match') }}</p>
-                <p v-else-if="newPasswordsMatch === true" class="match-message match">{{ __('profile.passwords_match') }}</p>
-            </div>
-
-            <button type="submit" class="save-btn" :disabled="!passwordValid || newPasswordsMatch === false">
-                {{ __('profile.change_password') }}
-            </button>
-        </form>
+            <form method="POST" action="{{ route('password.send-reset-link') }}">
+                @csrf
+                <button type="submit" class="reset-password-btn">
+                    {{ __('profile.send_reset_link') }}
+                </button>
+            </form>
+        </div>
 
         <div class="settings-section">
             <h2 class="section-title">{{ __('profile.settings') }}</h2>

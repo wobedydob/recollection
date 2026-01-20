@@ -8,6 +8,13 @@
     <meta name="description" content="{{ __('common.app_description') }}">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
+    <script>
+        window.__translations = {
+            common: @json(__('common')),
+            password: @json(__('password')),
+        };
+        window.__locale = '{{ app()->getLocale() }}';
+    </script>
 </head>
 <body>
     <div id="app" class="guest-page">

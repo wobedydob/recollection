@@ -623,6 +623,12 @@
         flex-shrink: 0;
       }
 
+      // Orange theme: hover background blends with page background, make it more visible
+      [data-color="orange"] &:hover {
+        background: #fed7aa;
+        border-color: #fb923c;
+      }
+
       &.active {
         // Pink theme (default)
         background: #fce7f3;
@@ -641,6 +647,13 @@
           background: #dcfce7;
           border-color: #86efac;
           color: #166534;
+        }
+
+        // Orange theme
+        [data-color="orange"] & {
+          background: #ffedd5;
+          border-color: #fdba74;
+          color: #c2410c;
         }
       }
     }

@@ -3,6 +3,8 @@
 use App\Http\Controllers\AdminController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ChecklistController;
+use App\Http\Controllers\PasswordResetController;
+use App\Http\Controllers\VerificationController;
 use Illuminate\Support\Facades\Route;
 
 // Guest routes (login, register)
@@ -11,10 +13,32 @@ Route::middleware('guest')->group(function () {
     Route::post('/login', [AuthController::class, 'webLogin']);
     Route::get('/register', [AuthController::class, 'showRegister'])->name('register');
     Route::post('/register', [AuthController::class, 'webRegister']);
+
+    // Forgot password
+    Route::get('/password/forgot', [PasswordResetController::class, 'showForgotForm'])->name('password.request');
+    Route::post('/password/email', [PasswordResetController::class, 'sendResetLinkEmail'])
+        ->middleware('throttle:5,1')
+        ->name('password.email');
 });
 
-// Authenticated routes
+// Password reset (accessible by anyone with a valid token)
+Route::get('/password/reset/{token}', [PasswordResetController::class, 'showResetForm'])->name('password.reset');
+Route::post('/password/reset', [PasswordResetController::class, 'reset'])->name('password.update');
+
+// Email verification routes (auth required, but NOT verified)
 Route::middleware('auth')->group(function () {
+    Route::get('/email/verify', [VerificationController::class, 'notice'])->name('verification.notice');
+    Route::get('/email/verify/{id}/{hash}', [VerificationController::class, 'verify'])
+        ->middleware('signed')
+        ->name('verification.verify');
+    Route::post('/email/resend', [VerificationController::class, 'resend'])
+        ->middleware('throttle:6,1')
+        ->name('verification.resend');
+    Route::post('/logout', [AuthController::class, 'webLogout'])->name('logout');
+});
+
+// Authenticated AND verified routes
+Route::middleware(['auth', 'verified'])->group(function () {
     // Home
     Route::get('/', function () {
         return view('home');
@@ -37,14 +61,16 @@ Route::middleware('auth')->group(function () {
     // Profile
     Route::get('/profile', [AuthController::class, 'showProfile'])->name('profile');
     Route::put('/profile', [AuthController::class, 'webUpdateProfile'])->name('profile.update');
-    Route::put('/profile/password', [AuthController::class, 'webUpdatePassword'])->name('profile.password');
     Route::delete('/profile', [AuthController::class, 'webDeleteAccount'])->name('profile.delete');
-    Route::post('/logout', [AuthController::class, 'webLogout'])->name('logout');
 
+    // Password reset request (from profile)
+    Route::post('/password/send-reset-link', [PasswordResetController::class, 'sendResetLink'])
+        ->middleware('throttle:3,1')
+        ->name('password.send-reset-link');
 });
 
-// Admin routes
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+// Admin routes (auth + verified + admin)
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/', [AdminController::class, 'dashboard'])->name('dashboard');
     Route::get('/users', [AdminController::class, 'users'])->name('users');
     Route::get('/users/{user}', [AdminController::class, 'showUser'])->name('users.show');

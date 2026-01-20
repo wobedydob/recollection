@@ -55,7 +55,10 @@ class AuthController extends Controller
 
         Auth::login($user);
 
-        return redirect()->route('home');
+        // Send verification email
+        $user->sendEmailVerificationNotification();
+
+        return redirect()->route('verification.notice');
     }
 
     public function webLogin(Request $request): RedirectResponse
@@ -157,8 +160,12 @@ class AuthController extends Controller
 
         Auth::login($user);
 
+        // Send verification email
+        $user->sendEmailVerificationNotification();
+
         return response()->json([
             'user' => $this->formatUser($user),
+            'requires_verification' => true,
         ]);
     }
 

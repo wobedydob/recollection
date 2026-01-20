@@ -45,6 +45,108 @@
   }
 }
 
+.auth-link-btn {
+  background: none;
+  border: none;
+  color: $color-primary;
+  text-decoration: none;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  padding: 0;
+  font-size: inherit;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.forgot-link {
+  color: $color-primary;
+  text-decoration: none;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-normal;
+
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Verify Email
+// --------------------------------------------------------------------------
+
+.verify-icon {
+  font-size: 4rem;
+  text-align: center;
+  margin-bottom: $spacing-lg;
+}
+
+.verify-instructions {
+  background: $color-bg-subtle;
+  border-radius: $radius-lg;
+  padding: $spacing-lg;
+  margin: $spacing-xl 0;
+
+  p {
+    margin: 0 0 $spacing-base 0;
+    color: $color-text-secondary;
+  }
+
+  ul {
+    margin: 0;
+    padding-left: $spacing-xl;
+    color: $color-text-muted;
+
+    li {
+      margin-bottom: $spacing-xs;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+}
+
+.verify-footer {
+  margin-top: $spacing-lg;
+  text-align: center;
+}
+
+.inline-form {
+  display: inline;
+}
+
+.success-message {
+  background: #dcfce7;
+  border: 1px solid #86efac;
+  color: #166534;
+  padding: $spacing-base;
+  border-radius: $radius-md;
+  margin-bottom: $spacing-lg;
+  text-align: center;
+}
+
+.error-message {
+  background: #fee2e2;
+  border: 1px solid #fecaca;
+  color: $color-danger;
+  padding: $spacing-base;
+  border-radius: $radius-md;
+  margin-bottom: $spacing-lg;
+  text-align: center;
+}
+
+.submit-btn--secondary {
+  background: $color-bg-white;
+  color: $color-primary;
+  border: 2px solid $color-primary;
+
+  &:hover {
+    background: $color-primary;
+    color: $color-bg-white;
+  }
+}
+
 // --------------------------------------------------------------------------
 // Idea Card
 // --------------------------------------------------------------------------

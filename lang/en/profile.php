@@ -30,4 +30,8 @@ return [
     'delete_confirm_btn' => 'Yes, delete my account',
     'member_since' => 'Member since :date',
     'your_name' => 'Your name',
+    'password' => 'Password',
+    'reset_password_description' => 'Click the button below to receive an email with a link to reset your password.',
+    'send_reset_link' => 'Send reset link',
+    'reset_link_sent' => 'We have sent you an email with a link to reset your password!',
 ];

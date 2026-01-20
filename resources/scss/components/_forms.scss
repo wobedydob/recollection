@@ -331,3 +331,37 @@
     box-shadow: $shadow-sm;
   }
 }
+
+// --------------------------------------------------------------------------
+// Password Section (Profile)
+// --------------------------------------------------------------------------
+
+.password-section {
+  margin-top: $spacing-2xl;
+  padding-top: $spacing-xl;
+  border-top: 1px solid $color-border-light;
+}
+
+.section-description {
+  color: $color-text-muted;
+  font-size: $font-size-sm;
+  margin: $spacing-sm 0 $spacing-lg;
+  line-height: $line-height-base;
+}
+
+.reset-password-btn {
+  padding: $spacing-sm $spacing-lg;
+  background: transparent;
+  border: 2px solid $color-primary;
+  border-radius: $radius-pill;
+  color: $color-primary;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: $transition-base;
+
+  &:hover {
+    background: $color-primary;
+    color: $color-bg-white;
+  }
+}

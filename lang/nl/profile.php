@@ -30,4 +30,8 @@ return [
     'delete_confirm_btn' => 'Ja, verwijder mijn account',
     'member_since' => 'Lid sinds :date',
     'your_name' => 'Je naam',
+    'password' => 'Wachtwoord',
+    'reset_password_description' => 'Klik op de onderstaande knop om een e-mail te ontvangen waarmee je je wachtwoord kunt resetten.',
+    'send_reset_link' => 'Stuur reset link',
+    'reset_link_sent' => 'We hebben je een e-mail gestuurd met een link om je wachtwoord te resetten!',
 ];

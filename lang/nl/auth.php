@@ -21,4 +21,5 @@ return [
     'create_password' => 'Maak een sterk wachtwoord',
     'repeat_password' => 'Herhaal wachtwoord',
     'preferred_language' => 'Voorkeurstaal',
+    'forgot_password' => 'Vergeten?',
 ];

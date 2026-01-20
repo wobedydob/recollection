@@ -21,4 +21,5 @@ return [
     'create_password' => 'Create a strong password',
     'repeat_password' => 'Repeat password',
     'preferred_language' => 'Preferred language',
+    'forgot_password' => 'Forgot?',
 ];
