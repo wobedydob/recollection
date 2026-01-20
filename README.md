@@ -4,10 +4,11 @@ A cozy personal productivity app for storing ideas and managing tasks. Built wit
 
 ## 💭 What is this?
 
-Recollectie is a personal space with two modules:
+Recollectie is a personal space with three modules:
 
 - **✨ Memory Box** - Store your thoughts, ideas, dreams, and random sparks of inspiration. Tag them with pretty colors and emojis, filter through them later, and never lose a brilliant idea again.
 - **📋 Checklist** - Manage your tasks with multiple lists, priorities, and a clean interface.
+- **💡 Suggestion Box** - Share ideas and suggestions with the admin. Track the status of your submissions.
 
 ## 🌸 Features
 
@@ -21,6 +22,11 @@ Recollectie is a personal space with two modules:
 - Add tasks with descriptions and priorities
 - Mark tasks as complete
 
+### Suggestion Box
+- Submit ideas and suggestions
+- Track status (new, seen, planned, done)
+- Admin dashboard for managing suggestions
+
 ### Personalization
 - **🎨 Color themes** - Choose from pink, blue, green, or orange
 - **🌙 Dark mode** - Light and dark theme support
@@ -28,6 +34,9 @@ Recollectie is a personal space with two modules:
 
 ### Account
 - Secure authentication with password strength meter
+- Email verification on registration
+- Password reset via email
+- Remember me option
 - Profile management
 - Account deletion
 
@@ -116,9 +125,13 @@ php artisan route:cache
 php artisan view:cache
 ```
 
-## 🇳🇱 Language
+## 🌍 Language
 
-The interface is in Dutch.
+The interface supports multiple languages:
+- 🇳🇱 Dutch (default)
+- 🇬🇧 English
+
+Users can switch languages in their profile settings.
 
 ## 📝 License
 
