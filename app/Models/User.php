@@ -19,6 +19,7 @@ class User extends Authenticatable
         'avatar',
         'theme',
         'color_theme',
+        'locale',
         'role',
     ];
 

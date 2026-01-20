@@ -48,3 +48,31 @@
   margin-bottom: $spacing-base;
   animation: float 3s ease-in-out infinite;
 }
+
+// --------------------------------------------------------------------------
+// Page Loader Overlay
+// --------------------------------------------------------------------------
+
+.page-loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba($color-bg-white, 0.9);
+  backdrop-filter: blur(4px);
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: fadeIn 0.2s ease;
+
+  [data-theme="dark"] & {
+    background: rgba(#1a1a2e, 0.9);
+  }
+}
+
+.page-loader-content {
+  @include flex-column($spacing-base);
+  align-items: center;
+}

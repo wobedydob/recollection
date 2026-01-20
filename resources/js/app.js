@@ -78,6 +78,43 @@ window.setColorTheme = async function(colorTheme) {
     }
 };
 
+window.setLocale = async function(locale) {
+    localStorage.setItem('locale', locale);
+
+    // Update active state on buttons
+    document.querySelectorAll('.language-option').forEach(btn => {
+        btn.classList.toggle('active', btn.textContent.trim() === locale.toUpperCase());
+    });
+
+    // Show loader if available
+    const loader = document.getElementById('locale-loader');
+    if (loader) {
+        loader.style.display = 'flex';
+    }
+
+    // Persist to database
+    try {
+        await fetch('/api/auth/locale', {
+            method: 'PATCH',
+            headers: {
+                'Content-Type': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            credentials: 'include',
+            body: JSON.stringify({ locale })
+        });
+
+        // Reload page to apply new language
+        window.location.reload();
+    } catch (e) {
+        console.error('Failed to save locale preference:', e);
+        // Hide loader on error
+        if (loader) {
+            loader.style.display = 'none';
+        }
+    }
+};
+
 // Auto-initialize Vue components on page load
 document.addEventListener('DOMContentLoaded', () => {
     // Initialize IdeasApp if the element exists

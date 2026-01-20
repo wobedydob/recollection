@@ -22,23 +22,25 @@
         <div class="todo-item-actions">
             <template v-if="!isEditing">
                 <span class="priority-indicator" :title="priorityLabel">{{ priorityIcon }}</span>
-                <button class="edit-btn" @click="startEdit" title="Bewerken">✎</button>
-                <button class="delete-btn" @click="$emit('delete')" title="Verwijderen">×</button>
+                <button class="edit-btn" @click="startEdit" :title="t('common.edit')">✎</button>
+                <button class="delete-btn" @click="$emit('delete')" :title="t('common.delete')">×</button>
             </template>
             <template v-else>
                 <select v-model="editPriority" class="priority-select">
-                    <option value="low">Laag</option>
-                    <option value="medium">Normaal</option>
-                    <option value="high">Hoog</option>
+                    <option value="low">{{ t('todos.priority_low') }}</option>
+                    <option value="medium">{{ t('todos.priority_normal') }}</option>
+                    <option value="high">{{ t('todos.priority_high') }}</option>
                 </select>
-                <button class="save-btn" @click="saveEdit" title="Opslaan">✓</button>
-                <button class="cancel-btn" @click="cancelEdit" title="Annuleren">×</button>
+                <button class="save-btn" @click="saveEdit" :title="t('common.save')">✓</button>
+                <button class="cancel-btn" @click="cancelEdit" :title="t('common.cancel')">×</button>
             </template>
         </div>
     </div>
 </template>
 
 <script>
+import { __, getLocale } from '@/utils/translations';
+
 export default {
     name: 'TodoItem',
     props: {
@@ -65,11 +67,18 @@ export default {
             return icons[this.item.priority] || '◐';
         },
         priorityLabel() {
-            const labels = { low: 'Laag', medium: 'Normaal', high: 'Hoog' };
-            return labels[this.item.priority] || 'Normaal';
+            const labels = {
+                low: this.t('todos.priority_low'),
+                medium: this.t('todos.priority_normal'),
+                high: this.t('todos.priority_high')
+            };
+            return labels[this.item.priority] || this.t('todos.priority_normal');
         }
     },
     methods: {
+        t(key, replacements = {}) {
+            return __(key, replacements);
+        },
         startEdit() {
             this.isEditing = true;
             this.editTitle = this.item.title;
@@ -95,7 +104,8 @@ export default {
         },
         formatDate(dateStr) {
             const date = new Date(dateStr);
-            return date.toLocaleDateString('nl-NL', {
+            const locale = getLocale() === 'nl' ? 'nl-NL' : 'en-US';
+            return date.toLocaleDateString(locale, {
                 day: 'numeric',
                 month: 'short'
             });

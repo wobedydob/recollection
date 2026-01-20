@@ -7,7 +7,7 @@
                     v-model="newListName"
                     type="text"
                     class="list-input"
-                    placeholder="Nieuwe lijst..."
+                    :placeholder="t('todos.new_list')"
                     @keyup.enter="createList"
                 />
                 <button class="add-list-btn" @click="createList" :disabled="!newListName.trim()">+</button>
@@ -17,7 +17,7 @@
         <!-- Loading State -->
         <div v-if="isLoading" class="loader-container">
             <div class="loader"></div>
-            <p class="loader-text">Laden...</p>
+            <p class="loader-text">{{ t('common.loading') }}</p>
         </div>
 
         <!-- Lists Overview -->
@@ -34,7 +34,7 @@
                         <h3 class="todo-list-name">{{ list.name }}</h3>
                     </div>
                     <p class="todo-list-count">
-                        {{ list.itemCount }} {{ list.itemCount === 1 ? 'taak' : 'taken' }}
+                        {{ list.itemCount }} {{ list.itemCount === 1 ? t('todos.task') : t('todos.tasks') }}
                     </p>
                 </div>
             </a>
@@ -44,13 +44,15 @@
         <Transition name="ideas-appear">
             <div v-if="!isLoading && lists.length === 0" class="empty-state">
                 <div class="empty-icon">📋</div>
-                <p>Nog geen lijsten.<br/>Maak hierboven je eerste lijst aan!</p>
+                <p v-html="t('todos.empty')"></p>
             </div>
         </Transition>
     </div>
 </template>
 
 <script>
+import { __ } from '@/utils/translations';
+
 export default {
     name: 'TodoApp',
     data() {
@@ -64,6 +66,9 @@ export default {
         await this.loadLists();
     },
     methods: {
+        t(key, replacements = {}) {
+            return __(key, replacements);
+        },
         async loadLists() {
             this.isLoading = true;
             try {

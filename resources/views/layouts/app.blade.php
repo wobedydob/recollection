@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="nl" data-theme="{{ auth()->user()->theme ?? 'light' }}" data-color="{{ auth()->user()->color_theme ?? 'pink' }}">
+<html lang="{{ app()->getLocale() }}" data-theme="{{ auth()->user()->theme ?? 'light' }}" data-color="{{ auth()->user()->color_theme ?? 'pink' }}">
 @php
     $modules = config('modules');
     $currentModule = null;
@@ -10,27 +10,38 @@
     } elseif (request()->routeIs('suggestions.*')) {
         $currentModule = 'suggestions';
     }
-    $pageTitle = $currentModule ? 'Recollectie - ' . $modules[$currentModule]['name'] : 'Recollectie';
+    $appName = __('common.app_name');
+    $pageTitle = $currentModule ? $appName . ' - ' . __($modules[$currentModule]['name_key']) : $appName;
 @endphp
 <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ $pageTitle }}</title>
-    <meta name="description" content="Een fijne plek voor je ideetjes">
+    <meta name="description" content="{{ __('common.app_description') }}">
     <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>✨</text></svg>">
     @vite(['resources/scss/app.scss', 'resources/js/app.js'])
+    <script>
+        window.__translations = {
+            common: @json(__('common')),
+            ideas: @json(__('ideas')),
+            todos: @json(__('todos')),
+            suggestions: @json(__('suggestions')),
+            password: @json(__('password')),
+        };
+        window.__locale = '{{ app()->getLocale() }}';
+    </script>
 </head>
 <body>
     <div id="app">
         <header class="header">
-            <a href="{{ route('home') }}" class="logo">Recollectie</a>
+            <a href="{{ route('home') }}" class="logo">{{ __('common.app_name') }}</a>
 
             @if($currentModule)
                 <div class="app-switcher">
                     <button class="app-switcher-btn" onclick="this.nextElementSibling.classList.toggle('show')">
                         <span class="app-icon">{{ $modules[$currentModule]['icon'] }}</span>
-                        <span class="app-name">{{ $modules[$currentModule]['name'] }}</span>
+                        <span class="app-name">{{ __($modules[$currentModule]['name_key']) }}</span>
                         <span class="dropdown-arrow">▼</span>
                     </button>
                     <div class="app-dropdown">
@@ -38,8 +49,8 @@
                             <a href="{{ route($module['route']) }}" class="app-dropdown-item {{ $key === $currentModule ? 'active' : '' }}">
                                 <span class="app-dropdown-icon">{{ $module['icon'] }}</span>
                                 <div class="app-dropdown-info">
-                                    <span class="app-dropdown-name">{{ $module['name'] }}</span>
-                                    <span class="app-dropdown-desc">{{ $module['description'] }}</span>
+                                    <span class="app-dropdown-name">{{ __($module['name_key']) }}</span>
+                                    <span class="app-dropdown-desc">{{ __($module['description_key']) }}</span>
                                 </div>
                             </a>
                         @endforeach
@@ -54,13 +65,13 @@
                     <span class="dropdown-arrow">▼</span>
                 </button>
                 <div class="menu-dropdown">
-                    <a href="{{ route('profile') }}" class="menu-item">Profiel</a>
+                    <a href="{{ route('profile') }}" class="menu-item">{{ __('common.profile') }}</a>
                     @if(auth()->user()->isAdmin())
-                        <a href="{{ route('admin.dashboard') }}" class="menu-item">Admin</a>
+                        <a href="{{ route('admin.dashboard') }}" class="menu-item">{{ __('common.admin') }}</a>
                     @endif
                     <form action="{{ route('logout') }}" method="POST">
                         @csrf
-                        <button type="submit" class="menu-item logout">Uitloggen</button>
+                        <button type="submit" class="menu-item logout">{{ __('common.logout') }}</button>
                     </form>
                 </div>
             </div>

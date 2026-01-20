@@ -6,11 +6,11 @@
                 <textarea
                     v-model="newSuggestion"
                     class="suggestion-textarea"
-                    placeholder="Deel je idee of suggestie..."
+                    :placeholder="t('suggestions.placeholder')"
                     rows="3"
                 ></textarea>
                 <button type="submit" class="submit-btn" :disabled="!newSuggestion.trim() || isSubmitting">
-                    {{ isSubmitting ? 'Versturen...' : 'Versturen' }}
+                    {{ isSubmitting ? t('suggestions.submitting') : t('suggestions.submit') }}
                 </button>
             </form>
         </Transition>
@@ -18,7 +18,7 @@
         <!-- Loading State -->
         <div v-if="isLoading" class="loader-container">
             <div class="loader"></div>
-            <p class="loader-text">Laden...</p>
+            <p class="loader-text">{{ t('common.loading') }}</p>
         </div>
 
         <!-- Suggestions List -->
@@ -30,7 +30,7 @@
             >
                 <div class="suggestion-header">
                     <span class="suggestion-status" :class="suggestion.status">{{ statusLabel(suggestion.status) }}</span>
-                    <button class="delete-btn" @click="deleteSuggestion(suggestion)" title="Verwijderen">×</button>
+                    <button class="delete-btn" @click="deleteSuggestion(suggestion)" :title="t('common.delete')">×</button>
                 </div>
                 <p class="suggestion-content">{{ suggestion.content }}</p>
                 <span class="suggestion-date">{{ formatDate(suggestion.createdAt) }}</span>
@@ -41,18 +41,18 @@
         <Transition name="ideas-appear">
             <div v-if="!isLoading && suggestions.length === 0" class="empty-state">
                 <div class="empty-icon">💡</div>
-                <p>Nog geen suggesties.<br/>Deel hierboven je eerste idee!</p>
+                <p>{{ t('suggestions.empty') }}</p>
             </div>
         </Transition>
 
         <!-- Delete Confirmation Modal -->
         <div v-if="deletingSuggestion" class="modal-overlay" @click.self="deletingSuggestion = null">
             <div class="modal">
-                <h3 class="modal-title">Suggestie verwijderen?</h3>
-                <p>Weet je zeker dat je deze suggestie wilt verwijderen?</p>
+                <h3 class="modal-title">{{ t('suggestions.delete_title') }}</h3>
+                <p>{{ t('suggestions.delete_confirm') }}</p>
                 <div class="modal-actions">
-                    <button class="btn btn-secondary" @click="deletingSuggestion = null">Annuleren</button>
-                    <button class="btn btn-primary" @click="confirmDelete">Verwijderen</button>
+                    <button class="btn btn-secondary" @click="deletingSuggestion = null">{{ t('common.cancel') }}</button>
+                    <button class="btn btn-primary" @click="confirmDelete">{{ t('common.delete') }}</button>
                 </div>
             </div>
         </div>
@@ -60,6 +60,8 @@
 </template>
 
 <script>
+import { __, getLocale } from '@/utils/translations';
+
 export default {
     name: 'SuggestionsApp',
     data() {
@@ -135,7 +137,8 @@ export default {
         },
         formatDate(timestamp) {
             const date = new Date(timestamp);
-            return date.toLocaleDateString('nl-NL', {
+            const locale = getLocale() === 'nl' ? 'nl-NL' : 'en-US';
+            return date.toLocaleDateString(locale, {
                 day: 'numeric',
                 month: 'short',
                 year: 'numeric'
@@ -143,12 +146,15 @@ export default {
         },
         statusLabel(status) {
             const labels = {
-                'new': 'Nieuw',
-                'reviewed': 'Bekeken',
-                'planned': 'Gepland',
-                'done': 'Afgerond'
+                'new': this.t('suggestions.status_new'),
+                'reviewed': this.t('suggestions.status_seen'),
+                'planned': this.t('suggestions.status_planned'),
+                'done': this.t('suggestions.status_done')
             };
             return labels[status] || status;
+        },
+        t(key, replacements = {}) {
+            return __(key, replacements);
         }
     }
 };

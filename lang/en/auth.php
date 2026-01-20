@@ -1,0 +1,24 @@
+<?php
+
+return [
+    'login_title' => 'Login - Recollection',
+    'welcome' => 'Welcome!',
+    'login_subtitle' => 'Log in to your Recollection',
+    'email' => 'Email',
+    'password' => 'Password',
+    'login' => 'Log in',
+    'no_account' => "Don't have an account?",
+    'create_one' => 'Create one',
+    'register_title' => 'Register - Recollection',
+    'create_account' => 'Create Account',
+    'register_subtitle' => 'Start your Recollection journey',
+    'name' => 'Name',
+    'confirm_password' => 'Confirm password',
+    'register' => 'Create account',
+    'have_account' => 'Already have an account?',
+    'your_name' => 'Your name',
+    'your_email' => 'Email address',
+    'create_password' => 'Create a strong password',
+    'repeat_password' => 'Repeat password',
+    'preferred_language' => 'Preferred language',
+];

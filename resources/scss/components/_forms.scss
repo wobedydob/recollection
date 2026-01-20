@@ -297,3 +297,37 @@
     box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.3);
   }
 }
+
+// --------------------------------------------------------------------------
+// Language Selector
+// --------------------------------------------------------------------------
+
+.language-switcher {
+  display: flex;
+  background: $color-bg-subtle;
+  border-radius: $radius-md;
+  padding: 0.25rem;
+  gap: 0.25rem;
+}
+
+.language-option {
+  padding: $spacing-sm $spacing-base;
+  border: none;
+  border-radius: $radius-sm;
+  background: transparent;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $color-text-muted;
+  cursor: pointer;
+  transition: $transition-base;
+
+  &:hover {
+    color: $color-text-secondary;
+  }
+
+  &.active {
+    background: $color-bg-white;
+    color: $color-text-primary;
+    box-shadow: $shadow-sm;
+  }
+}

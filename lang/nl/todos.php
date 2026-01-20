@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'new_list' => 'Nieuwe lijst...',
+    'empty' => 'Nog geen lijsten.<br/>Maak hierboven je eerste lijst aan!',
+    'task' => 'taak',
+    'tasks' => 'taken',
+    'back_to_lists' => 'Terug naar lijsten',
+    'task_placeholder' => 'Wat moet er gebeuren?...',
+    'description_placeholder' => 'Beschrijving (optioneel)...',
+    'add' => 'Toevoegen',
+    'priority_low' => 'Laag',
+    'priority_normal' => 'Normaal',
+    'priority_high' => 'Hoog',
+    'all_completed' => 'Alles voltooid!',
+    'completed' => 'voltooid',
+    'edit_task' => 'Taak bewerken',
+    'delete_list' => 'Lijst verwijderen?',
+    'delete_list_warning' => 'Alle taken worden ook verwijderd.',
+    'empty_tasks' => 'Nog geen taken.<br/>Voeg hierboven je eerste taak toe!',
+    'list_settings' => 'Lijst instellingen',
+    'title' => 'Titel',
+    'description' => 'Beschrijving',
+    'priority' => 'Prioriteit',
+];

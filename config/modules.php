@@ -2,21 +2,21 @@
 
 return [
     'memorybox' => [
-        'name' => 'Memory Box',
+        'name_key' => 'common.module_memorybox',
         'icon' => '✨',
         'route' => 'memorybox.index',
-        'description' => 'Een fijne plek voor je ideetjes',
+        'description_key' => 'common.module_memorybox_desc',
     ],
     'checklist' => [
-        'name' => 'Checklist',
+        'name_key' => 'common.module_checklist',
         'icon' => '📋',
         'route' => 'checklist.index',
-        'description' => 'Beheer je taken',
+        'description_key' => 'common.module_checklist_desc',
     ],
     'suggestions' => [
-        'name' => 'Suggestion Box',
+        'name_key' => 'common.module_suggestions',
         'icon' => '💡',
         'route' => 'suggestions.index',
-        'description' => 'Help ons de app te verbeteren',
+        'description_key' => 'common.module_suggestions_desc',
     ],
 ];

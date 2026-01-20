@@ -2,13 +2,13 @@
     <div class="todo-detail">
         <!-- Back Link -->
         <Transition name="form-fade" appear>
-            <a href="/checklist" class="back-link-header">← Terug naar lijsten</a>
+            <a href="/checklist" class="back-link-header">← {{ t('todos.back_to_lists') }}</a>
         </Transition>
 
         <!-- Loading State -->
         <div v-if="isLoading" class="loader-container">
             <div class="loader"></div>
-            <p class="loader-text">Laden...</p>
+            <p class="loader-text">{{ t('common.loading') }}</p>
         </div>
 
         <template v-if="!isLoading && list">
@@ -21,7 +21,7 @@
                             <span v-if="list.emoji" class="title-emoji">{{ list.emoji }}</span>
                             {{ list.name }}
                         </h1>
-                        <button class="title-edit-btn" @click="startEditTitle" title="Bewerken">✎</button>
+                        <button class="title-edit-btn" @click="startEditTitle" :title="t('common.edit')">✎</button>
                     </template>
                     <template v-else>
                         <input
@@ -38,10 +38,10 @@
                 </div>
                 <p class="todo-count">
                     <template v-if="list.items.length > 0 && completedCount === list.items.length">
-                        <span class="todo-all-done">🎉 Alles voltooid!</span>
+                        <span class="todo-all-done">🎉 {{ t('todos.all_completed') }}</span>
                     </template>
                     <template v-else>
-                        {{ list.items.length }} {{ list.items.length === 1 ? 'taak' : 'taken' }}<span v-if="completedCount > 0" class="todo-completed-count"> · {{ completedCount }} voltooid</span>
+                        {{ list.items.length }} {{ list.items.length === 1 ? t('todos.task') : t('todos.tasks') }}<span v-if="completedCount > 0" class="todo-completed-count"> · {{ completedCount }} {{ t('todos.completed') }}</span>
                     </template>
                 </p>
 
@@ -51,7 +51,7 @@
                             v-model="newItemTitle"
                             type="text"
                             class="todo-input"
-                            placeholder="Wat moet er gebeuren?..."
+                            :placeholder="t('todos.task_placeholder')"
                         />
                         <div class="priority-selector">
                             <button
@@ -59,32 +59,32 @@
                                 class="priority-option priority-low"
                                 :class="{ active: newItemPriority === 'low' }"
                                 @click="newItemPriority = 'low'"
-                                title="Lage prioriteit"
+                                :title="t('todos.priority_low')"
                             >L</button>
                             <button
                                 type="button"
                                 class="priority-option priority-medium"
                                 :class="{ active: newItemPriority === 'medium' }"
                                 @click="newItemPriority = 'medium'"
-                                title="Normale prioriteit"
+                                :title="t('todos.priority_normal')"
                             >M</button>
                             <button
                                 type="button"
                                 class="priority-option priority-high"
                                 :class="{ active: newItemPriority === 'high' }"
                                 @click="newItemPriority = 'high'"
-                                title="Hoge prioriteit"
+                                :title="t('todos.priority_high')"
                             >H</button>
                         </div>
                     </div>
                     <textarea
                         v-model="newItemDescription"
                         class="todo-description-input"
-                        placeholder="Beschrijving (optioneel)..."
+                        :placeholder="t('todos.description_placeholder')"
                         rows="2"
                     ></textarea>
                     <button type="submit" class="submit-btn" :disabled="!newItemTitle.trim()">
-                        Toevoegen
+                        {{ t('todos.add') }}
                     </button>
                 </form>
             </div>
@@ -99,8 +99,8 @@
                     :class="{ completed: item.isCompleted, [`priority-${item.priority}`]: true }"
                 >
                     <div class="card-actions">
-                        <button class="edit-btn" @click="startEditItem(item)" title="Bewerken">✎</button>
-                        <button class="delete-btn" @click="deleteItem(item.id)" title="Verwijderen">×</button>
+                        <button class="edit-btn" @click="startEditItem(item)" :title="t('common.edit')">✎</button>
+                        <button class="delete-btn" @click="deleteItem(item.id)" :title="t('common.delete')">×</button>
                     </div>
 
                     <div class="todo-item-main" @click="toggleItem(item.id)">
@@ -126,14 +126,14 @@
             <Transition name="ideas-appear">
                 <div v-if="!isLoading && sortedItems.length === 0" class="empty-state">
                     <div class="empty-icon">📋</div>
-                    <p>Nog geen taken.<br/>Voeg hierboven je eerste taak toe!</p>
+                    <p v-html="t('todos.empty_tasks')"></p>
                 </div>
             </Transition>
 
             <!-- List Settings -->
             <div class="list-settings">
                 <button class="delete-list-btn" @click="confirmDeleteList">
-                    Lijst verwijderen
+                    {{ t('common.delete') }}
                 </button>
             </div>
         </template>
@@ -141,14 +141,14 @@
         <!-- Edit Item Modal -->
         <div v-if="editingItem" class="modal-overlay" @click.self="cancelEditItem">
             <div class="modal todo-edit-modal">
-                <h3 class="modal-title">Taak bewerken</h3>
+                <h3 class="modal-title">{{ t('todos.edit_task') }}</h3>
                 <div class="todo-form-inner">
                     <div class="todo-form-row">
                         <input
                             v-model="editItemTitle"
                             type="text"
                             class="todo-input"
-                            placeholder="Wat moet er gebeuren?..."
+                            :placeholder="t('todos.task_placeholder')"
                             ref="editItemInput"
                         />
                         <div class="priority-selector">
@@ -175,13 +175,13 @@
                     <textarea
                         v-model="editItemDescription"
                         class="todo-description-input"
-                        placeholder="Beschrijving (optioneel)..."
+                        :placeholder="t('todos.description_placeholder')"
                         rows="3"
                     ></textarea>
                 </div>
                 <div class="modal-actions">
-                    <button class="btn btn-secondary" @click="cancelEditItem">Annuleren</button>
-                    <button class="btn btn-primary" @click="saveEditItem" :disabled="!editItemTitle.trim()">Opslaan</button>
+                    <button class="btn btn-secondary" @click="cancelEditItem">{{ t('common.cancel') }}</button>
+                    <button class="btn btn-primary" @click="saveEditItem" :disabled="!editItemTitle.trim()">{{ t('common.save') }}</button>
                 </div>
             </div>
         </div>
@@ -189,11 +189,11 @@
         <!-- Delete List Confirmation -->
         <div v-if="showDeleteConfirm" class="modal-overlay" @click.self="showDeleteConfirm = false">
             <div class="modal">
-                <h3 class="modal-title">Lijst verwijderen?</h3>
-                <p>Weet je zeker dat je "{{ list?.name }}" wilt verwijderen? Alle taken worden ook verwijderd.</p>
+                <h3 class="modal-title">{{ t('todos.delete_list') }}</h3>
+                <p>{{ t('todos.delete_list_warning') }}</p>
                 <div class="modal-actions">
-                    <button class="btn btn-secondary" @click="showDeleteConfirm = false">Annuleren</button>
-                    <button class="btn btn-primary" @click="deleteList">Verwijderen</button>
+                    <button class="btn btn-secondary" @click="showDeleteConfirm = false">{{ t('common.cancel') }}</button>
+                    <button class="btn btn-primary" @click="deleteList">{{ t('common.delete') }}</button>
                 </div>
             </div>
         </div>
@@ -201,6 +201,8 @@
 </template>
 
 <script>
+import { __, getLocale } from '@/utils/translations';
+
 export default {
     name: 'TodoListDetail',
     props: {
@@ -244,13 +246,21 @@ export default {
         await this.loadList();
     },
     methods: {
+        t(key, replacements = {}) {
+            return __(key, replacements);
+        },
         priorityLabel(priority) {
-            const labels = { low: 'Laag', medium: 'Normaal', high: 'Hoog' };
-            return labels[priority] || 'Normaal';
+            const labels = {
+                low: this.t('todos.priority_low'),
+                medium: this.t('todos.priority_normal'),
+                high: this.t('todos.priority_high')
+            };
+            return labels[priority] || this.t('todos.priority_normal');
         },
         formatDate(dateStr) {
             const date = new Date(dateStr);
-            return date.toLocaleDateString('nl-NL', {
+            const locale = getLocale() === 'nl' ? 'nl-NL' : 'en-US';
+            return date.toLocaleDateString(locale, {
                 day: 'numeric',
                 month: 'short'
             });

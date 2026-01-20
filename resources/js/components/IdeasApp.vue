@@ -6,7 +6,7 @@
             <textarea
                 v-model="newIdea"
                 class="idea-textarea"
-                placeholder="Wat zit er in je hoofd?..."
+                :placeholder="t('ideas.placeholder')"
                 rows="3"
             ></textarea>
             <div class="tag-selector-container">
@@ -25,7 +25,7 @@
                         </span>
 
                         <span v-if="selectedTagObjects.length === 0" class="tag-placeholder">
-                            {{ availableTags.length > 0 ? 'Klik om tags te selecteren' : 'Geen tags beschikbaar' }}
+                            {{ availableTags.length > 0 ? t('ideas.select_tags') : t('ideas.no_tags') }}
                         </span>
 
                         <span v-if="availableTags.length > 0" class="dropdown-indicator">▼</span>
@@ -53,7 +53,7 @@
                 </div>
             </div>
             <button type="submit" class="submit-btn" :disabled="!newIdea.trim() || isSubmitting">
-                {{ isSubmitting ? 'Opslaan...' : 'Opslaan in Memory Box' }}
+                {{ isSubmitting ? t('common.loading') : t('ideas.save_btn') }}
             </button>
         </form>
         </Transition>
@@ -61,7 +61,7 @@
         <!-- Filter Section -->
         <Transition name="ideas-appear">
             <div v-if="!isLoading && tags.length > 0" class="filter-section">
-            <span class="filter-label">Filter op tags:</span>
+            <span class="filter-label">{{ t('ideas.filter_by_tags') }}</span>
             <div class="filter-tags">
                 <button
                     v-for="tag in tags"
@@ -76,7 +76,7 @@
                 </button>
             </div>
             <button v-if="filterTags.length > 0" class="clear-filter" @click="clearFilter">
-                Wissen
+                {{ t('common.clear') }}
             </button>
             </div>
         </Transition>
@@ -84,15 +84,15 @@
         <!-- Loading State -->
         <div v-if="isLoading || isFiltering" class="loader-container">
             <div class="loader"></div>
-            <p class="loader-text">Laden...</p>
+            <p class="loader-text">{{ t('common.loading') }}</p>
         </div>
 
         <!-- Ideas List -->
         <TransitionGroup name="todo-task" tag="div" class="ideas-list" appear v-if="!isLoading && !isFiltering && filteredIdeas.length > 0" :key="filterTags.join(',') || 'all'">
             <div v-for="idea in filteredIdeas" :key="idea.id" class="idea-card">
                 <div class="card-actions">
-                    <button class="edit-btn" @click="startEdit(idea)" title="Bewerken">✎</button>
-                    <button class="delete-btn" @click="confirmDelete(idea)" title="Verwijderen">×</button>
+                    <button class="edit-btn" @click="startEdit(idea)" :title="t('common.edit')">✎</button>
+                    <button class="delete-btn" @click="confirmDelete(idea)" :title="t('common.delete')">×</button>
                 </div>
                 <p class="idea-content">{{ idea.content }}</p>
                 <div class="idea-footer">
@@ -117,15 +117,15 @@
         <Transition name="ideas-appear">
             <div v-if="!isLoading && !isFiltering && filteredIdeas.length === 0" class="empty-state">
                 <div class="empty-icon">✨</div>
-                <p v-if="activeFilterTags.length > 0">Geen ideeën met {{ activeFilterTags.length === 1 ? 'tag' : 'tags' }} "{{ activeFilterTags.map(t => t.name).join('", "') }}"</p>
-                <p v-else>Je memory box is leeg.<br/>Voeg hierboven je eerste idee toe!</p>
+                <p v-if="activeFilterTags.length > 0">{{ t('ideas.empty') }}</p>
+                <p v-else>{{ t('ideas.empty') }}</p>
             </div>
         </Transition>
 
         <!-- Edit Modal -->
         <div v-if="editingIdea" class="modal-overlay" @click.self="cancelEdit">
             <div class="modal">
-                <h3 class="modal-title">Idee bewerken</h3>
+                <h3 class="modal-title">{{ t('ideas.edit_idea') }}</h3>
                 <div class="form-group">
                     <textarea
                         v-model="editContent"
@@ -154,13 +154,13 @@
                                 :disabled="editAvailableTags.length === 0"
                             >
                                 <span class="dropdown-icon">▼</span>
-                                Kies tag
+                                {{ t('ideas.tags') }}
                             </button>
 
-                            <button type="button" class="add-tag-btn" @click="showAddTagModal = true" title="Nieuwe tag maken">
+                            <button type="button" class="add-tag-btn" @click="showAddTagModal = true" :title="t('ideas.create_tag')">
                                 +
                             </button>
-                            <button type="button" class="manage-tags-btn" :class="{ visible: tags.length }" @click="showManageTagsModal = true" title="Tags beheren">
+                            <button type="button" class="manage-tags-btn" :class="{ visible: tags.length }" @click="showManageTagsModal = true" :title="t('ideas.manage_tags')">
                                 ⚙
                             </button>
                         </div>
@@ -182,9 +182,9 @@
                     </div>
                 </div>
                 <div class="modal-actions">
-                    <button class="btn btn-secondary" @click="cancelEdit">Annuleren</button>
+                    <button class="btn btn-secondary" @click="cancelEdit">{{ t('common.cancel') }}</button>
                     <button class="btn btn-primary" @click="saveEdit" :disabled="!editContent.trim()">
-                        Opslaan
+                        {{ t('common.save') }}
                     </button>
                 </div>
             </div>
@@ -193,11 +193,11 @@
         <!-- Delete Confirmation Modal -->
         <div v-if="deletingIdea" class="modal-overlay" @click.self="deletingIdea = null">
             <div class="modal">
-                <h3 class="modal-title">Idee verwijderen?</h3>
-                <p>Weet je zeker dat je dit idee wilt verwijderen?</p>
+                <h3 class="modal-title">{{ t('ideas.delete_idea') }}</h3>
+                <p>{{ t('ideas.delete_confirm') }}</p>
                 <div class="modal-actions">
-                    <button class="btn btn-secondary" @click="deletingIdea = null">Annuleren</button>
-                    <button class="btn btn-primary" @click="deleteIdea">Verwijderen</button>
+                    <button class="btn btn-secondary" @click="deletingIdea = null">{{ t('common.cancel') }}</button>
+                    <button class="btn btn-primary" @click="deleteIdea">{{ t('common.delete') }}</button>
                 </div>
             </div>
         </div>
@@ -206,11 +206,11 @@
         <div v-if="showAddTagModal" class="modal-overlay" @click.self="closeTagModal">
             <div class="modal tag-modal">
                 <button class="close-btn" @click="closeTagModal">×</button>
-                <h2 class="modal-title-gradient">Tags</h2>
+                <h2 class="modal-title-gradient">{{ t('ideas.tags') }}</h2>
 
                 <!-- Quick select existing tags (mobile) -->
                 <div v-if="availableTags.length > 0" class="mobile-tag-select">
-                    <label class="label">Selecteer tag</label>
+                    <label class="label">{{ t('ideas.select_tags') }}</label>
                     <div class="mobile-tag-grid">
                         <button
                             v-for="tag in availableTags"
@@ -227,26 +227,25 @@
                 </div>
 
                 <div v-if="availableTags.length > 0" class="mobile-divider">
-                    <span>of maak een nieuwe</span>
+                    <span>{{ t('ideas.create_tag') }}</span>
                 </div>
 
                 <form @submit.prevent="createTag" class="modal-form">
                     <div class="form-group">
                         <label class="label">
-                            Tag naam
+                            {{ t('ideas.tag_name') }}
                             <span class="char-count">{{ newTag.name.length }}/25</span>
                         </label>
                         <input
                             v-model="newTag.name"
                             type="text"
                             class="input"
-                            placeholder="bijv. recepten, dromen, doelen..."
                             maxlength="25"
                         />
                     </div>
 
                     <div class="form-group">
-                        <label class="label">Kleur</label>
+                        <label class="label">{{ t('ideas.tag_color') }}</label>
                         <div class="color-grid">
                             <button
                                 v-for="color in colors"
@@ -263,7 +262,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="label">Emoji (optioneel)</label>
+                        <label class="label">{{ t('ideas.tag_emoji') }}</label>
                         <div class="emoji-section">
                             <input
                                 v-model="newTag.emoji"
@@ -287,17 +286,17 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="label">Voorbeeld</label>
+                        <label class="label">{{ t('ideas.tag_preview') }}</label>
                         <div class="preview">
                             <span class="tag-preview" :style="{ backgroundColor: newTag.color }">
                                 <span v-if="newTag.emoji" class="tag-emoji">{{ newTag.emoji }}</span>
-                                {{ newTag.name || 'tag naam' }}
+                                {{ newTag.name || t('ideas.tag_name') }}
                             </span>
                         </div>
                     </div>
 
                     <button type="submit" class="submit-btn" :disabled="!newTag.name.trim()">
-                        Tag Maken
+                        {{ t('ideas.create_tag') }}
                     </button>
                 </form>
 
@@ -308,7 +307,7 @@
                     class="mobile-manage-link"
                     @click="openManageFromAdd"
                 >
-                    ⚙ Tags beheren
+                    ⚙ {{ t('ideas.manage_tags') }}
                 </button>
             </div>
         </div>
@@ -316,7 +315,7 @@
         <!-- Manage Tags Modal -->
         <div v-if="showManageTagsModal" class="modal-overlay" @click.self="showManageTagsModal = false">
             <div class="modal">
-                <h3 class="modal-title">Tags beheren</h3>
+                <h3 class="modal-title">{{ t('ideas.manage_tags') }}</h3>
                 <div v-if="tags.length > 0" class="tag-list">
                     <div v-for="tag in tags" :key="tag.id" class="tag-list-item">
                         <div class="tag-list-info">
@@ -325,15 +324,15 @@
                             <span class="tag-list-name">{{ tag.name }}</span>
                         </div>
                         <div class="tag-list-actions">
-                            <button class="tag-edit-btn" @click="startEditTag(tag)" title="Bewerken">✎</button>
-                            <button class="tag-delete-btn" @click="deleteTag(tag)" title="Verwijderen">×</button>
+                            <button class="tag-edit-btn" @click="startEditTag(tag)" :title="t('common.edit')">✎</button>
+                            <button class="tag-delete-btn" @click="deleteTag(tag)" :title="t('common.delete')">×</button>
                         </div>
                     </div>
                 </div>
-                <p v-else>Nog geen tags aangemaakt.</p>
+                <p v-else>{{ t('ideas.no_tags_yet') }}</p>
                 <div class="modal-actions">
                     <button class="btn btn-primary btn-full" @click="showManageTagsModal = false">
-                        Sluiten
+                        {{ t('common.back') }}
                     </button>
                 </div>
             </div>
@@ -343,24 +342,23 @@
         <div v-if="editingTag" class="modal-overlay" @click.self="cancelEditTag">
             <div class="modal tag-modal">
                 <button class="close-btn" @click="cancelEditTag">×</button>
-                <h2 class="modal-title-gradient">Tag Bewerken</h2>
+                <h2 class="modal-title-gradient">{{ t('ideas.edit_tag') }}</h2>
                 <form @submit.prevent="updateTag" class="modal-form">
                     <div class="form-group">
                         <label class="label">
-                            Tag naam
+                            {{ t('ideas.tag_name') }}
                             <span class="char-count">{{ editingTag.name.length }}/25</span>
                         </label>
                         <input
                             v-model="editingTag.name"
                             type="text"
                             class="input"
-                            placeholder="bijv. recepten, dromen, doelen..."
                             maxlength="25"
                         />
                     </div>
 
                     <div class="form-group">
-                        <label class="label">Kleur</label>
+                        <label class="label">{{ t('ideas.tag_color') }}</label>
                         <div class="color-grid">
                             <button
                                 v-for="color in colors"
@@ -377,7 +375,7 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="label">Emoji (optioneel)</label>
+                        <label class="label">{{ t('ideas.tag_emoji') }}</label>
                         <div class="emoji-section">
                             <input
                                 v-model="editingTag.emoji"
@@ -401,17 +399,17 @@
                     </div>
 
                     <div class="form-group">
-                        <label class="label">Voorbeeld</label>
+                        <label class="label">{{ t('ideas.tag_preview') }}</label>
                         <div class="preview">
                             <span class="tag-preview" :style="{ backgroundColor: editingTag.color }">
                                 <span v-if="editingTag.emoji" class="tag-emoji">{{ editingTag.emoji }}</span>
-                                {{ editingTag.name || 'tag naam' }}
+                                {{ editingTag.name || t('ideas.tag_name') }}
                             </span>
                         </div>
                     </div>
 
                     <button type="submit" class="submit-btn" :disabled="!editingTag.name.trim()">
-                        Opslaan
+                        {{ t('common.save') }}
                     </button>
                 </form>
             </div>
@@ -420,6 +418,8 @@
 </template>
 
 <script>
+import { __, getLocale } from '@/utils/translations';
+
 export default {
     name: 'IdeasApp',
     data() {
@@ -763,11 +763,15 @@ export default {
         },
         formatDate(dateStr) {
             const date = new Date(dateStr);
-            return date.toLocaleDateString('nl-NL', {
+            const locale = getLocale() === 'nl' ? 'nl-NL' : 'en-US';
+            return date.toLocaleDateString(locale, {
                 day: 'numeric',
                 month: 'short',
                 year: 'numeric'
             });
+        },
+        t(key, replacements = {}) {
+            return __(key, replacements);
         }
     }
 }

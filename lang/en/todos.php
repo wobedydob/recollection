@@ -1,0 +1,25 @@
+<?php
+
+return [
+    'new_list' => 'New list...',
+    'empty' => 'No lists yet.<br/>Create your first list above!',
+    'task' => 'task',
+    'tasks' => 'tasks',
+    'back_to_lists' => 'Back to lists',
+    'task_placeholder' => 'What needs to be done?...',
+    'description_placeholder' => 'Description (optional)...',
+    'add' => 'Add',
+    'priority_low' => 'Low',
+    'priority_normal' => 'Normal',
+    'priority_high' => 'High',
+    'all_completed' => 'All done!',
+    'completed' => 'completed',
+    'edit_task' => 'Edit task',
+    'delete_list' => 'Delete list?',
+    'delete_list_warning' => 'All tasks will also be deleted.',
+    'empty_tasks' => 'No tasks yet.<br/>Add your first task above!',
+    'list_settings' => 'List settings',
+    'title' => 'Title',
+    'description' => 'Description',
+    'priority' => 'Priority',
+];

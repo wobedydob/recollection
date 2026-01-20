@@ -4,8 +4,8 @@
 <div class="admin-page admin-page-wide">
     <div class="admin-header">
         <div class="header-left">
-            <a href="{{ route('admin.dashboard') }}" class="back-link">← Dashboard</a>
-            <h1 class="admin-title">Suggesties</h1>
+            <a href="{{ route('admin.dashboard') }}" class="back-link">← {{ __('admin.dashboard') }}</a>
+            <h1 class="admin-title">{{ __('admin.suggestions') }}</h1>
         </div>
     </div>
 
@@ -14,35 +14,35 @@
             <span class="stat-icon">💡</span>
             <div class="stat-info">
                 <span class="stat-value" id="stat-total">{{ $stats['total'] }}</span>
-                <span class="stat-label">Totaal</span>
+                <span class="stat-label">{{ __('admin.total') }}</span>
             </div>
         </div>
         <div class="stat-card">
             <span class="stat-icon">🆕</span>
             <div class="stat-info">
                 <span class="stat-value" id="stat-new">{{ $stats['new'] }}</span>
-                <span class="stat-label">Nieuw</span>
+                <span class="stat-label">{{ __('admin.new') }}</span>
             </div>
         </div>
         <div class="stat-card">
             <span class="stat-icon">👀</span>
             <div class="stat-info">
                 <span class="stat-value" id="stat-reviewed">{{ $stats['reviewed'] }}</span>
-                <span class="stat-label">Bekeken</span>
+                <span class="stat-label">{{ __('admin.seen') }}</span>
             </div>
         </div>
         <div class="stat-card">
             <span class="stat-icon">📅</span>
             <div class="stat-info">
                 <span class="stat-value" id="stat-planned">{{ $stats['planned'] }}</span>
-                <span class="stat-label">Gepland</span>
+                <span class="stat-label">{{ __('admin.planned') }}</span>
             </div>
         </div>
         <div class="stat-card">
             <span class="stat-icon">✅</span>
             <div class="stat-info">
                 <span class="stat-value" id="stat-done">{{ $stats['done'] }}</span>
-                <span class="stat-label">Afgerond</span>
+                <span class="stat-label">{{ __('admin.done') }}</span>
             </div>
         </div>
     </div>
@@ -52,23 +52,23 @@
             <div class="filter-row">
                 <div class="filter-tags" id="filter-tags">
                     <button type="button" class="filter-tag active" data-status="" onclick="filterByStatus('')">
-                        Alle
+                        {{ __('admin.all') }}
                     </button>
                     <button type="button" class="filter-tag" data-status="new" onclick="filterByStatus('new')">
                         <span class="status-indicator new"></span>
-                        Nieuw
+                        {{ __('admin.new') }}
                     </button>
                     <button type="button" class="filter-tag" data-status="reviewed" onclick="filterByStatus('reviewed')">
                         <span class="status-indicator reviewed"></span>
-                        Bekeken
+                        {{ __('admin.seen') }}
                     </button>
                     <button type="button" class="filter-tag" data-status="planned" onclick="filterByStatus('planned')">
                         <span class="status-indicator planned"></span>
-                        Gepland
+                        {{ __('admin.planned') }}
                     </button>
                     <button type="button" class="filter-tag" data-status="done" onclick="filterByStatus('done')">
                         <span class="status-indicator done"></span>
-                        Afgerond
+                        {{ __('admin.done') }}
                     </button>
                 </div>
             </div>
@@ -84,7 +84,7 @@
 
         <div class="admin-loader" id="admin-loader">
             <div class="loader"></div>
-            <p class="loader-text">Laden...</p>
+            <p class="loader-text">{{ __('common.loading') }}</p>
         </div>
 
         <div class="admin-content" id="admin-content">
@@ -104,10 +104,10 @@
                                     <button type="button" class="custom-select-trigger" onclick="toggleStatusDropdown(this)">
                                         <span class="status-indicator {{ $suggestion->status }}"></span>
                                         <span class="custom-select-value">
-                                            @if($suggestion->status === 'new') Nieuw
-                                            @elseif($suggestion->status === 'reviewed') Bekeken
-                                            @elseif($suggestion->status === 'planned') Gepland
-                                            @elseif($suggestion->status === 'done') Afgerond
+                                            @if($suggestion->status === 'new') {{ __('admin.new') }}
+                                            @elseif($suggestion->status === 'reviewed') {{ __('admin.seen') }}
+                                            @elseif($suggestion->status === 'planned') {{ __('admin.planned') }}
+                                            @elseif($suggestion->status === 'done') {{ __('admin.done') }}
                                             @endif
                                         </span>
                                         <span class="custom-select-arrow">▼</span>
@@ -115,29 +115,29 @@
                                     <div class="custom-select-dropdown">
                                         <button type="button" class="custom-select-option {{ $suggestion->status === 'new' ? 'active' : '' }}" onclick="updateStatusFromDropdown(this, 'new')">
                                             <span class="status-indicator new"></span>
-                                            Nieuw
+                                            {{ __('admin.new') }}
                                         </button>
                                         <button type="button" class="custom-select-option {{ $suggestion->status === 'reviewed' ? 'active' : '' }}" onclick="updateStatusFromDropdown(this, 'reviewed')">
                                             <span class="status-indicator reviewed"></span>
-                                            Bekeken
+                                            {{ __('admin.seen') }}
                                         </button>
                                         <button type="button" class="custom-select-option {{ $suggestion->status === 'planned' ? 'active' : '' }}" onclick="updateStatusFromDropdown(this, 'planned')">
                                             <span class="status-indicator planned"></span>
-                                            Gepland
+                                            {{ __('admin.planned') }}
                                         </button>
                                         <button type="button" class="custom-select-option {{ $suggestion->status === 'done' ? 'active' : '' }}" onclick="updateStatusFromDropdown(this, 'done')">
                                             <span class="status-indicator done"></span>
-                                            Afgerond
+                                            {{ __('admin.done') }}
                                         </button>
                                     </div>
                                 </div>
-                                <button type="button" class="delete-btn" title="Verwijderen" onclick="deleteSuggestion({{ $suggestion->id }}, this)">×</button>
+                                <button type="button" class="delete-btn" title="{{ __('common.delete') }}" onclick="deleteSuggestion({{ $suggestion->id }}, this)">×</button>
                             </div>
                         </div>
                         <p class="suggestion-admin-content">{{ $suggestion->content }}</p>
                     </div>
                 @empty
-                    <p class="empty-message">Geen suggesties gevonden.</p>
+                    <p class="empty-message">{{ __('admin.no_suggestions') }}</p>
                 @endforelse
             </div>
 
@@ -153,11 +153,11 @@
 <!-- Delete Confirmation Modal -->
 <div class="modal-overlay" id="delete-modal" style="display: none;">
     <div class="modal">
-        <h3 class="modal-title">Suggestie verwijderen?</h3>
-        <p>Weet je zeker dat je deze suggestie wilt verwijderen?</p>
+        <h3 class="modal-title">{{ __('admin.delete_suggestion') }}</h3>
+        <p>{{ __('admin.delete_suggestion_confirm') }}</p>
         <div class="modal-actions">
-            <button class="btn btn-secondary" onclick="closeDeleteModal()">Annuleren</button>
-            <button class="btn btn-primary" id="confirm-delete-btn">Verwijderen</button>
+            <button class="btn btn-secondary" onclick="closeDeleteModal()">{{ __('common.cancel') }}</button>
+            <button class="btn btn-primary" id="confirm-delete-btn">{{ __('common.delete') }}</button>
         </div>
     </div>
 </div>
@@ -203,7 +203,7 @@ function filterByStatus(status) {
             emptyMsg.className = 'empty-message';
             document.querySelector('.suggestions-admin-list').appendChild(emptyMsg);
         }
-        emptyMsg.textContent = status ? 'Geen suggesties met deze status.' : 'Geen suggesties gevonden.';
+        emptyMsg.textContent = status ? '{{ __('admin.no_suggestions_status') }}' : '{{ __('admin.no_suggestions') }}';
         emptyMsg.style.display = '';
     } else if (emptyMsg) {
         emptyMsg.style.display = 'none';
@@ -229,7 +229,7 @@ async function updateStatusFromDropdown(optionEl, newStatus) {
     if (oldStatus === newStatus) return;
 
     const trigger = customSelect.querySelector('.custom-select-trigger');
-    const statusLabels = { 'new': 'Nieuw', 'reviewed': 'Bekeken', 'planned': 'Gepland', 'done': 'Afgerond' };
+    const statusLabels = { 'new': '{{ __('admin.new') }}', 'reviewed': '{{ __('admin.seen') }}', 'planned': '{{ __('admin.planned') }}', 'done': '{{ __('admin.done') }}' };
 
     try {
         const res = await fetch(`/admin/suggestions/${suggestionId}/status`, {

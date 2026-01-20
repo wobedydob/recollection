@@ -1,11 +1,11 @@
 @extends('layouts.guest')
 
-@section('title', 'Inloggen - Recollectie')
+@section('title', __('auth.login_title'))
 
 @section('content')
 <div class="auth-card" data-vue-auth>
-    <h1 class="auth-title">Welkom!</h1>
-    <p class="auth-subtitle">Log in bij je Recollectie</p>
+    <h1 class="auth-title">{{ __('auth.welcome') }}</h1>
+    <p class="auth-subtitle">{{ __('auth.login_subtitle') }}</p>
 
     @if(session('error'))
         <div class="error-message">{{ session('error') }}</div>
@@ -21,13 +21,13 @@
         @csrf
 
         <div class="form-group">
-            <label for="email" class="label">E-mail</label>
+            <label for="email" class="label">{{ __('auth.email') }}</label>
             <input
                 type="email"
                 id="email"
                 name="email"
                 class="input"
-                placeholder="jij@voorbeeld.nl"
+                placeholder="{{ __('auth.your_email') }}"
                 value="{{ old('email') }}"
                 required
                 autofocus
@@ -35,24 +35,24 @@
         </div>
 
         <div class="form-group">
-            <label for="password" class="label">Wachtwoord</label>
+            <label for="password" class="label">{{ __('auth.password') }}</label>
             <password-input
                 name="password"
                 id="password"
-                placeholder="Je wachtwoord"
+                placeholder="{{ __('auth.password') }}"
                 v-model="password"
                 :required="true"
             ></password-input>
         </div>
 
         <button type="submit" class="submit-btn">
-            Inloggen
+            {{ __('auth.login') }}
         </button>
     </form>
 
     <p class="auth-footer">
-        Nog geen account?
-        <a href="{{ route('register') }}" class="auth-link">Maak er een aan</a>
+        {{ __('auth.no_account') }}
+        <a href="{{ route('register') }}" class="auth-link">{{ __('auth.create_one') }}</a>
     </p>
 </div>
 @endsection

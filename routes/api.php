@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::put('/auth/password', [AuthController::class, 'updatePassword']);
     Route::patch('/auth/theme', [AuthController::class, 'updateTheme']);
     Route::patch('/auth/color-theme', [AuthController::class, 'updateColorTheme']);
+    Route::patch('/auth/locale', [AuthController::class, 'updateLocale']);
 
     // Memory Box - Ideas
     Route::prefix('memory-box')->group(function () {

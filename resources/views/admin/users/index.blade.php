@@ -4,8 +4,8 @@
 <div class="admin-page admin-page-wide">
     <div class="admin-header">
         <div class="header-left">
-            <a href="{{ route('admin.dashboard') }}" class="back-link">← Dashboard</a>
-            <h1 class="admin-title">Gebruikers</h1>
+            <a href="{{ route('admin.dashboard') }}" class="back-link">← {{ __('admin.dashboard') }}</a>
+            <h1 class="admin-title">{{ __('admin.users') }}</h1>
         </div>
     </div>
 
@@ -16,7 +16,7 @@
                     type="text"
                     id="search-input"
                     class="input"
-                    placeholder="Zoek op naam of e-mail..."
+                    placeholder="{{ __('admin.search_placeholder') }}"
                     value="{{ request('search') }}"
                 />
                 <div class="custom-select" id="role-select">
@@ -25,20 +25,20 @@
                             @if(request('role') === 'admin')
                                 Admin
                             @elseif(request('role') === 'user')
-                                User
+                                {{ __('admin.user') }}
                             @else
-                                Alle rollen
+                                {{ __('admin.all_roles') }}
                             @endif
                         </span>
                         <span class="custom-select-arrow">▼</span>
                     </button>
                     <div class="custom-select-dropdown" id="role-dropdown">
                         <button type="button" class="custom-select-option {{ !request('role') ? 'active' : '' }}" onclick="selectRole('')">
-                            Alle rollen
+                            {{ __('admin.all_roles') }}
                         </button>
                         <button type="button" class="custom-select-option {{ request('role') === 'user' ? 'active' : '' }}" onclick="selectRole('user')">
                             <span class="role-indicator user"></span>
-                            User
+                            {{ __('admin.user') }}
                         </button>
                         <button type="button" class="custom-select-option {{ request('role') === 'admin' ? 'active' : '' }}" onclick="selectRole('admin')">
                             <span class="role-indicator admin"></span>
@@ -59,7 +59,7 @@
 
         <div class="admin-loader" id="admin-loader">
             <div class="loader"></div>
-            <p class="loader-text">Laden...</p>
+            <p class="loader-text">{{ __('common.loading') }}</p>
         </div>
 
         <div class="admin-content" id="admin-content">
@@ -74,8 +74,8 @@
                             </div>
                         </div>
                         <div class="user-stats">
-                            <span class="stat" title="Ideeën">✨ {{ $user->ideas_count }}</span>
-                            <span class="stat" title="Checklists">📋 {{ $user->todo_lists_count }}</span>
+                            <span class="stat" title="{{ __('admin.ideas') }}">✨ {{ $user->ideas_count }}</span>
+                            <span class="stat" title="{{ __('admin.checklists') }}">📋 {{ $user->todo_lists_count }}</span>
                         </div>
                         <div class="user-meta">
                             <span class="user-role {{ $user->role }}">{{ $user->role }}</span>
@@ -83,7 +83,7 @@
                         </div>
                     </a>
                 @empty
-                    <p class="empty-message">Geen gebruikers gevonden.</p>
+                    <p class="empty-message">{{ __('admin.no_users') }}</p>
                 @endforelse
             </div>
 
@@ -112,7 +112,7 @@ function toggleDropdown() {
 
 function selectRole(role) {
     currentRole = role;
-    const labels = { '': 'Alle rollen', 'user': 'User', 'admin': 'Admin' };
+    const labels = { '': '{{ __('admin.all_roles') }}', 'user': '{{ __('admin.user') }}', 'admin': 'Admin' };
     document.querySelector('.custom-select-value').textContent = labels[role];
     document.getElementById('role-dropdown').classList.remove('show');
 
@@ -185,7 +185,7 @@ function renderUsers(users) {
     const usersList = document.querySelector('.users-list');
 
     if (users.length === 0) {
-        usersList.innerHTML = '<p class="empty-message">Geen gebruikers gevonden.</p>';
+        usersList.innerHTML = '<p class="empty-message">{{ __('admin.no_users') }}</p>';
         return;
     }
 
@@ -199,8 +199,8 @@ function renderUsers(users) {
                 </div>
             </div>
             <div class="user-stats">
-                <span class="stat" title="Ideeën">✨ ${user.ideas_count}</span>
-                <span class="stat" title="Checklists">📋 ${user.todo_lists_count}</span>
+                <span class="stat" title="{{ __('admin.ideas') }}">✨ ${user.ideas_count}</span>
+                <span class="stat" title="{{ __('admin.checklists') }}">📋 ${user.todo_lists_count}</span>
             </div>
             <div class="user-meta">
                 <span class="user-role ${user.role}">${user.role}</span>

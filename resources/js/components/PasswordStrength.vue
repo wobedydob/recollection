@@ -17,21 +17,23 @@
         <div class="password-requirements">
             <div class="requirement" :class="{ met: hasLength }">
                 <span class="requirement-icon">{{ hasLength ? '✓' : '○' }}</span>
-                <span>Minimaal 6 tekens</span>
+                <span>{{ t('password.min_chars') }}</span>
             </div>
             <div class="requirement" :class="{ met: hasNumber }">
                 <span class="requirement-icon">{{ hasNumber ? '✓' : '○' }}</span>
-                <span>Minimaal 1 cijfer</span>
+                <span>{{ t('password.min_number') }}</span>
             </div>
             <div class="requirement" :class="{ met: hasSpecial }">
                 <span class="requirement-icon">{{ hasSpecial ? '✓' : '○' }}</span>
-                <span>Minimaal 1 speciaal teken (!@#$%...)</span>
+                <span>{{ t('password.min_special') }}</span>
             </div>
         </div>
     </div>
 </template>
 
 <script>
+import { __ } from '@/utils/translations';
+
 export default {
     name: 'PasswordStrength',
     props: {
@@ -71,11 +73,11 @@ export default {
         },
         strengthLabel() {
             if (this.password.length === 0) return '';
-            if (this.strength <= 1) return 'Zwak';
-            if (this.strength <= 2) return 'Matig';
-            if (this.strength <= 3) return 'Redelijk';
-            if (this.strength <= 4) return 'Sterk';
-            return 'Zeer sterk';
+            if (this.strength <= 1) return this.t('password.strength_weak');
+            if (this.strength <= 2) return this.t('password.strength_fair');
+            if (this.strength <= 3) return this.t('password.strength_good');
+            if (this.strength <= 4) return this.t('password.strength_strong');
+            return this.t('password.strength_very_strong');
         },
         isValid() {
             return this.hasLength && this.hasNumber && this.hasSpecial;
@@ -89,6 +91,11 @@ export default {
             immediate: true
         }
     },
-    emits: ['validity-change']
+    emits: ['validity-change'],
+    methods: {
+        t(key, replacements = {}) {
+            return __(key, replacements);
+        }
+    }
 }
 </script>

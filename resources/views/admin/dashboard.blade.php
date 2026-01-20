@@ -3,12 +3,12 @@
 @section('content')
 <div class="admin-page">
     <div class="admin-header">
-        <h1 class="admin-title">Admin Dashboard</h1>
+        <h1 class="admin-title">{{ __('admin.dashboard') }}</h1>
     </div>
 
     <div class="admin-loader" id="admin-loader">
         <div class="loader"></div>
-        <p class="loader-text">Laden...</p>
+        <p class="loader-text">{{ __('common.loading') }}</p>
     </div>
 
     <div class="admin-content" id="admin-content">
@@ -17,53 +17,53 @@
             <span class="stat-icon">👥</span>
             <div class="stat-info">
                 <span class="stat-value">{{ $stats['users'] }}</span>
-                <span class="stat-label">Gebruikers</span>
+                <span class="stat-label">{{ __('admin.users') }}</span>
             </div>
         </div>
         <div class="stat-card">
             <span class="stat-icon">🛡️</span>
             <div class="stat-info">
                 <span class="stat-value">{{ $stats['admins'] }}</span>
-                <span class="stat-label">Admins</span>
+                <span class="stat-label">{{ __('admin.admins') }}</span>
             </div>
         </div>
         <div class="stat-card">
             <span class="stat-icon">✨</span>
             <div class="stat-info">
                 <span class="stat-value">{{ $stats['ideas'] }}</span>
-                <span class="stat-label">Ideeën</span>
+                <span class="stat-label">{{ __('admin.ideas') }}</span>
             </div>
         </div>
         <div class="stat-card">
             <span class="stat-icon">🏷️</span>
             <div class="stat-info">
                 <span class="stat-value">{{ $stats['tags'] }}</span>
-                <span class="stat-label">Tags</span>
+                <span class="stat-label">{{ __('admin.tags') }}</span>
             </div>
         </div>
         <div class="stat-card">
             <span class="stat-icon">📋</span>
             <div class="stat-info">
                 <span class="stat-value">{{ $stats['checklists'] }}</span>
-                <span class="stat-label">Checklists</span>
+                <span class="stat-label">{{ __('admin.checklists') }}</span>
             </div>
         </div>
         <div class="stat-card">
             <span class="stat-icon">✓</span>
             <div class="stat-info">
                 <span class="stat-value">{{ $stats['tasks'] }}</span>
-                <span class="stat-label">Taken</span>
+                <span class="stat-label">{{ __('admin.tasks') }}</span>
             </div>
         </div>
     </div>
 
     <div class="admin-actions">
-        <a href="{{ route('admin.users') }}" class="btn btn-primary">Gebruikers beheren</a>
-        <a href="{{ route('admin.suggestions') }}" class="btn btn-secondary">Suggesties @if($stats['new_suggestions'] > 0)<span class="badge">{{ $stats['new_suggestions'] }}</span>@endif</a>
+        <a href="{{ route('admin.users') }}" class="btn btn-primary">{{ __('admin.manage_users') }}</a>
+        <a href="{{ route('admin.suggestions') }}" class="btn btn-secondary">{{ __('admin.suggestions') }} @if($stats['new_suggestions'] > 0)<span class="badge">{{ $stats['new_suggestions'] }}</span>@endif</a>
     </div>
 
     <div class="admin-card">
-        <h2 class="section-title">Recente gebruikers</h2>
+        <h2 class="section-title">{{ __('admin.recent_users') }}</h2>
         <div class="users-list">
             @forelse($recentUsers as $user)
                 <a href="{{ route('admin.users.show', $user) }}" class="user-row clickable">
@@ -80,7 +80,7 @@
                     </div>
                 </a>
             @empty
-                <p class="empty-message">Geen gebruikers gevonden.</p>
+                <p class="empty-message">{{ __('admin.no_users') }}</p>
             @endforelse
         </div>
     </div>

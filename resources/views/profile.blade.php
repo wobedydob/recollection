@@ -8,34 +8,34 @@
             <div class="profile-info">
                 <h1 class="profile-name">{{ auth()->user()->name }}</h1>
                 <p class="profile-email">{{ auth()->user()->email }}</p>
-                <p class="profile-member">Lid sinds {{ auth()->user()->created_at->translatedFormat('F Y') }}</p>
+                <p class="profile-member">{{ __('profile.member_since', ['date' => auth()->user()->created_at->translatedFormat('F Y')]) }}</p>
             </div>
         </div>
 
         <form method="POST" action="{{ route('profile.update') }}" class="profile-form">
             @csrf
             @method('PUT')
-            <h2 class="section-title">Profiel bewerken</h2>
+            <h2 class="section-title">{{ __('profile.edit') }}</h2>
 
             @if(session('profile_success'))
                 <div class="success-message">{{ session('profile_success') }}</div>
             @endif
 
             <div class="form-group">
-                <label for="name" class="label">Weergavenaam</label>
+                <label for="name" class="label">{{ __('profile.display_name') }}</label>
                 <input
                     type="text"
                     id="name"
                     name="name"
                     class="input"
                     value="{{ auth()->user()->name }}"
-                    placeholder="Je naam"
+                    placeholder="{{ __('profile.your_name') }}"
                     required
                 />
             </div>
 
             <div class="form-group">
-                <label for="email" class="label">E-mail</label>
+                <label for="email" class="label">{{ __('profile.email') }}</label>
                 <input
                     type="email"
                     id="email"
@@ -43,18 +43,18 @@
                     class="input"
                     disabled
                 />
-                <p class="input-hint">E-mail kan niet worden gewijzigd</p>
+                <p class="input-hint">{{ __('profile.email_hint') }}</p>
             </div>
 
             <button type="submit" class="save-btn">
-                Wijzigingen opslaan
+                {{ __('profile.save_changes') }}
             </button>
         </form>
 
         <form method="POST" action="{{ route('profile.password') }}" class="password-form">
             @csrf
             @method('PUT')
-            <h2 class="section-title">Wachtwoord wijzigen</h2>
+            <h2 class="section-title">{{ __('profile.change_password') }}</h2>
 
             @if(session('password_success'))
                 <div class="success-message">{{ session('password_success') }}</div>
@@ -65,22 +65,22 @@
             @endif
 
             <div class="form-group">
-                <label for="current_password" class="label">Huidig wachtwoord</label>
+                <label for="current_password" class="label">{{ __('profile.current_password') }}</label>
                 <password-input
                     name="current_password"
                     id="current_password"
-                    placeholder="Je huidige wachtwoord"
+                    placeholder="{{ __('profile.current_password_placeholder') }}"
                     v-model="currentPassword"
                     :required="true"
                 ></password-input>
             </div>
 
             <div class="form-group">
-                <label for="new_password" class="label">Nieuw wachtwoord</label>
+                <label for="new_password" class="label">{{ __('profile.new_password') }}</label>
                 <password-input
                     name="password"
                     id="new_password"
-                    placeholder="Maak een sterk wachtwoord"
+                    placeholder="{{ __('profile.new_password_placeholder') }}"
                     v-model="newPassword"
                     :required="true"
                 ></password-input>
@@ -91,58 +91,78 @@
             </div>
 
             <div class="form-group">
-                <label for="new_password_confirmation" class="label">Bevestig nieuw wachtwoord</label>
+                <label for="new_password_confirmation" class="label">{{ __('profile.confirm_new_password') }}</label>
                 <password-input
                     name="password_confirmation"
                     id="new_password_confirmation"
-                    placeholder="Herhaal nieuw wachtwoord"
+                    placeholder="{{ __('profile.confirm_password_placeholder') }}"
                     v-model="newPasswordConfirmation"
                     :required="true"
                     :show-match="newPasswordsMatch"
                     :input-class="newPasswordsMatch === true ? 'match' : (newPasswordsMatch === false ? 'no-match' : '')"
                 ></password-input>
-                <p v-if="newPasswordsMatch === false" class="match-message no-match">Wachtwoorden komen niet overeen</p>
-                <p v-else-if="newPasswordsMatch === true" class="match-message match">Wachtwoorden komen overeen</p>
+                <p v-if="newPasswordsMatch === false" class="match-message no-match">{{ __('profile.passwords_no_match') }}</p>
+                <p v-else-if="newPasswordsMatch === true" class="match-message match">{{ __('profile.passwords_match') }}</p>
             </div>
 
             <button type="submit" class="save-btn" :disabled="!passwordValid || newPasswordsMatch === false">
-                Wachtwoord wijzigen
+                {{ __('profile.change_password') }}
             </button>
         </form>
 
         <div class="settings-section">
-            <h2 class="section-title">Instellingen</h2>
+            <h2 class="section-title">{{ __('profile.settings') }}</h2>
 
             <div class="setting-item">
-                <span class="setting-label">Thema</span>
+                <span class="setting-label">{{ __('profile.theme') }}</span>
                 <div class="theme-switcher">
                     <button
                         type="button"
                         class="theme-option {{ auth()->user()->theme !== 'dark' ? 'active' : '' }}"
                         onclick="setTheme('light')"
                     >
-                        ☀️ Licht
+                        ☀️ {{ __('profile.light') }}
                     </button>
                     <button
                         type="button"
                         class="theme-option {{ auth()->user()->theme === 'dark' ? 'active' : '' }}"
                         onclick="setTheme('dark')"
                     >
-                        🌙 Donker
+                        🌙 {{ __('profile.dark') }}
                     </button>
                 </div>
             </div>
 
             <div class="setting-item">
-                <span class="setting-label">Kleur</span>
+                <span class="setting-label">{{ __('profile.color') }}</span>
                 <div class="color-theme-switcher">
-                    <button type="button" class="color-theme-option pink {{ auth()->user()->color_theme === 'pink' || !auth()->user()->color_theme ? 'active' : '' }}" onclick="setColorTheme('pink')" title="Roze">
+                    <button type="button" class="color-theme-option pink {{ auth()->user()->color_theme === 'pink' || !auth()->user()->color_theme ? 'active' : '' }}" onclick="setColorTheme('pink')">
                     </button>
-                    <button type="button" class="color-theme-option blue {{ auth()->user()->color_theme === 'blue' ? 'active' : '' }}" onclick="setColorTheme('blue')" title="Blauw">
+                    <button type="button" class="color-theme-option blue {{ auth()->user()->color_theme === 'blue' ? 'active' : '' }}" onclick="setColorTheme('blue')">
                     </button>
-                    <button type="button" class="color-theme-option green {{ auth()->user()->color_theme === 'green' ? 'active' : '' }}" onclick="setColorTheme('green')" title="Groen">
+                    <button type="button" class="color-theme-option green {{ auth()->user()->color_theme === 'green' ? 'active' : '' }}" onclick="setColorTheme('green')">
                     </button>
-                    <button type="button" class="color-theme-option orange {{ auth()->user()->color_theme === 'orange' ? 'active' : '' }}" onclick="setColorTheme('orange')" title="Oranje">
+                    <button type="button" class="color-theme-option orange {{ auth()->user()->color_theme === 'orange' ? 'active' : '' }}" onclick="setColorTheme('orange')">
+                    </button>
+                </div>
+            </div>
+
+            <div class="setting-item">
+                <span class="setting-label">{{ __('profile.language') }}</span>
+                <div class="language-switcher">
+                    <button
+                        type="button"
+                        class="language-option {{ auth()->user()->locale === 'nl' || !auth()->user()->locale ? 'active' : '' }}"
+                        onclick="setLocale('nl')"
+                    >
+                        NL
+                    </button>
+                    <button
+                        type="button"
+                        class="language-option {{ auth()->user()->locale === 'en' ? 'active' : '' }}"
+                        onclick="setLocale('en')"
+                    >
+                        EN
                     </button>
                 </div>
             </div>
@@ -150,36 +170,44 @@
 
         <div class="profile-actions">
             <div class="profile-nav-links">
-                <span class="profile-nav-label">Terug naar:</span>
+                <span class="profile-nav-label">{{ __('profile.back_to') }}</span>
                 <a href="{{ route('home') }}" class="profile-nav-btn" title="Home">🏠</a>
                 <a href="{{ route('memorybox.index') }}" class="profile-nav-btn" title="{{ config('modules.memorybox.name') }}">{{ config('modules.memorybox.icon') }}</a>
                 <a href="{{ route('checklist.index') }}" class="profile-nav-btn" title="{{ config('modules.checklist.name') }}">{{ config('modules.checklist.icon') }}</a>
             </div>
             <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                 @csrf
-                <button type="submit" class="logout-btn">Uitloggen</button>
+                <button type="submit" class="logout-btn">{{ __('common.logout') }}</button>
             </form>
         </div>
 
         <div class="danger-zone">
-            <h2 class="section-title danger-title">Gevarenzone</h2>
-            <p class="danger-description">Als je je account verwijdert, worden al je gegevens permanent verwijderd. Dit kan niet ongedaan worden gemaakt.</p>
-            <button type="button" class="delete-account-btn" onclick="confirmDeleteAccount()">Account verwijderen</button>
+            <h2 class="section-title danger-title">{{ __('profile.danger_zone') }}</h2>
+            <p class="danger-description">{{ __('profile.delete_warning') }}</p>
+            <button type="button" class="delete-account-btn" onclick="confirmDeleteAccount()">{{ __('profile.delete_account') }}</button>
         </div>
+    </div>
+</div>
+
+<!-- Language Change Loader -->
+<div class="page-loader-overlay" id="locale-loader" style="display: none;">
+    <div class="page-loader-content">
+        <div class="loader"></div>
+        <p class="loader-text">{{ __('common.loading') }}</p>
     </div>
 </div>
 
 <div class="modal-overlay" id="delete-account-modal" style="display: none;">
     <div class="modal">
         <button type="button" class="close-btn" onclick="closeDeleteModal()">×</button>
-        <h2 class="modal-title">Account verwijderen?</h2>
-        <p class="modal-text">Weet je zeker dat je je account wilt verwijderen? Al je gegevens worden permanent verwijderd. Dit kan niet ongedaan worden gemaakt.</p>
+        <h2 class="modal-title">{{ __('profile.delete_confirm_title') }}</h2>
+        <p class="modal-text">{{ __('profile.delete_confirm_text') }}</p>
         <div class="modal-actions">
-            <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">Annuleren</button>
+            <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">{{ __('common.cancel') }}</button>
             <form method="POST" action="{{ route('profile.delete') }}" style="flex: 1;">
                 @csrf
                 @method('DELETE')
-                <button type="submit" class="btn btn-danger btn-full">Ja, verwijder mijn account</button>
+                <button type="submit" class="btn btn-danger btn-full">{{ __('profile.delete_confirm_btn') }}</button>
             </form>
         </div>
     </div>

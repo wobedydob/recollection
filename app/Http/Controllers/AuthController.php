@@ -35,6 +35,7 @@ class AuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:users,email',
             'password' => 'required|min:6|confirmed',
+            'locale' => 'nullable|in:nl,en',
         ], [
             'name.required' => 'Naam is verplicht',
             'email.required' => 'E-mailadres is verplicht',
@@ -49,6 +50,7 @@ class AuthController extends Controller
             'email' => $request->input('email'),
             'password' => $request->input('password'),
             'name' => $request->input('name'),
+            'locale' => $request->input('locale', 'nl'),
         ]);
 
         Auth::login($user);
@@ -272,6 +274,20 @@ class AuthController extends Controller
         $request->user()->update(['color_theme' => $colorTheme]);
 
         return response()->json(['color_theme' => $colorTheme]);
+    }
+
+    public function updateLocale(Request $request): JsonResponse
+    {
+        $locale = $request->input('locale');
+
+        if (!in_array($locale, ['nl', 'en'])) {
+            return response()->json(['message' => 'Invalid locale'], 400);
+        }
+
+        $request->user()->update(['locale' => $locale]);
+        app()->setLocale($locale);
+
+        return response()->json(['locale' => $locale]);
     }
 
     public function webDeleteAccount(Request $request): RedirectResponse
