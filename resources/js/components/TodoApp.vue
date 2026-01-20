@@ -10,7 +10,7 @@
                     :placeholder="t('todos.new_list')"
                     @keyup.enter="createList"
                 />
-                <button class="add-list-btn" @click="createList" :disabled="!newListName.trim()">+</button>
+                <button class="add-list-btn" @click="createList" :disabled="!newListName.trim()" v-tooltip="t('todos.add_list')">+</button>
             </div>
         </Transition>
 

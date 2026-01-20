@@ -22,4 +22,5 @@ return [
     'title' => 'Titel',
     'description' => 'Beschrijving',
     'priority' => 'Prioriteit',
+    'add_list' => 'Lijst toevoegen',
 ];

@@ -7,7 +7,7 @@
                 class="tiptap-toolbar-btn"
                 :class="{ active: editor?.isActive('bold') }"
                 @click="editor?.chain().focus().toggleBold().run()"
-                title="Bold"
+                v-tooltip="'Bold'"
             >
                 <strong>B</strong>
             </button>
@@ -16,7 +16,7 @@
                 class="tiptap-toolbar-btn"
                 :class="{ active: editor?.isActive('italic') }"
                 @click="editor?.chain().focus().toggleItalic().run()"
-                title="Italic"
+                v-tooltip="'Italic'"
             >
                 <em>I</em>
             </button>
@@ -25,7 +25,7 @@
                 class="tiptap-toolbar-btn"
                 :class="{ active: editor?.isActive('underline') }"
                 @click="editor?.chain().focus().toggleUnderline().run()"
-                title="Underline"
+                v-tooltip="'Underline'"
             >
                 <u>U</u>
             </button>
@@ -34,7 +34,7 @@
                 class="tiptap-toolbar-btn"
                 :class="{ active: editor?.isActive('strike') }"
                 @click="editor?.chain().focus().toggleStrike().run()"
-                title="Strikethrough"
+                v-tooltip="'Strikethrough'"
             >
                 <s>S</s>
             </button>
@@ -43,7 +43,7 @@
                 class="tiptap-toolbar-btn"
                 :class="{ active: editor?.isActive('subscript') }"
                 @click="toggleSubscript"
-                title="Subscript"
+                v-tooltip="'Subscript'"
             >
                 X<sub>2</sub>
             </button>
@@ -52,7 +52,7 @@
                 class="tiptap-toolbar-btn"
                 :class="{ active: editor?.isActive('superscript') }"
                 @click="toggleSuperscript"
-                title="Superscript"
+                v-tooltip="'Superscript'"
             >
                 X<sup>2</sup>
             </button>
@@ -66,7 +66,7 @@
                     class="tiptap-toolbar-btn"
                     :class="{ active: editor?.isActive('textStyle') }"
                     @click.stop="toggleDropdown('color')"
-                    title="Text Color"
+                    v-tooltip="'Text Color'"
                 >
                     <span class="color-icon" :style="{ borderBottomColor: currentColor || '#000' }">A</span>
                 </button>
@@ -79,7 +79,7 @@
                         :style="{ backgroundColor: color }"
                         @click="setColor(color)"
                     ></button>
-                    <button type="button" class="color-option color-reset" @click="setColor(null)">✕</button>
+                    <button type="button" class="color-option color-reset" @click="setColor(null)" v-tooltip="'Reset color'">✕</button>
                 </div>
             </div>
             <div class="tiptap-color-picker">
@@ -88,7 +88,7 @@
                     class="tiptap-toolbar-btn"
                     :class="{ active: editor?.isActive('highlight') }"
                     @click.stop="toggleDropdown('highlight')"
-                    title="Highlight"
+                    v-tooltip="'Highlight'"
                 >
                     <span class="highlight-icon" :style="{ backgroundColor: currentHighlight || '#ffffba' }">H</span>
                 </button>
@@ -101,7 +101,7 @@
                         :style="{ backgroundColor: color }"
                         @click="setHighlight(color)"
                     ></button>
-                    <button type="button" class="color-option color-reset" @click="setHighlight(null)">✕</button>
+                    <button type="button" class="color-option color-reset" @click="setHighlight(null)" v-tooltip="'Reset highlight'">✕</button>
                 </div>
             </div>
 
@@ -113,7 +113,7 @@
                 class="tiptap-toolbar-btn"
                 :class="{ active: editor?.isActive('bulletList') }"
                 @click="editor?.chain().focus().toggleBulletList().run()"
-                title="Bullet List"
+                v-tooltip="'Bullet List'"
             >
                 •
             </button>
@@ -122,7 +122,7 @@
                 class="tiptap-toolbar-btn"
                 :class="{ active: editor?.isActive('orderedList') }"
                 @click="editor?.chain().focus().toggleOrderedList().run()"
-                title="Numbered List"
+                v-tooltip="'Numbered List'"
             >
                 1.
             </button>
@@ -135,7 +135,7 @@
                 class="tiptap-toolbar-btn"
                 :class="{ active: editor?.isActive('link') }"
                 @click="openLinkModal"
-                title="Link"
+                v-tooltip="'Link'"
             >
                 🔗
             </button>
@@ -145,7 +145,7 @@
                 type="button"
                 class="tiptap-toolbar-btn"
                 @click="openImageModal"
-                title="Image"
+                v-tooltip="'Image'"
             >
                 🖼
             </button>
@@ -155,7 +155,7 @@
                 type="button"
                 class="tiptap-toolbar-btn"
                 @click="openVideoModal"
-                title="Video"
+                v-tooltip="'Video'"
             >
                 ▶
             </button>
@@ -167,7 +167,7 @@
                     class="tiptap-toolbar-btn"
                     :class="{ active: editor?.isActive('table') }"
                     @click.stop="toggleDropdown('table')"
-                    title="Table"
+                    v-tooltip="'Table'"
                 >
                     ▦
                 </button>
@@ -192,7 +192,7 @@
                 type="button"
                 class="tiptap-toolbar-btn"
                 @click="editor?.chain().focus().unsetAllMarks().clearNodes().run()"
-                title="Clear Formatting"
+                v-tooltip="'Clear Formatting'"
             >
                 ✕
             </button>
@@ -204,7 +204,7 @@
             <!-- Link Modal -->
             <div v-if="showLinkModal" class="editor-modal-overlay" @click.self="closeLinkModal">
                 <div class="editor-modal">
-                    <button class="editor-modal-close" @click="closeLinkModal">×</button>
+                    <button class="editor-modal-close" v-tooltip="'Close'" @click="closeLinkModal">×</button>
                     <h3 class="editor-modal-title">{{ editor?.isActive('link') ? 'Edit Link' : 'Insert Link' }}</h3>
                     <div class="editor-modal-field">
                         <label>URL</label>
@@ -237,7 +237,7 @@
             <!-- Image Modal -->
             <div v-if="showImageModal" class="editor-modal-overlay" @click.self="closeImageModal">
                 <div class="editor-modal">
-                    <button class="editor-modal-close" @click="closeImageModal">×</button>
+                    <button class="editor-modal-close" v-tooltip="'Close'" @click="closeImageModal">×</button>
                     <h3 class="editor-modal-title">Insert Image</h3>
                     <div class="editor-modal-tabs">
                         <button
@@ -284,7 +284,7 @@
             <!-- Video Modal -->
             <div v-if="showVideoModal" class="editor-modal-overlay" @click.self="closeVideoModal">
                 <div class="editor-modal">
-                    <button class="editor-modal-close" @click="closeVideoModal">×</button>
+                    <button class="editor-modal-close" v-tooltip="'Close'" @click="closeVideoModal">×</button>
                     <h3 class="editor-modal-title">Insert Video</h3>
                     <div class="editor-modal-tabs">
                         <button

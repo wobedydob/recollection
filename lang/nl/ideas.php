@@ -20,4 +20,5 @@ return [
     'manage_tags' => 'Tags beheren',
     'no_tags_yet' => 'Nog geen tags aangemaakt.',
     'content' => 'Inhoud',
+    'add_tag' => 'Tag toevoegen',
 ];

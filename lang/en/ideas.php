@@ -20,4 +20,5 @@ return [
     'manage_tags' => 'Manage tags',
     'no_tags_yet' => 'No tags created yet.',
     'content' => 'Content',
+    'add_tag' => 'Add tag',
 ];

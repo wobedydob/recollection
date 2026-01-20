@@ -29,7 +29,7 @@
                         <span v-if="availableTags.length > 0" class="dropdown-indicator">▼</span>
                     </div>
 
-                    <button type="button" class="add-tag-btn" @click="showAddTagModal = true" title="Tags">
+                    <button type="button" class="add-tag-btn" @click="showAddTagModal = true" v-tooltip="t('ideas.add_tag')">
                         +
                     </button>
                 </div>
@@ -89,8 +89,8 @@
         <TransitionGroup name="todo-task" tag="div" class="ideas-list" appear v-if="!isLoading && !isFiltering && filteredIdeas.length > 0" :key="filterTags.join(',') || 'all'">
             <div v-for="idea in filteredIdeas" :key="idea.id" class="idea-card">
                 <div class="card-actions">
-                    <button class="edit-btn" @click="startEdit(idea)" :title="t('common.edit')">✎</button>
-                    <button class="delete-btn" @click="confirmDelete(idea)" :title="t('common.delete')">×</button>
+                    <button class="edit-btn" @click="startEdit(idea)" v-tooltip="t('common.edit')">✎</button>
+                    <button class="delete-btn" @click="confirmDelete(idea)" v-tooltip="t('common.delete')">×</button>
                 </div>
                 <div class="idea-content" v-html="sanitize(idea.content)"></div>
                 <div class="idea-footer">
@@ -153,10 +153,10 @@
                                 {{ t('ideas.tags') }}
                             </button>
 
-                            <button type="button" class="add-tag-btn" @click="showAddTagModal = true" :title="t('ideas.create_tag')">
+                            <button type="button" class="add-tag-btn" @click="showAddTagModal = true" v-tooltip="t('ideas.create_tag')">
                                 +
                             </button>
-                            <button type="button" class="manage-tags-btn" :class="{ visible: tags.length }" @click="showManageTagsModal = true" :title="t('ideas.manage_tags')">
+                            <button type="button" class="manage-tags-btn" :class="{ visible: tags.length }" @click="showManageTagsModal = true" v-tooltip="t('ideas.manage_tags')">
                                 ⚙
                             </button>
                         </div>
@@ -320,8 +320,8 @@
                             <span class="tag-list-name">{{ tag.name }}</span>
                         </div>
                         <div class="tag-list-actions">
-                            <button class="tag-edit-btn" @click="startEditTag(tag)" :title="t('common.edit')">✎</button>
-                            <button class="tag-delete-btn" @click="deleteTag(tag)" :title="t('common.delete')">×</button>
+                            <button class="tag-edit-btn" @click="startEditTag(tag)" v-tooltip="t('common.edit')">✎</button>
+                            <button class="tag-delete-btn" @click="deleteTag(tag)" v-tooltip="t('common.delete')">×</button>
                         </div>
                     </div>
                 </div>

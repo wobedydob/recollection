@@ -14,7 +14,7 @@
         <span v-if="showMatch !== null" class="match-indicator" :class="{ match: showMatch, 'no-match': !showMatch }">
             {{ showMatch ? '✓' : '✗' }}
         </span>
-        <button type="button" class="toggle-password" @click="showPassword = !showPassword">
+        <button type="button" class="toggle-password" @click="showPassword = !showPassword" v-tooltip="showPassword ? 'Hide password' : 'Show password'">
             {{ showPassword ? '🙈' : '👁️' }}
         </button>
     </div>

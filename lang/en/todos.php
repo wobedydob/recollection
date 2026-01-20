@@ -22,4 +22,5 @@ return [
     'title' => 'Title',
     'description' => 'Description',
     'priority' => 'Priority',
+    'add_list' => 'Add list',
 ];

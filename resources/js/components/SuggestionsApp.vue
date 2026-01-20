@@ -30,7 +30,7 @@
             >
                 <div class="suggestion-header">
                     <span class="suggestion-status" :class="suggestion.status">{{ statusLabel(suggestion.status) }}</span>
-                    <button class="delete-btn" @click="deleteSuggestion(suggestion)" :title="t('common.delete')">×</button>
+                    <button class="delete-btn" @click="deleteSuggestion(suggestion)" v-tooltip="t('common.delete')">×</button>
                 </div>
                 <p class="suggestion-content">{{ suggestion.content }}</p>
                 <span class="suggestion-date">{{ formatDate(suggestion.createdAt) }}</span>

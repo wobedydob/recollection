@@ -6,6 +6,7 @@ import IdeasApp from './components/IdeasApp.vue';
 import TodoApp from './components/TodoApp.vue';
 import TodoListDetail from './components/TodoListDetail.vue';
 import SuggestionsApp from './components/SuggestionsApp.vue';
+import tooltip from './directives/tooltip';
 
 // Theme Toggle Functions
 window.toggleTheme = async function() {
@@ -120,26 +121,26 @@ document.addEventListener('DOMContentLoaded', () => {
     // Initialize IdeasApp if the element exists
     const ideasEl = document.getElementById('ideas-app');
     if (ideasEl) {
-        createApp(IdeasApp).mount(ideasEl);
+        createApp(IdeasApp).directive('tooltip', tooltip).mount(ideasEl);
     }
 
     // Initialize TodoApp if the element exists
     const todoEl = document.getElementById('todo-app');
     if (todoEl) {
-        createApp(TodoApp).mount(todoEl);
+        createApp(TodoApp).directive('tooltip', tooltip).mount(todoEl);
     }
 
     // Initialize TodoListDetail if the element exists
     const todoDetailEl = document.getElementById('todo-list-detail');
     if (todoDetailEl) {
         const listId = parseInt(todoDetailEl.dataset.listId, 10);
-        createApp(TodoListDetail, { listId }).mount(todoDetailEl);
+        createApp(TodoListDetail, { listId }).directive('tooltip', tooltip).mount(todoDetailEl);
     }
 
     // Initialize SuggestionsApp if the element exists
     const suggestionsEl = document.getElementById('suggestions-app');
     if (suggestionsEl) {
-        createApp(SuggestionsApp).mount(suggestionsEl);
+        createApp(SuggestionsApp).directive('tooltip', tooltip).mount(suggestionsEl);
     }
 
     // Initialize password components on auth pages
@@ -176,6 +177,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             }
         });
+        app.directive('tooltip', tooltip);
         app.mount(form);
     });
 

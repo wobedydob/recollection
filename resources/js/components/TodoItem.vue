@@ -21,9 +21,9 @@
         </div>
         <div class="todo-item-actions">
             <template v-if="!isEditing">
-                <span class="priority-indicator" :title="priorityLabel">{{ priorityIcon }}</span>
-                <button class="edit-btn" @click="startEdit" :title="t('common.edit')">✎</button>
-                <button class="delete-btn" @click="$emit('delete')" :title="t('common.delete')">×</button>
+                <span class="priority-indicator" v-tooltip="priorityLabel">{{ priorityIcon }}</span>
+                <button class="edit-btn" @click="startEdit" v-tooltip="t('common.edit')">✎</button>
+                <button class="delete-btn" @click="$emit('delete')" v-tooltip="t('common.delete')">×</button>
             </template>
             <template v-else>
                 <select v-model="editPriority" class="priority-select">
@@ -31,8 +31,8 @@
                     <option value="medium">{{ t('todos.priority_normal') }}</option>
                     <option value="high">{{ t('todos.priority_high') }}</option>
                 </select>
-                <button class="save-btn" @click="saveEdit" :title="t('common.save')">✓</button>
-                <button class="cancel-btn" @click="cancelEdit" :title="t('common.cancel')">×</button>
+                <button class="save-btn" @click="saveEdit" v-tooltip="t('common.save')">✓</button>
+                <button class="cancel-btn" @click="cancelEdit" v-tooltip="t('common.cancel')">×</button>
             </template>
         </div>
     </div>

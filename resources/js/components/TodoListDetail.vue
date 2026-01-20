@@ -21,7 +21,7 @@
                             <span v-if="list.emoji" class="title-emoji">{{ list.emoji }}</span>
                             {{ list.name }}
                         </h1>
-                        <button class="title-edit-btn" @click="startEditTitle" :title="t('common.edit')">✎</button>
+                        <button class="title-edit-btn" @click="startEditTitle" v-tooltip="t('common.edit')">✎</button>
                     </template>
                     <template v-else>
                         <input
@@ -59,21 +59,21 @@
                                 class="priority-option priority-low"
                                 :class="{ active: newItemPriority === 'low' }"
                                 @click="newItemPriority = 'low'"
-                                :title="t('todos.priority_low')"
+                                v-tooltip="t('todos.priority_low')"
                             >L</button>
                             <button
                                 type="button"
                                 class="priority-option priority-medium"
                                 :class="{ active: newItemPriority === 'medium' }"
                                 @click="newItemPriority = 'medium'"
-                                :title="t('todos.priority_normal')"
+                                v-tooltip="t('todos.priority_normal')"
                             >M</button>
                             <button
                                 type="button"
                                 class="priority-option priority-high"
                                 :class="{ active: newItemPriority === 'high' }"
                                 @click="newItemPriority = 'high'"
-                                :title="t('todos.priority_high')"
+                                v-tooltip="t('todos.priority_high')"
                             >H</button>
                         </div>
                     </div>
@@ -99,8 +99,8 @@
                     :class="{ completed: item.isCompleted, [`priority-${item.priority}`]: true }"
                 >
                     <div class="card-actions">
-                        <button class="edit-btn" @click="startEditItem(item)" :title="t('common.edit')">✎</button>
-                        <button class="delete-btn" @click="deleteItem(item.id)" :title="t('common.delete')">×</button>
+                        <button class="edit-btn" @click="startEditItem(item)" v-tooltip="t('common.edit')">✎</button>
+                        <button class="delete-btn" @click="deleteItem(item.id)" v-tooltip="t('common.delete')">×</button>
                     </div>
 
                     <div class="todo-item-main" @click="toggleItem(item.id)">
