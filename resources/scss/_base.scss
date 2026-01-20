@@ -81,6 +81,11 @@ a {
   max-width: $container-max-width;
   margin: 0 auto;
   padding: $spacing-2xl $spacing-base;
+
+  // Wider container for Memory Box (WYSIWYG editor toolbar)
+  &:has(.ideas-app) {
+    max-width: 720px;
+  }
 }
 
 .guest-page {
