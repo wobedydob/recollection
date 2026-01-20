@@ -3,12 +3,10 @@
         <!-- Create Idea Form -->
         <Transition name="form-fade" appear>
         <form class="idea-form" @submit.prevent="createIdea">
-            <textarea
+            <TiptapEditor
                 v-model="newIdea"
-                class="idea-textarea"
                 :placeholder="t('ideas.placeholder')"
-                rows="3"
-            ></textarea>
+            />
             <div class="tag-selector-container">
                 <div class="tag-selector-row">
                     <div class="selected-tags" :class="{ clickable: availableTags.length > 0 }" @click="availableTags.length > 0 && (showTagDropdown = !showTagDropdown)">
@@ -52,7 +50,7 @@
                     </button>
                 </div>
             </div>
-            <button type="submit" class="submit-btn" :disabled="!newIdea.trim() || isSubmitting">
+            <button type="submit" class="submit-btn" :disabled="isContentEmpty(newIdea) || isSubmitting">
                 {{ isSubmitting ? t('common.loading') : t('ideas.save_btn') }}
             </button>
         </form>
@@ -94,7 +92,7 @@
                     <button class="edit-btn" @click="startEdit(idea)" :title="t('common.edit')">✎</button>
                     <button class="delete-btn" @click="confirmDelete(idea)" :title="t('common.delete')">×</button>
                 </div>
-                <p class="idea-content">{{ idea.content }}</p>
+                <div class="idea-content" v-html="sanitize(idea.content)"></div>
                 <div class="idea-footer">
                     <div class="idea-tags">
                         <button
@@ -127,11 +125,9 @@
             <div class="modal">
                 <h3 class="modal-title">{{ t('ideas.edit_idea') }}</h3>
                 <div class="form-group">
-                    <textarea
+                    <TiptapEditor
                         v-model="editContent"
-                        class="idea-textarea"
-                        rows="4"
-                    ></textarea>
+                    />
                 </div>
                 <div class="tag-selector-container">
                     <div class="selected-tags">
@@ -183,7 +179,7 @@
                 </div>
                 <div class="modal-actions">
                     <button class="btn btn-secondary" @click="cancelEdit">{{ t('common.cancel') }}</button>
-                    <button class="btn btn-primary" @click="saveEdit" :disabled="!editContent.trim()">
+                    <button class="btn btn-primary" @click="saveEdit" :disabled="isContentEmpty(editContent)">
                         {{ t('common.save') }}
                     </button>
                 </div>
@@ -419,9 +415,14 @@
 
 <script>
 import { __, getLocale } from '@/utils/translations';
+import TiptapEditor from './TiptapEditor.vue';
+import DOMPurify from 'dompurify';
 
 export default {
     name: 'IdeasApp',
+    components: {
+        TiptapEditor
+    },
     data() {
         return {
             ideas: [],
@@ -560,7 +561,7 @@ export default {
             }
         },
         async createIdea() {
-            if (!this.newIdea.trim() || this.isSubmitting) return;
+            if (this.isContentEmpty(this.newIdea) || this.isSubmitting) return;
             this.isSubmitting = true;
             try {
                 const res = await fetch('/api/memory-box/ideas', {
@@ -621,7 +622,7 @@ export default {
             }
         },
         async saveEdit() {
-            if (!this.editContent.trim()) return;
+            if (this.isContentEmpty(this.editContent)) return;
             try {
                 const res = await fetch(`/api/memory-box/ideas/${this.editingIdea.id}`, {
                     method: 'PUT',
@@ -772,6 +773,18 @@ export default {
         },
         t(key, replacements = {}) {
             return __(key, replacements);
+        },
+        sanitize(html) {
+            return DOMPurify.sanitize(html, {
+                ADD_TAGS: ['iframe'],
+                ADD_ATTR: ['allow', 'allowfullscreen', 'frameborder', 'src', 'width', 'height']
+            });
+        },
+        isContentEmpty(html) {
+            if (!html) return true;
+            // Strip HTML tags and check if remaining text is empty
+            const text = html.replace(/<[^>]*>/g, '').trim();
+            return text.length === 0;
         }
     }
 }

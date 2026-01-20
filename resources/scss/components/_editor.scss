@@ -1,0 +1,679 @@
+// ==========================================================================
+// Tiptap Editor Component
+// ==========================================================================
+
+@use '../index' as *;
+
+// --------------------------------------------------------------------------
+// Editor Container
+// --------------------------------------------------------------------------
+
+.tiptap-editor {
+  position: relative;
+  z-index: 600;
+  border: 2px solid $color-border;
+  border-radius: $radius-md;
+  background: $color-bg-white;
+  transition: $transition-border;
+
+  &:focus-within {
+    border-color: $color-border-hover;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Toolbar
+// --------------------------------------------------------------------------
+
+.tiptap-toolbar {
+  position: relative;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: $spacing-xs;
+  padding: $spacing-sm $spacing-md;
+  background: $color-bg-subtle;
+  border-bottom: 1px solid $color-border-light;
+  border-radius: $radius-md $radius-md 0 0;
+  flex-wrap: wrap;
+  overflow: visible;
+}
+
+.tiptap-toolbar-btn {
+  @include flex-center;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  border-radius: $radius-xs;
+  background: transparent;
+  color: $color-text-muted;
+  font-size: $font-size-sm;
+  line-height: 1;
+  cursor: pointer;
+  transition: $transition-fast;
+
+  &:hover {
+    background: $color-bg-hover;
+    color: $color-text-secondary;
+  }
+
+  &.active {
+    background: $color-bg-hover;
+    color: $color-text-primary;
+  }
+
+  @include tablet {
+    width: 2.5rem;
+    height: 2.5rem;
+    font-size: $font-size-base;
+  }
+}
+
+.tiptap-toolbar-divider {
+  width: 1px;
+  height: 1.25rem;
+  background: $color-border-light;
+  margin: 0 $spacing-xs;
+}
+
+// --------------------------------------------------------------------------
+// Color Picker
+// --------------------------------------------------------------------------
+
+.tiptap-color-picker {
+  position: relative;
+  overflow: visible;
+}
+
+.color-icon {
+  border-bottom: 3px solid;
+  line-height: 1;
+  padding-bottom: 2px;
+}
+
+.highlight-icon {
+  padding: 2px 4px;
+  border-radius: 2px;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+}
+
+.tiptap-color-dropdown {
+  @include dropdown-base;
+  top: 100%;
+  left: 0;
+  margin-top: $spacing-xs;
+  padding: $spacing-sm;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: $spacing-xs;
+  min-width: 140px;
+  z-index: 1000;
+}
+
+.tiptap-color-dropdown .color-option {
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 2px solid transparent;
+  border-radius: $radius-xs;
+  cursor: pointer;
+  transition: $transition-fast;
+
+  &:hover {
+    transform: scale(1.15);
+    border-color: $color-border-hover;
+  }
+
+  &.color-reset {
+    @include flex-center;
+    background: $color-bg-subtle;
+    color: $color-text-muted;
+    font-size: $font-size-xs;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Table Menu
+// --------------------------------------------------------------------------
+
+.tiptap-table-menu {
+  position: relative;
+  overflow: visible;
+}
+
+.tiptap-table-dropdown {
+  @include dropdown-base;
+  top: 100%;
+  left: 0;
+  margin-top: $spacing-xs;
+  padding: $spacing-xs;
+  min-width: 160px;
+  z-index: 1000;
+
+  button {
+    display: block;
+    width: 100%;
+    padding: $spacing-sm $spacing-md;
+    border: none;
+    background: transparent;
+    text-align: left;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    cursor: pointer;
+    border-radius: $radius-xs;
+    transition: $transition-fast;
+
+    &:hover {
+      background: $color-bg-hover;
+      color: $color-text-primary;
+    }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Content Area
+// --------------------------------------------------------------------------
+
+.tiptap-content {
+  min-height: 100px;
+  max-height: 400px;
+  overflow-y: auto;
+
+  @include mobile {
+    min-height: 80px;
+  }
+
+  .tiptap {
+    padding: 0.875rem $spacing-base;
+    outline: none;
+    font-size: $font-size-base;
+    color: $color-text-primary;
+    line-height: $line-height-base;
+    min-height: inherit;
+
+    @include tablet {
+      padding: 1rem $spacing-lg;
+      font-size: 1rem;
+    }
+
+    // Placeholder
+    p.is-editor-empty:first-child::before {
+      content: attr(data-placeholder);
+      float: left;
+      color: $color-text-lightest;
+      pointer-events: none;
+      height: 0;
+    }
+
+    // Typography
+    p {
+      margin: 0 0 $spacing-sm;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    strong {
+      font-weight: $font-weight-bold;
+    }
+
+    em {
+      font-style: italic;
+    }
+
+    u {
+      text-decoration: underline;
+    }
+
+    s {
+      text-decoration: line-through;
+    }
+
+    sub {
+      vertical-align: sub;
+      font-size: 0.75em;
+    }
+
+    sup {
+      vertical-align: super;
+      font-size: 0.75em;
+    }
+
+    // Links
+    a {
+      color: #0066cc;
+      text-decoration: underline;
+      cursor: pointer;
+
+      &:hover {
+        color: #004499;
+      }
+    }
+
+    // Lists
+    ul,
+    ol {
+      margin: 0 0 $spacing-sm;
+      padding-left: $spacing-xl;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    ul {
+      list-style-type: disc;
+    }
+
+    ol {
+      list-style-type: decimal;
+    }
+
+    li {
+      margin-bottom: $spacing-xs;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      p {
+        margin: 0;
+      }
+    }
+
+    // Images
+    img {
+      max-width: 100%;
+      height: auto;
+      border-radius: $radius-sm;
+      margin: $spacing-sm 0;
+
+      &.ProseMirror-selectednode {
+        outline: 2px solid $color-primary;
+      }
+    }
+
+    // YouTube embeds
+    div[data-youtube-video] {
+      margin: $spacing-base 0;
+
+      iframe {
+        max-width: 100%;
+        border-radius: $radius-sm;
+      }
+    }
+
+    // Tables
+    table {
+      border-collapse: collapse;
+      margin: $spacing-base 0;
+      width: 100%;
+      overflow: hidden;
+      table-layout: fixed;
+
+      td,
+      th {
+        border: 1px solid $color-border;
+        padding: $spacing-sm $spacing-md;
+        vertical-align: top;
+        box-sizing: border-box;
+        position: relative;
+        min-width: 50px;
+
+        > * {
+          margin: 0;
+        }
+      }
+
+      th {
+        background: $color-bg-subtle;
+        font-weight: $font-weight-semibold;
+        text-align: left;
+      }
+
+      .selectedCell {
+        background: rgba($color-primary-pink, 0.2);
+      }
+
+      .column-resize-handle {
+        position: absolute;
+        right: -2px;
+        top: 0;
+        bottom: -2px;
+        width: 4px;
+        background-color: $color-primary;
+        pointer-events: none;
+      }
+    }
+
+    // Highlight
+    mark {
+      border-radius: 2px;
+      padding: 0 2px;
+    }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Idea Content (Display Mode)
+// --------------------------------------------------------------------------
+
+.idea-content {
+  // Style rich text in displayed ideas
+  strong {
+    font-weight: $font-weight-bold;
+  }
+
+  em {
+    font-style: italic;
+  }
+
+  u {
+    text-decoration: underline;
+  }
+
+  s {
+    text-decoration: line-through;
+  }
+
+  sub {
+    vertical-align: sub;
+    font-size: 0.75em;
+  }
+
+  sup {
+    vertical-align: super;
+    font-size: 0.75em;
+  }
+
+  a {
+    color: #0066cc;
+    text-decoration: underline;
+
+    &:hover {
+      color: #004499;
+    }
+  }
+
+  ul,
+  ol {
+    margin: $spacing-sm 0;
+    padding-left: $spacing-xl;
+  }
+
+  ul {
+    list-style-type: disc;
+  }
+
+  ol {
+    list-style-type: decimal;
+  }
+
+  li {
+    margin-bottom: $spacing-xs;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  p {
+    margin: 0 0 $spacing-sm;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: $radius-sm;
+    margin: $spacing-sm 0;
+  }
+
+  iframe {
+    max-width: 100%;
+    border-radius: $radius-sm;
+    margin: $spacing-sm 0;
+  }
+
+  video {
+    max-width: 100%;
+    border-radius: $radius-sm;
+    margin: $spacing-sm 0;
+  }
+
+  table {
+    border-collapse: collapse;
+    margin: $spacing-sm 0;
+    width: 100%;
+
+    td,
+    th {
+      border: 1px solid $color-border;
+      padding: $spacing-sm $spacing-md;
+      vertical-align: top;
+    }
+
+    th {
+      background: $color-bg-subtle;
+      font-weight: $font-weight-semibold;
+      text-align: left;
+    }
+  }
+
+  mark {
+    border-radius: 2px;
+    padding: 0 2px;
+  }
+
+  video {
+    max-width: 100%;
+    border-radius: $radius-sm;
+    margin: $spacing-sm 0;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Editor Modals
+// --------------------------------------------------------------------------
+
+.editor-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: $z-modal;
+  padding: $spacing-base;
+}
+
+.editor-modal {
+  background: $color-bg-white;
+  border-radius: $radius-xl;
+  padding: $spacing-2xl;
+  width: 100%;
+  max-width: 400px;
+  position: relative;
+  box-shadow: $shadow-modal;
+  animation: editor-modal-appear 0.2s ease;
+
+  @include mobile {
+    padding: $spacing-lg;
+    max-width: 95%;
+  }
+}
+
+@keyframes editor-modal-appear {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+.editor-modal-close {
+  position: absolute;
+  top: $spacing-base;
+  right: $spacing-base;
+  width: 2rem;
+  height: 2rem;
+  border: none;
+  background: transparent;
+  font-size: 1.5rem;
+  color: $color-text-muted;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: $radius-circle;
+  transition: $transition-fast;
+
+  &:hover {
+    background: $color-bg-subtle;
+    color: $color-text-primary;
+  }
+}
+
+.editor-modal-title {
+  margin: 0 0 $spacing-lg;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: $color-text-primary;
+}
+
+.editor-modal-tabs {
+  display: flex;
+  gap: $spacing-xs;
+  margin-bottom: $spacing-lg;
+  background: $color-bg-subtle;
+  padding: $spacing-xs;
+  border-radius: $radius-sm;
+
+  button {
+    flex: 1;
+    padding: $spacing-sm $spacing-base;
+    border: none;
+    background: transparent;
+    border-radius: $radius-xs;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-text-muted;
+    cursor: pointer;
+    transition: $transition-fast;
+
+    &:hover {
+      color: $color-text-secondary;
+    }
+
+    &.active {
+      background: $color-bg-white;
+      color: $color-text-primary;
+      box-shadow: $shadow-sm;
+    }
+  }
+}
+
+.editor-modal-field {
+  margin-bottom: $spacing-lg;
+
+  label {
+    display: block;
+    margin-bottom: $spacing-sm;
+    font-size: $font-size-sm;
+    font-weight: $font-weight-medium;
+    color: $color-text-tertiary;
+  }
+
+  input[type="text"],
+  input[type="url"] {
+    @include input-base;
+  }
+
+  input[type="file"] {
+    width: 100%;
+    padding: $spacing-sm;
+    border: 2px dashed $color-border;
+    border-radius: $radius-sm;
+    background: $color-bg-subtle;
+    cursor: pointer;
+    font-size: $font-size-sm;
+
+    &:hover {
+      border-color: $color-border-hover;
+    }
+  }
+}
+
+.editor-modal-preview {
+  margin-top: $spacing-base;
+  border-radius: $radius-sm;
+  overflow: hidden;
+  background: $color-bg-subtle;
+
+  img,
+  video {
+    display: block;
+    width: 100%;
+    max-height: 200px;
+    object-fit: contain;
+  }
+}
+
+.editor-modal-actions {
+  display: flex;
+  gap: $spacing-sm;
+  justify-content: flex-end;
+  margin-top: $spacing-lg;
+}
+
+.editor-modal-btn {
+  padding: $spacing-sm $spacing-lg;
+  border: none;
+  border-radius: $radius-pill;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  cursor: pointer;
+  transition: $transition-fast;
+
+  &:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &.primary {
+    background: $gradient-primary;
+    color: $color-bg-white;
+
+    &:hover:not(:disabled) {
+      transform: translateY(-1px);
+      box-shadow: $shadow-button;
+    }
+  }
+
+  &.secondary {
+    background: $color-bg-subtle;
+    color: $color-text-tertiary;
+
+    &:hover:not(:disabled) {
+      background: $color-bg-hover;
+      color: $color-text-secondary;
+    }
+  }
+
+  &.danger {
+    background: $color-danger-light;
+    color: $color-danger;
+
+    &:hover:not(:disabled) {
+      background: $color-danger-hover;
+    }
+  }
+}
