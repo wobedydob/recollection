@@ -10,16 +10,43 @@
 @media only screen and (max-width: 600px) {
 .inner-body {
 width: 100% !important;
+border-radius: 0 !important;
 }
 
 .footer {
 width: 100% !important;
 }
+
+.content-cell {
+padding: 24px 20px !important;
 }
 
-@media only screen and (max-width: 500px) {
+.header {
+padding: 24px 0 16px !important;
+}
+
+.header a {
+font-size: 24px !important;
+}
+
+h1 {
+font-size: 20px !important;
+}
+
+p {
+font-size: 15px !important;
+}
+
 .button {
+display: block !important;
 width: 100% !important;
+padding: 14px 20px !important;
+text-align: center !important;
+box-sizing: border-box !important;
+}
+
+.subcopy p {
+font-size: 12px !important;
 }
 }
 </style>

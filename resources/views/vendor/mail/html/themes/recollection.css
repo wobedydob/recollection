@@ -308,3 +308,20 @@ img {
 .break-all {
     word-break: break-all;
 }
+
+/* Mobile Adjustments */
+@media only screen and (max-width: 600px) {
+    .wrapper {
+        padding: 0 !important;
+    }
+
+    .inner-body {
+        margin: 0 !important;
+        border-radius: 0 !important;
+        box-shadow: none !important;
+    }
+
+    .content-cell {
+        padding: 24px 20px !important;
+    }
+}
