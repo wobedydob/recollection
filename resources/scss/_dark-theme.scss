@@ -489,6 +489,24 @@ $dark-gradient-bg: linear-gradient(135deg, #1e1a2e 0%, #2a2540 50%, #1e2535 100%
     }
   }
 
+  .checkbox {
+    background: $dark-bg-input;
+    border-color: $dark-border;
+
+    &:hover {
+      border-color: $color-primary;
+    }
+
+    &:checked {
+      background: $gradient-primary;
+      border-color: transparent;
+    }
+  }
+
+  .checkbox-text {
+    color: $dark-text-secondary;
+  }
+
   // --------------------------------------------------------------------------
   // Empty States
   // --------------------------------------------------------------------------

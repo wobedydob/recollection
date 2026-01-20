@@ -52,6 +52,13 @@
             ></password-input>
         </div>
 
+        <div class="form-group">
+            <label class="checkbox-label">
+                <input type="checkbox" name="remember" class="checkbox" {{ old('remember') ? 'checked' : '' }}>
+                <span class="checkbox-text">{{ __('auth.remember_me') }}</span>
+            </label>
+        </div>
+
         <button type="submit" class="submit-btn">
             {{ __('auth.login') }}
         </button>

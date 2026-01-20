@@ -22,4 +22,5 @@ return [
     'repeat_password' => 'Herhaal wachtwoord',
     'preferred_language' => 'Voorkeurstaal',
     'forgot_password' => 'Vergeten?',
+    'remember_me' => 'Onthoud mij',
 ];

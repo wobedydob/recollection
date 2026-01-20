@@ -22,4 +22,5 @@ return [
     'repeat_password' => 'Repeat password',
     'preferred_language' => 'Preferred language',
     'forgot_password' => 'Forgot?',
+    'remember_me' => 'Remember me',
 ];

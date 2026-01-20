@@ -72,7 +72,7 @@ class AuthController extends Controller
             'password.required' => 'Wachtwoord is verplicht',
         ]);
 
-        if (!Auth::attempt($request->only('email', 'password'))) {
+        if (!Auth::attempt($request->only('email', 'password'), $request->boolean('remember'))) {
             return back()->withErrors(['email' => 'Ongeldige inloggegevens'])->withInput();
         }
 
