@@ -1,7 +1,7 @@
 <template>
     <div class="tiptap-editor">
         <div class="tiptap-toolbar">
-            <!-- Text formatting -->
+            <!-- Primary formatting - always visible -->
             <button
                 type="button"
                 class="tiptap-toolbar-btn"
@@ -38,9 +38,82 @@
             >
                 <s>S</s>
             </button>
+
+            <span class="tiptap-toolbar-divider"></span>
+
+            <!-- Lists - always visible -->
             <button
                 type="button"
                 class="tiptap-toolbar-btn"
+                :class="{ active: editor?.isActive('bulletList') }"
+                @click="editor?.chain().focus().toggleBulletList().run()"
+                v-tooltip="'Bullet List'"
+            >
+                •
+            </button>
+            <button
+                type="button"
+                class="tiptap-toolbar-btn"
+                :class="{ active: editor?.isActive('orderedList') }"
+                @click="editor?.chain().focus().toggleOrderedList().run()"
+                v-tooltip="'Numbered List'"
+            >
+                1.
+            </button>
+
+            <span class="tiptap-toolbar-divider"></span>
+
+            <!-- Link - desktop version (always visible) -->
+            <button
+                type="button"
+                class="tiptap-toolbar-btn tiptap-desktop-only"
+                :class="{ active: editor?.isActive('link') }"
+                @click="openLinkModal"
+                v-tooltip="'Link'"
+            >
+                🔗
+            </button>
+
+            <!-- Link - mobile version (hidden when table is active) -->
+            <button
+                v-if="!editor?.isActive('table')"
+                type="button"
+                class="tiptap-toolbar-btn tiptap-mobile-only"
+                :class="{ active: editor?.isActive('link') }"
+                @click="openLinkModal"
+                v-tooltip="'Link'"
+            >
+                🔗
+            </button>
+
+            <!-- Table - mobile version (shown when table is active, in place of Link) -->
+            <div v-if="editor?.isActive('table')" class="tiptap-table-menu tiptap-mobile-only">
+                <button
+                    type="button"
+                    class="tiptap-toolbar-btn"
+                    :class="{ active: editor?.isActive('table') }"
+                    @click.stop="toggleDropdown('table')"
+                    v-tooltip="'Table Options'"
+                >
+                    ▦
+                </button>
+                <div v-if="showTableMenu" class="tiptap-table-dropdown" @click.stop>
+                    <button type="button" @click="addColumnBefore">Add Column Before</button>
+                    <button type="button" @click="addColumnAfter">Add Column After</button>
+                    <button type="button" @click="deleteColumn">Delete Column</button>
+                    <button type="button" @click="addRowBefore">Add Row Before</button>
+                    <button type="button" @click="addRowAfter">Add Row After</button>
+                    <button type="button" @click="deleteRow">Delete Row</button>
+                    <button type="button" @click="deleteTable">Delete Table</button>
+                </div>
+            </div>
+
+            <span class="tiptap-toolbar-divider tiptap-mobile-hide"></span>
+
+            <!-- Advanced features - hidden on mobile, shown in More menu -->
+            <button
+                type="button"
+                class="tiptap-toolbar-btn tiptap-desktop-only"
                 :class="{ active: editor?.isActive('subscript') }"
                 @click="toggleSubscript"
                 v-tooltip="'Subscript'"
@@ -49,7 +122,7 @@
             </button>
             <button
                 type="button"
-                class="tiptap-toolbar-btn"
+                class="tiptap-toolbar-btn tiptap-desktop-only"
                 :class="{ active: editor?.isActive('superscript') }"
                 @click="toggleSuperscript"
                 v-tooltip="'Superscript'"
@@ -57,10 +130,10 @@
                 X<sup>2</sup>
             </button>
 
-            <span class="tiptap-toolbar-divider"></span>
+            <span class="tiptap-toolbar-divider tiptap-desktop-only"></span>
 
-            <!-- Color & Highlight -->
-            <div class="tiptap-color-picker">
+            <!-- Color & Highlight - desktop only -->
+            <div class="tiptap-color-picker tiptap-desktop-only">
                 <button
                     type="button"
                     class="tiptap-toolbar-btn"
@@ -82,7 +155,7 @@
                     <button type="button" class="color-option color-reset" @click="setColor(null)" v-tooltip="'Reset color'">✕</button>
                 </div>
             </div>
-            <div class="tiptap-color-picker">
+            <div class="tiptap-color-picker tiptap-desktop-only">
                 <button
                     type="button"
                     class="tiptap-toolbar-btn"
@@ -105,97 +178,116 @@
                 </div>
             </div>
 
-            <span class="tiptap-toolbar-divider"></span>
+            <span class="tiptap-toolbar-divider tiptap-desktop-only"></span>
 
-            <!-- Lists -->
+            <!-- Image - desktop only -->
             <button
                 type="button"
-                class="tiptap-toolbar-btn"
-                :class="{ active: editor?.isActive('bulletList') }"
-                @click="editor?.chain().focus().toggleBulletList().run()"
-                v-tooltip="'Bullet List'"
-            >
-                •
-            </button>
-            <button
-                type="button"
-                class="tiptap-toolbar-btn"
-                :class="{ active: editor?.isActive('orderedList') }"
-                @click="editor?.chain().focus().toggleOrderedList().run()"
-                v-tooltip="'Numbered List'"
-            >
-                1.
-            </button>
-
-            <span class="tiptap-toolbar-divider"></span>
-
-            <!-- Link -->
-            <button
-                type="button"
-                class="tiptap-toolbar-btn"
-                :class="{ active: editor?.isActive('link') }"
-                @click="openLinkModal"
-                v-tooltip="'Link'"
-            >
-                🔗
-            </button>
-
-            <!-- Image -->
-            <button
-                type="button"
-                class="tiptap-toolbar-btn"
+                class="tiptap-toolbar-btn tiptap-desktop-only"
                 @click="openImageModal"
                 v-tooltip="'Image'"
             >
                 🖼
             </button>
 
-            <!-- Video -->
+            <!-- Video - desktop only -->
             <button
                 type="button"
-                class="tiptap-toolbar-btn"
+                class="tiptap-toolbar-btn tiptap-desktop-only"
                 @click="openVideoModal"
                 v-tooltip="'Video'"
             >
                 ▶
             </button>
 
-            <!-- Table -->
-            <div class="tiptap-table-menu">
+            <!-- Table - desktop only -->
+            <!-- If NOT in table: button inserts table directly -->
+            <button
+                v-if="!editor?.isActive('table')"
+                type="button"
+                class="tiptap-toolbar-btn tiptap-desktop-only"
+                @click="insertTable"
+                v-tooltip="'Insert Table'"
+            >
+                ▦
+            </button>
+            <!-- If IN table: dropdown with edit options -->
+            <div v-else class="tiptap-table-menu tiptap-desktop-only">
                 <button
                     type="button"
                     class="tiptap-toolbar-btn"
-                    :class="{ active: editor?.isActive('table') }"
+                    :class="{ active: true }"
                     @click.stop="toggleDropdown('table')"
-                    v-tooltip="'Table'"
+                    v-tooltip="'Table Options'"
                 >
                     ▦
                 </button>
                 <div v-if="showTableMenu" class="tiptap-table-dropdown" @click.stop>
-                    <button type="button" @click="insertTable">Insert Table</button>
-                    <template v-if="editor?.isActive('table')">
-                        <button type="button" @click="addColumnBefore">Add Column Before</button>
-                        <button type="button" @click="addColumnAfter">Add Column After</button>
-                        <button type="button" @click="deleteColumn">Delete Column</button>
-                        <button type="button" @click="addRowBefore">Add Row Before</button>
-                        <button type="button" @click="addRowAfter">Add Row After</button>
-                        <button type="button" @click="deleteRow">Delete Row</button>
-                        <button type="button" @click="deleteTable">Delete Table</button>
-                    </template>
+                    <button type="button" @click="addColumnBefore">Add Column Before</button>
+                    <button type="button" @click="addColumnAfter">Add Column After</button>
+                    <button type="button" @click="deleteColumn">Delete Column</button>
+                    <button type="button" @click="addRowBefore">Add Row Before</button>
+                    <button type="button" @click="addRowAfter">Add Row After</button>
+                    <button type="button" @click="deleteRow">Delete Row</button>
+                    <button type="button" @click="deleteTable">Delete Table</button>
                 </div>
             </div>
 
-            <span class="tiptap-toolbar-divider"></span>
+            <span class="tiptap-toolbar-divider tiptap-desktop-only"></span>
 
-            <!-- Clear formatting -->
+            <!-- Clear formatting - desktop only -->
             <button
                 type="button"
-                class="tiptap-toolbar-btn"
+                class="tiptap-toolbar-btn tiptap-desktop-only"
                 @click="editor?.chain().focus().unsetAllMarks().clearNodes().run()"
                 v-tooltip="'Clear Formatting'"
             >
                 ✕
             </button>
+
+            <!-- More menu - mobile only -->
+            <span class="tiptap-toolbar-divider tiptap-mobile-only"></span>
+            <div class="tiptap-more-menu tiptap-mobile-only">
+                <button
+                    type="button"
+                    class="tiptap-toolbar-btn"
+                    @click.stop="toggleDropdown('more')"
+                    v-tooltip="'More'"
+                >
+                    ⋮
+                </button>
+                <div v-if="showMoreMenu" class="tiptap-more-dropdown" @click.stop>
+                    <!-- Link - shown when table is active -->
+                    <button v-if="editor?.isActive('table')" type="button" @click="showMoreMenu = false; openLinkModal()">
+                        🔗 Link
+                    </button>
+                    <button type="button" @click="toggleSubscript(); showMoreMenu = false">
+                        <span>X<sub>2</sub></span> Subscript
+                    </button>
+                    <button type="button" @click="toggleSuperscript(); showMoreMenu = false">
+                        <span>X<sup>2</sup></span> Superscript
+                    </button>
+                    <button type="button" @click="showMoreMenu = false; $nextTick(() => toggleDropdown('color', true))">
+                        <span class="color-icon" :style="{ borderBottomColor: currentColor || '#000' }">A</span> Text Color
+                    </button>
+                    <button type="button" @click="showMoreMenu = false; $nextTick(() => toggleDropdown('highlight', true))">
+                        <span class="highlight-icon" :style="{ backgroundColor: currentHighlight || '#ffffba' }">H</span> Highlight
+                    </button>
+                    <button type="button" @click="showMoreMenu = false; openImageModal()">
+                        🖼 Image
+                    </button>
+                    <button type="button" @click="showMoreMenu = false; openVideoModal()">
+                        ▶ Video
+                    </button>
+                    <!-- Table - hidden when table is active (shown in toolbar instead) -->
+                    <button v-if="!editor?.isActive('table')" type="button" @click="insertTable(); showMoreMenu = false">
+                        ▦ Insert Table
+                    </button>
+                    <button type="button" @click="editor?.chain().focus().unsetAllMarks().clearNodes().run(); showMoreMenu = false">
+                        ✕ Clear Formatting
+                    </button>
+                </div>
+            </div>
         </div>
         <EditorContent :editor="editor" class="tiptap-content" />
 
@@ -391,6 +483,7 @@ export default {
             showColorPicker: false,
             showHighlightPicker: false,
             showTableMenu: false,
+            showMoreMenu: false,
             // Color state
             currentColor: null,
             currentHighlight: null,
@@ -481,12 +574,26 @@ export default {
             this.showColorPicker = false
             this.showHighlightPicker = false
             this.showTableMenu = false
+            this.showMoreMenu = false
         },
-        toggleDropdown(type) {
+        toggleDropdown(type, forceOpen = false) {
+            // Check if the dropdown is already open
+            const isAlreadyOpen =
+                (type === 'color' && this.showColorPicker) ||
+                (type === 'highlight' && this.showHighlightPicker) ||
+                (type === 'table' && this.showTableMenu) ||
+                (type === 'more' && this.showMoreMenu)
+
+            // Close all dropdowns
             this.closeAllDropdowns()
-            if (type === 'color') this.showColorPicker = true
-            else if (type === 'highlight') this.showHighlightPicker = true
-            else if (type === 'table') this.showTableMenu = true
+
+            // Open if it wasn't already open, or if forceOpen is true
+            if (!isAlreadyOpen || forceOpen) {
+                if (type === 'color') this.showColorPicker = true
+                else if (type === 'highlight') this.showHighlightPicker = true
+                else if (type === 'table') this.showTableMenu = true
+                else if (type === 'more') this.showMoreMenu = true
+            }
         },
 
         // Subscript/Superscript (mutually exclusive)

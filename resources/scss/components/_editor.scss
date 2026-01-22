@@ -35,7 +35,7 @@
   background: $color-bg-subtle;
   border-bottom: 1px solid $color-border-light;
   border-radius: $radius-md $radius-md 0 0;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   overflow: visible;
 }
 
@@ -74,7 +74,44 @@
   height: 1.25rem;
   background: $color-border-light;
   margin: 0 $spacing-xs;
+
+  &.tiptap-mobile-hide {
+    @include mobile {
+      display: none;
+    }
+  }
 }
+
+// Hide desktop-only items on mobile
+.tiptap-desktop-only {
+  @include mobile {
+    // For color pickers, only hide the button but keep the dropdown (for More menu)
+    &.tiptap-color-picker {
+      position: absolute;
+      right: 0;
+      top: 100%;
+
+      > .tiptap-toolbar-btn {
+        display: none;
+      }
+    }
+
+    // Hide everything else completely (table menu now inserts directly, no dropdown needed)
+    &:not(.tiptap-color-picker) {
+      display: none;
+    }
+  }
+}
+
+// Hide mobile-only items on desktop
+.tiptap-mobile-only {
+  display: none;
+
+  @include mobile {
+    display: block;
+  }
+}
+
 
 // --------------------------------------------------------------------------
 // Color Picker
@@ -101,7 +138,8 @@
 .tiptap-color-dropdown {
   @include dropdown-base;
   top: 100%;
-  left: 0;
+  left: 50%;
+  transform: translateX(-50%);
   margin-top: $spacing-xs;
   padding: $spacing-sm;
   display: grid;
@@ -109,6 +147,12 @@
   gap: $spacing-xs;
   min-width: 140px;
   z-index: 1000;
+
+  @include mobile {
+    left: auto;
+    right: 0;
+    transform: none;
+  }
 }
 
 .tiptap-color-dropdown .color-option {
@@ -150,6 +194,11 @@
   min-width: 160px;
   z-index: 1000;
 
+  @include mobile {
+    left: auto;
+    right: 0;
+  }
+
   button {
     display: block;
     width: 100%;
@@ -166,6 +215,65 @@
     &:hover {
       background: $color-bg-hover;
       color: $color-text-primary;
+    }
+  }
+}
+
+// --------------------------------------------------------------------------
+// More Menu (Mobile)
+// --------------------------------------------------------------------------
+
+.tiptap-more-menu {
+  position: relative;
+  overflow: visible;
+}
+
+.tiptap-more-dropdown {
+  @include dropdown-base;
+  top: 100%;
+  left: auto;
+  right: 0;
+  margin-top: $spacing-xs;
+  padding: $spacing-xs;
+  min-width: 180px;
+  max-width: 200px;
+  z-index: 1000;
+
+  @include mobile {
+    // Prevent going off-screen
+    right: -$spacing-sm;
+  }
+
+  button {
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    width: 100%;
+    padding: $spacing-sm $spacing-md;
+    border: none;
+    background: transparent;
+    text-align: left;
+    font-size: $font-size-sm;
+    color: $color-text-secondary;
+    cursor: pointer;
+    border-radius: $radius-xs;
+    transition: $transition-fast;
+
+    &:hover {
+      background: $color-bg-hover;
+      color: $color-text-primary;
+    }
+
+    span {
+      @include flex-center;
+      width: 1.5rem;
+      height: 1.5rem;
+      font-size: $font-size-xs;
+    }
+
+    .color-icon,
+    .highlight-icon {
+      flex-shrink: 0;
     }
   }
 }

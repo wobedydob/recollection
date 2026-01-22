@@ -18,6 +18,13 @@
 
 .btn-secondary {
   @include btn-secondary;
+
+  // Orange theme: darker hover for better visibility against orange background
+  html[data-color="orange"]:not([data-theme="dark"]) & {
+    &:hover {
+      background: #fed7aa;
+    }
+  }
 }
 
 .btn-full {
