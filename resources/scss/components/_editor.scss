@@ -139,7 +139,6 @@
   @include dropdown-base;
   top: 100%;
   left: 50%;
-  transform: translateX(-50%);
   margin-top: $spacing-xs;
   padding: $spacing-sm;
   display: grid;
@@ -148,10 +147,43 @@
   min-width: 140px;
   z-index: 1000;
 
+  // Gentle fade and slide animation
+  opacity: 0;
+  visibility: hidden;
+  transform: translateX(-50%) translateY(-8px);
+
+  transition:
+    opacity 0.2s ease-in-out,
+    transform 0.2s ease-in-out,
+    visibility 0s linear 0.2s;
+
   @include mobile {
     left: auto;
     right: 0;
-    transform: none;
+    transform: translateY(-8px);
+  }
+
+  // Show state (controlled by Vue v-if)
+  // When rendered, animate in
+  animation: dropdownFadeIn 0.25s ease-out forwards;
+}
+
+@keyframes dropdownFadeIn {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-8px);
+
+    @include mobile {
+      transform: translateY(-8px);
+    }
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+
+    @include mobile {
+      transform: translateY(0);
+    }
   }
 }
 
@@ -194,6 +226,9 @@
   min-width: 160px;
   z-index: 1000;
 
+  // Gentle fade and slide animation
+  animation: dropdownFadeInLeft 0.25s ease-out forwards;
+
   @include mobile {
     left: auto;
     right: 0;
@@ -212,10 +247,41 @@
     border-radius: $radius-xs;
     transition: $transition-fast;
 
+    // Subtle initial state
+    opacity: 0;
+    animation: itemFadeIn 0.3s ease-out forwards;
+
+    // Subtle stagger
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{0.03 + ($i * 0.03)}s;
+      }
+    }
+
     &:hover {
       background: $color-bg-hover;
       color: $color-text-primary;
     }
+  }
+}
+
+@keyframes dropdownFadeInLeft {
+  from {
+    opacity: 0;
+    transform: translateY(-8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes itemFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 
@@ -239,6 +305,9 @@
   max-width: 200px;
   z-index: 1000;
 
+  // Gentle fade and slide animation
+  animation: dropdownFadeInLeft 0.25s ease-out forwards;
+
   @include mobile {
     // Prevent going off-screen
     right: -$spacing-sm;
@@ -257,7 +326,18 @@
     color: $color-text-secondary;
     cursor: pointer;
     border-radius: $radius-xs;
-    transition: $transition-fast;
+    transition: background 0.15s ease;
+
+    // Subtle initial state
+    opacity: 0;
+    animation: itemFadeIn 0.3s ease-out forwards;
+
+    // Subtle stagger
+    @for $i from 1 through 10 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{0.03 + ($i * 0.03)}s;
+      }
+    }
 
     &:hover {
       background: $color-bg-hover;

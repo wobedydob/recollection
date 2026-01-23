@@ -748,15 +748,28 @@
   border-radius: $radius-sm;
   box-shadow: $shadow-md;
   z-index: $z-dropdown;
+
+  // Gentle fade and slide
   opacity: 0;
   visibility: hidden;
-  transform: translateY(-5px);
-  transition: $transition-fast;
+  transform: translateY(-8px);
+
+  // Close animation
+  transition:
+    opacity 0.2s ease-in-out,
+    transform 0.2s ease-in-out,
+    visibility 0s linear 0.2s;
 
   &.show {
     opacity: 1;
     visibility: visible;
     transform: translateY(0);
+
+    // Open animation - smooth and gentle
+    transition:
+      opacity 0.25s ease-out,
+      transform 0.25s ease-out,
+      visibility 0s;
   }
 }
 
@@ -771,8 +784,8 @@
   font-size: $font-size-base;
   color: $color-text-secondary;
   cursor: pointer;
-  transition: $transition-fast;
   text-align: left;
+  transition: background 0.15s ease;
 
   &:first-child {
     border-radius: $radius-xs $radius-xs 0 0;
@@ -790,6 +803,29 @@
     background: $color-bg-subtle;
     color: $color-text-primary;
     font-weight: $font-weight-medium;
+  }
+}
+
+// Gentle fade in with subtle stagger when dropdown opens
+.custom-select-dropdown.show .custom-select-option {
+  // Subtle initial state
+  opacity: 0;
+  animation: itemFadeIn 0.3s ease-out forwards;
+
+  // Subtle stagger
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{0.03 + ($i * 0.04)}s;
+    }
+  }
+}
+
+@keyframes itemFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 

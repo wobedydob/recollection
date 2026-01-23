@@ -345,6 +345,17 @@
   z-index: $z-dropdown;
 }
 
+// Vue Transition for tag dropdowns
+.dropdown-fade-enter-active,
+.dropdown-fade-leave-active {
+  transition: opacity 0.25s ease-out;
+}
+
+.dropdown-fade-enter-from,
+.dropdown-fade-leave-to {
+  opacity: 0;
+}
+
 .tag-multiselect-item {
   display: flex;
   align-items: center;
@@ -354,10 +365,33 @@
   border: none;
   border-radius: $radius-sm;
   cursor: pointer;
-  transition: $transition-base;
+  transition: background 0.15s ease;
 
   &:hover {
     background: $color-bg-light;
+  }
+}
+
+// Item fade-in animation when dropdown enters
+.dropdown-fade-enter-active .tag-multiselect-item,
+.dropdown-fade-enter-active .tag-dropdown-item {
+  opacity: 0;
+  animation: itemFadeIn 0.3s ease-out forwards;
+
+  // Subtle stagger
+  @for $i from 1 through 10 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{0.03 + ($i * 0.04)}s;
+    }
+  }
+}
+
+@keyframes itemFadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
   }
 }
 

@@ -35,20 +35,22 @@
                 </div>
 
                 <!-- Tag dropdown (shows only unselected tags) -->
-                <div v-if="showTagDropdown && availableTags.length > 0" class="tag-multiselect-dropdown" @click.stop>
-                    <button
-                        v-for="tag in availableTags"
-                        :key="tag.id"
-                        type="button"
-                        class="tag-multiselect-item"
-                        @click="selectTag(tag.id)"
-                    >
-                        <span class="tag-preview" :style="{ backgroundColor: tag.color + '20', color: tag.color }">
-                            <span v-if="tag.emoji" class="tag-emoji">{{ tag.emoji }}</span>
-                            {{ tag.name }}
-                        </span>
-                    </button>
-                </div>
+                <Transition name="dropdown-fade">
+                    <div v-if="showTagDropdown && availableTags.length > 0" class="tag-multiselect-dropdown" @click.stop>
+                        <button
+                            v-for="tag in availableTags"
+                            :key="tag.id"
+                            type="button"
+                            class="tag-multiselect-item"
+                            @click="selectTag(tag.id)"
+                        >
+                            <span class="tag-preview" :style="{ backgroundColor: tag.color + '20', color: tag.color }">
+                                <span v-if="tag.emoji" class="tag-emoji">{{ tag.emoji }}</span>
+                                {{ tag.name }}
+                            </span>
+                        </button>
+                    </div>
+                </Transition>
             </div>
             <button type="submit" class="submit-btn" :disabled="isContentEmpty(newIdea) || isSubmitting">
                 {{ isSubmitting ? t('common.loading') : t('ideas.save_btn') }}
@@ -162,20 +164,22 @@
                         </div>
                     </div>
 
-                    <div v-if="showEditTagDropdown && editAvailableTags.length" class="tag-dropdown">
-                        <button
-                            v-for="tag in editAvailableTags"
-                            :key="tag.id"
-                            type="button"
-                            class="tag-dropdown-item"
-                            @click="selectEditTag(tag.id)"
-                        >
-                            <span class="tag-preview" :style="{ backgroundColor: tag.color + '20', color: tag.color }">
-                                <span v-if="tag.emoji" class="tag-emoji">{{ tag.emoji }}</span>
-                                {{ tag.name }}
-                            </span>
-                        </button>
-                    </div>
+                    <Transition name="dropdown-fade">
+                        <div v-if="showEditTagDropdown && editAvailableTags.length" class="tag-dropdown">
+                            <button
+                                v-for="tag in editAvailableTags"
+                                :key="tag.id"
+                                type="button"
+                                class="tag-dropdown-item"
+                                @click="selectEditTag(tag.id)"
+                            >
+                                <span class="tag-preview" :style="{ backgroundColor: tag.color + '20', color: tag.color }">
+                                    <span v-if="tag.emoji" class="tag-emoji">{{ tag.emoji }}</span>
+                                    {{ tag.name }}
+                                </span>
+                            </button>
+                        </div>
+                    </Transition>
                 </div>
                 <div class="modal-actions">
                     <button class="btn btn-secondary" @click="cancelEdit">{{ t('common.cancel') }}</button>

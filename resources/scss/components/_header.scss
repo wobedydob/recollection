@@ -73,7 +73,6 @@
 
 .app-dropdown {
   @include dropdown-base;
-  @include dropdown-hidden;
   top: 100%;
   left: 0;
   margin-top: $spacing-sm;
@@ -81,13 +80,32 @@
   overflow: hidden;
   min-width: 220px;
 
+  // Gentle fade and slide
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+
+  // Close animation
+  transition:
+    opacity 0.2s ease-in-out,
+    transform 0.2s ease-in-out,
+    visibility 0s linear 0.2s;
+
   @include mobile {
     min-width: 180px;
     left: -$spacing-sm;
   }
 
   &.show {
-    @include dropdown-visible;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+
+    // Open animation - smooth and gentle
+    transition:
+      opacity 0.25s ease-out,
+      transform 0.25s ease-out,
+      visibility 0s;
   }
 }
 
@@ -98,7 +116,14 @@
   padding: $spacing-md $spacing-base;
   text-decoration: none;
   color: $color-text-secondary;
-  transition: $transition-base;
+
+  // Subtle initial state
+  opacity: 0;
+
+  // Quick fade out when closing
+  transition:
+    opacity 0.15s ease-in-out,
+    background 0.15s ease;
 
   @include tablet {
     padding: $spacing-lg $spacing-base;
@@ -125,6 +150,23 @@
     .app-dropdown-name {
       color: $color-primary;
       font-weight: $font-weight-semibold;
+    }
+  }
+}
+
+// Gentle fade in with subtle stagger when dropdown opens
+.app-dropdown.show .app-dropdown-item {
+  opacity: 1;
+
+  // Gentle fade in
+  transition:
+    opacity 0.3s ease-out,
+    background 0.15s ease;
+
+  // Subtle stagger - each item fades in slightly after the previous
+  @for $i from 1 through 5 {
+    &:nth-child(#{$i}) {
+      transition-delay: #{0.03 + ($i * 0.04)}s, 0s;
     }
   }
 }
@@ -209,7 +251,6 @@
 
 .menu-dropdown {
   @include dropdown-base;
-  @include dropdown-hidden;
   top: 100%;
   right: 0;
   margin-top: $spacing-sm;
@@ -217,13 +258,32 @@
   overflow: hidden;
   min-width: 140px;
 
+  // Gentle fade and slide
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-8px);
+
+  // Close animation
+  transition:
+    opacity 0.2s ease-in-out,
+    transform 0.2s ease-in-out,
+    visibility 0s linear 0.2s;
+
   @include mobile {
     min-width: 120px;
     right: -$spacing-sm;
   }
 
   &.show {
-    @include dropdown-visible;
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+
+    // Open animation - smooth and gentle
+    transition:
+      opacity 0.25s ease-out,
+      transform 0.25s ease-out,
+      visibility 0s;
   }
 }
 
@@ -242,7 +302,14 @@
   color: $color-text-secondary;
   text-decoration: none;
   cursor: pointer;
-  transition: background 0.15s ease;
+
+  // Subtle initial state
+  opacity: 0;
+
+  // Quick fade out when closing
+  transition:
+    opacity 0.15s ease-in-out,
+    background 0.15s ease;
 
   &:hover,
   &:focus,
@@ -272,6 +339,23 @@
 
     &:hover {
       background: $color-danger-light;
+    }
+  }
+}
+
+// Gentle fade in with subtle stagger when menu opens
+.menu-dropdown.show .menu-item {
+  opacity: 1;
+
+  // Gentle fade in
+  transition:
+    opacity 0.3s ease-out,
+    background 0.15s ease;
+
+  // Subtle stagger
+  @for $i from 1 through 5 {
+    &:nth-child(#{$i}) {
+      transition-delay: #{0.03 + ($i * 0.04)}s, 0s;
     }
   }
 }
