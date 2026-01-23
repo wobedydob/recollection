@@ -214,6 +214,28 @@ body {
 }
 
 // --------------------------------------------------------------------------
+// Page Load Animations - Guest Pages (Login, Register, etc.)
+// --------------------------------------------------------------------------
+
+.guest-page {
+  .auth-card {
+    animation: fade-scale-in 0.5s ease forwards;
+    opacity: 0;
+  }
+}
+
+@keyframes fade-scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.95) translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+// --------------------------------------------------------------------------
 // Page Load Animations - Profile
 // --------------------------------------------------------------------------
 

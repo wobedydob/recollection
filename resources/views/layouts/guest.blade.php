@@ -34,5 +34,86 @@
     </div>
 
     @stack('scripts')
+
+    <script>
+        // Make guest pages visible immediately
+        requestAnimationFrame(() => {
+            document.body.classList.add('page-loaded');
+        });
+
+        // Page transitions for guest pages (login, register, etc.)
+        (() => {
+            // Intercept all internal navigation for smooth transitions
+            document.addEventListener('click', async (e) => {
+                const link = e.target.closest('a');
+
+                // Skip if not a link
+                if (!link) {
+                    return;
+                }
+
+                // Skip external links
+                if (link.target === '_blank' || !link.href || !link.href.startsWith(window.location.origin)) {
+                    return;
+                }
+
+                // Skip if it's the same page
+                if (link.href === window.location.href) {
+                    e.preventDefault();
+                    return;
+                }
+
+                e.preventDefault();
+
+                try {
+                    const currentCard = document.querySelector('.auth-card');
+
+                    // Start fetching immediately (parallel with exit animation)
+                    const fetchPromise = fetch(link.href)
+                        .then(response => response.text())
+                        .then(html => {
+                            const parser = new DOMParser();
+                            return parser.parseFromString(html, 'text/html');
+                        });
+
+                    // Trigger exit animation
+                    if (currentCard) {
+                        currentCard.style.transition = 'all 0.3s ease';
+                        currentCard.style.opacity = '0';
+                        currentCard.style.transform = 'scale(0.95) translateY(-20px)';
+                    }
+
+                    // Wait for both animation AND fetch to complete
+                    const [newDoc] = await Promise.all([
+                        fetchPromise,
+                        new Promise(resolve => setTimeout(resolve, 300))
+                    ]);
+
+                    const newContent = newDoc.querySelector('#app');
+
+                    if (!newContent) {
+                        window.location.href = link.href;
+                        return;
+                    }
+
+                    // Replace content
+                    document.querySelector('#app').innerHTML = newContent.innerHTML;
+
+                    // Update title and URL
+                    document.title = newDoc.title;
+                    window.history.pushState({}, '', link.href);
+
+                    // Reinitialize Vue apps if needed
+                    if (window.initializeVueApps) {
+                        window.initializeVueApps();
+                    }
+
+                } catch (error) {
+                    console.error('Transition failed:', error);
+                    window.location.href = link.href;
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
