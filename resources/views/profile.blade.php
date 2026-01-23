@@ -129,9 +129,10 @@
         <div class="profile-actions">
             <div class="profile-nav-links">
                 <span class="profile-nav-label">{{ __('profile.back_to') }}</span>
-                <a href="{{ route('home') }}" class="profile-nav-btn" title="Home">🏠</a>
-                <a href="{{ route('memorybox.index') }}" class="profile-nav-btn" title="{{ config('modules.memorybox.name') }}">{{ config('modules.memorybox.icon') }}</a>
-                <a href="{{ route('checklist.index') }}" class="profile-nav-btn" title="{{ config('modules.checklist.name') }}">{{ config('modules.checklist.icon') }}</a>
+                <a href="{{ route('home') }}" class="profile-nav-btn" data-tooltip="Home">🏠</a>
+                <a href="{{ route('memorybox.index') }}" class="profile-nav-btn" data-tooltip="{{ __('common.module_memorybox') }}">{{ config('modules.memorybox.icon') }}</a>
+                <a href="{{ route('checklist.index') }}" class="profile-nav-btn" data-tooltip="{{ __('common.module_checklist') }}">{{ config('modules.checklist.icon') }}</a>
+                <a href="{{ route('suggestions.index') }}" class="profile-nav-btn" data-tooltip="{{ __('common.module_suggestions') }}">{{ config('modules.suggestions.icon') }}</a>
             </div>
             <form method="POST" action="{{ route('logout') }}" style="display: inline;">
                 @csrf

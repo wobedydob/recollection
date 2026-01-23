@@ -106,5 +106,24 @@ document.addEventListener('click', function(e) {
     }
 });
 </script>
+
+<script data-always-execute>
+(function() {
+    // Reset animations to show content immediately after page transition
+    const adminHeader = document.querySelector('.admin-header');
+    const adminCard = document.querySelector('.admin-card');
+
+    if (adminHeader) {
+        adminHeader.style.animation = 'none';
+        adminHeader.style.opacity = '1';
+        adminHeader.style.transform = 'translateY(0)';
+    }
+
+    if (adminCard) {
+        adminCard.style.opacity = '1';
+        adminCard.style.transform = 'translateY(0)';
+    }
+})();
+</script>
 @endpush
 @endsection

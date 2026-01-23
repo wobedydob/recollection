@@ -331,6 +331,8 @@
   background: $color-bg-subtle;
   font-size: 1.25rem;
   transition: $transition-base;
+  position: relative; // For tooltip positioning
+  border: 2px solid transparent;
 
   &,
   &:hover,
@@ -341,6 +343,7 @@
 
   &:hover {
     background: $color-bg-hover;
+    border-color: $color-primary;
     transform: scale(1.05);
   }
 }

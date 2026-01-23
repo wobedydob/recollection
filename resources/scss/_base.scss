@@ -126,3 +126,185 @@ a {
   font-weight: $font-weight-semibold;
   color: $color-text-tertiary;
 }
+
+// --------------------------------------------------------------------------
+// Page Transitions (App Switching)
+// --------------------------------------------------------------------------
+
+body {
+  // Start invisible for initial page load
+  opacity: 0;
+  transition: opacity 0.3s ease-out;
+
+  // Fade in when page is loaded
+  &.page-loaded {
+    opacity: 1;
+  }
+}
+
+#app {
+  // Smooth transitions for app switching
+  min-height: 100vh;
+}
+
+// --------------------------------------------------------------------------
+// Page Load Animations - Homepage
+// --------------------------------------------------------------------------
+
+.home-header {
+  animation: slide-up 0.4s ease forwards;
+  opacity: 0;
+}
+
+.module-tiles {
+  display: grid;
+}
+
+.module-tile {
+  animation: slide-up 0.4s ease forwards;
+  opacity: 0;
+
+  @for $i from 1 through 6 {
+    &:nth-child(#{$i}) {
+      animation-delay: #{0.1 + ($i * 0.08)}s;
+    }
+  }
+}
+
+// --------------------------------------------------------------------------
+// Page Load Animations - Floating Navigation
+// --------------------------------------------------------------------------
+
+.floating-nav {
+  animation: slide-down 0.3s ease forwards;
+  opacity: 0;
+
+  .floating-nav-btn {
+    animation: pop-in 0.4s ease forwards;
+    opacity: 0;
+
+    @for $i from 1 through 6 {
+      &:nth-child(#{$i}) {
+        animation-delay: #{0.15 + ($i * 0.06)}s;
+      }
+    }
+  }
+}
+
+@keyframes slide-down {
+  from {
+    opacity: 0;
+    transform: translateY(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes pop-in {
+  from {
+    opacity: 0;
+    transform: scale(0.8) translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1) translateY(0);
+  }
+}
+
+// --------------------------------------------------------------------------
+// Page Load Animations - Profile
+// --------------------------------------------------------------------------
+
+.profile-card {
+  // Animate the card itself
+  animation: slide-up 0.4s ease forwards;
+  animation-delay: 0.1s;
+  opacity: 0;
+
+  > * {
+    animation: slide-up 0.4s ease forwards;
+    opacity: 0;
+  }
+
+  .profile-header {
+    animation-delay: 0.25s;
+  }
+
+  .profile-form {
+    animation-delay: 0.35s;
+  }
+
+  .password-section {
+    animation-delay: 0.45s;
+  }
+
+  .settings-section {
+    animation-delay: 0.55s;
+  }
+
+  .profile-actions {
+    animation-delay: 0.65s;
+  }
+
+  .danger-zone {
+    animation-delay: 0.75s;
+  }
+}
+
+// --------------------------------------------------------------------------
+// Page Load Animations - Admin
+// --------------------------------------------------------------------------
+
+.admin-header {
+  animation: slide-up 0.4s ease forwards;
+  animation-delay: 0.1s;
+  opacity: 0;
+}
+
+.admin-content {
+  animation: slide-up 0.4s ease forwards;
+  animation-delay: 0.2s;
+  opacity: 0;
+
+  .stats-grid,
+  .admin-table-container,
+  .user-detail-grid {
+    > * {
+      animation: slide-up 0.3s ease forwards;
+      opacity: 0;
+
+      @for $i from 1 through 12 {
+        &:nth-child(#{$i}) {
+          animation-delay: #{0.3 + ($i * 0.05)}s;
+        }
+      }
+    }
+  }
+}
+
+// Respect user's motion preferences
+@media (prefers-reduced-motion: reduce) {
+  body {
+    transition: none !important;
+    opacity: 1 !important;
+  }
+
+  #old-page,
+  #app > * {
+    transition: none !important;
+  }
+
+  .floating-nav .floating-nav-btn,
+  .home-header,
+  .module-tile,
+  .profile-card,
+  .profile-card > *,
+  .admin-header,
+  .admin-content,
+  .admin-content > * {
+    animation: none !important;
+    opacity: 1 !important;
+  }
+}

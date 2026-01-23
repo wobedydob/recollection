@@ -6,11 +6,6 @@
         <h1 class="admin-title">{{ __('admin.dashboard') }}</h1>
     </div>
 
-    <div class="admin-loader" id="admin-loader">
-        <div class="loader"></div>
-        <p class="loader-text">{{ __('common.loading') }}</p>
-    </div>
-
     <div class="admin-content" id="admin-content">
         <div class="stats-grid">
         <div class="stat-card">
@@ -88,11 +83,40 @@
 </div>
 
 @push('scripts')
-<script>
-setTimeout(function() {
-    document.getElementById('admin-loader').style.display = 'none';
-    document.getElementById('admin-content').classList.add('loaded');
-}, 300);
+<script data-always-execute>
+(function() {
+    // Dashboard loads fast, just show content immediately (always execute on page load/transition)
+    const adminContent = document.getElementById('admin-content');
+    const adminHeader = document.querySelector('.admin-header');
+    const statCards = document.querySelectorAll('.stat-card');
+    const adminCard = document.querySelector('.admin-card');
+
+    if (adminContent) {
+        adminContent.style.animation = 'none';
+        adminContent.style.opacity = '1';
+        adminContent.style.transform = 'translateY(0)';
+        adminContent.style.display = 'block';
+        adminContent.classList.add('loaded');
+    }
+
+    if (adminHeader) {
+        adminHeader.style.animation = 'none';
+        adminHeader.style.opacity = '1';
+        adminHeader.style.transform = 'translateY(0)';
+    }
+
+    statCards.forEach((card) => {
+        card.style.animation = 'none';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+    });
+
+    if (adminCard) {
+        adminCard.style.animation = 'none';
+        adminCard.style.opacity = '1';
+        adminCard.style.transform = 'translateY(0)';
+    }
+})();
 </script>
 @endpush
 @endsection

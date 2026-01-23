@@ -133,16 +133,8 @@ class AdminController extends Controller
         return redirect()->route('admin.users')->with('success', 'Gebruiker verwijderd.');
     }
 
-    public function suggestions(Request $request): View
+    public function suggestions(Request $request): View|\Illuminate\Http\JsonResponse
     {
-        $query = Suggestion::with('user');
-
-        if ($status = $request->get('status')) {
-            $query->where('status', $status);
-        }
-
-        $suggestions = $query->latest()->paginate(20);
-
         $stats = [
             'total' => Suggestion::count(),
             'new' => Suggestion::where('status', 'new')->count(),
@@ -151,7 +143,34 @@ class AdminController extends Controller
             'done' => Suggestion::where('status', 'done')->count(),
         ];
 
-        return view('admin.suggestions.index', compact('suggestions', 'stats'));
+        // If JSON request, return suggestions data
+        if ($request->expectsJson()) {
+            $query = Suggestion::with('user');
+
+            if ($status = $request->get('status')) {
+                $query->where('status', $status);
+            }
+
+            $suggestions = $query->latest()->paginate(20);
+
+            return response()->json([
+                'suggestions' => $suggestions->map(function ($suggestion) {
+                    return [
+                        'id' => $suggestion->id,
+                        'content' => $suggestion->content,
+                        'status' => $suggestion->status,
+                        'created_at' => $suggestion->created_at->translatedFormat('d M Y H:i'),
+                        'user' => [
+                            'name' => $suggestion->user->name,
+                            'avatar' => strtoupper(substr($suggestion->user->name, 0, 1)),
+                        ],
+                    ];
+                }),
+            ]);
+        }
+
+        // For initial page load, just return view with stats
+        return view('admin.suggestions.index', compact('stats'));
     }
 
     public function updateSuggestionStatus(Request $request, Suggestion $suggestion)

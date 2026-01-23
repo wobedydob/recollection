@@ -82,70 +82,13 @@
             <div class="error-message">{{ $errors->first() }}</div>
         @endif
 
-        <div class="admin-loader" id="admin-loader">
+        <div class="admin-loader" id="admin-loader" style="display: flex;">
             <div class="loader"></div>
             <p class="loader-text">{{ __('common.loading') }}</p>
         </div>
 
-        <div class="admin-content" id="admin-content">
-            <div class="suggestions-admin-list">
-                @forelse($suggestions as $suggestion)
-                    <div class="suggestion-admin-item" data-status="{{ $suggestion->status }}">
-                        <div class="suggestion-admin-header">
-                            <div class="suggestion-admin-user">
-                                <span class="user-avatar">{{ strtoupper(substr($suggestion->user->name, 0, 1)) }}</span>
-                                <div class="user-details">
-                                    <span class="user-name">{{ $suggestion->user->name }}</span>
-                                    <span class="suggestion-date">{{ $suggestion->created_at->translatedFormat('d M Y H:i') }}</span>
-                                </div>
-                            </div>
-                            <div class="suggestion-admin-actions">
-                                <div class="custom-select custom-select-small" data-suggestion-id="{{ $suggestion->id }}" data-current-status="{{ $suggestion->status }}">
-                                    <button type="button" class="custom-select-trigger" onclick="toggleStatusDropdown(this)">
-                                        <span class="status-indicator {{ $suggestion->status }}"></span>
-                                        <span class="custom-select-value">
-                                            @if($suggestion->status === 'new') {{ __('admin.new') }}
-                                            @elseif($suggestion->status === 'reviewed') {{ __('admin.seen') }}
-                                            @elseif($suggestion->status === 'planned') {{ __('admin.planned') }}
-                                            @elseif($suggestion->status === 'done') {{ __('admin.done') }}
-                                            @endif
-                                        </span>
-                                        <span class="custom-select-arrow">▼</span>
-                                    </button>
-                                    <div class="custom-select-dropdown">
-                                        <button type="button" class="custom-select-option {{ $suggestion->status === 'new' ? 'active' : '' }}" onclick="updateStatusFromDropdown(this, 'new')">
-                                            <span class="status-indicator new"></span>
-                                            {{ __('admin.new') }}
-                                        </button>
-                                        <button type="button" class="custom-select-option {{ $suggestion->status === 'reviewed' ? 'active' : '' }}" onclick="updateStatusFromDropdown(this, 'reviewed')">
-                                            <span class="status-indicator reviewed"></span>
-                                            {{ __('admin.seen') }}
-                                        </button>
-                                        <button type="button" class="custom-select-option {{ $suggestion->status === 'planned' ? 'active' : '' }}" onclick="updateStatusFromDropdown(this, 'planned')">
-                                            <span class="status-indicator planned"></span>
-                                            {{ __('admin.planned') }}
-                                        </button>
-                                        <button type="button" class="custom-select-option {{ $suggestion->status === 'done' ? 'active' : '' }}" onclick="updateStatusFromDropdown(this, 'done')">
-                                            <span class="status-indicator done"></span>
-                                            {{ __('admin.done') }}
-                                        </button>
-                                    </div>
-                                </div>
-                                <button type="button" class="delete-btn" title="{{ __('common.delete') }}" onclick="deleteSuggestion({{ $suggestion->id }}, this)">×</button>
-                            </div>
-                        </div>
-                        <p class="suggestion-admin-content">{{ $suggestion->content }}</p>
-                    </div>
-                @empty
-                    <p class="empty-message">{{ __('admin.no_suggestions') }}</p>
-                @endforelse
-            </div>
-
-            @if($suggestions->hasPages())
-                <div class="pagination-wrapper">
-                    {{ $suggestions->links() }}
-                </div>
-            @endif
+        <div class="admin-content" id="admin-content" style="display: none;">
+            <div class="suggestions-admin-list"></div>
         </div>
     </div>
 </div>
@@ -164,12 +107,107 @@
 
 @push('scripts')
 <script>
-setTimeout(function() {
-    document.getElementById('admin-loader').style.display = 'none';
-    document.getElementById('admin-content').classList.add('loaded');
-}, 300);
-
 let currentFilter = '';
+let allSuggestions = [];
+
+// Make loadSuggestions globally available (only define once)
+if (!window.loadSuggestions) {
+    window.loadSuggestions = async function() {
+        if (window.loadSuggestionsRunning) {
+            return;
+        }
+        window.loadSuggestionsRunning = true;
+    const loader = document.getElementById('admin-loader');
+    const content = document.getElementById('admin-content');
+
+    // Show loader
+    loader.style.display = 'flex';
+    content.style.display = 'none';
+
+    // Build URL
+    const params = new URLSearchParams();
+    if (currentFilter) params.append('status', currentFilter);
+
+    try {
+        const res = await fetch(`/admin/suggestions?${params.toString()}`, {
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            credentials: 'include'
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            allSuggestions = data.suggestions;
+            renderSuggestions(data.suggestions);
+        }
+    } catch (e) {
+        console.error('Failed to load suggestions:', e);
+    }
+
+    // Hide loader, show content after minimum time for smooth transition
+    setTimeout(() => {
+        loader.style.display = 'none';
+        content.style.display = 'block';
+        content.classList.add('loaded');
+        window.loadSuggestionsRunning = false;
+    }, 300);
+    };
+}
+
+function renderSuggestions(suggestions) {
+        const list = document.querySelector('.suggestions-admin-list');
+        const statusLabels = { 'new': '{{ __('admin.new') }}', 'reviewed': '{{ __('admin.seen') }}', 'planned': '{{ __('admin.planned') }}', 'done': '{{ __('admin.done') }}' };
+
+        if (suggestions.length === 0) {
+            list.innerHTML = '<p class="empty-message">{{ __('admin.no_suggestions') }}</p>';
+            return;
+        }
+
+        list.innerHTML = suggestions.map((suggestion) => `
+        <div class="suggestion-admin-item" data-status="${suggestion.status}">
+            <div class="suggestion-admin-header">
+                <div class="suggestion-admin-user">
+                    <span class="user-avatar">${suggestion.user.avatar}</span>
+                    <div class="user-details">
+                        <span class="user-name">${escapeHtml(suggestion.user.name)}</span>
+                        <span class="suggestion-date">${suggestion.created_at}</span>
+                    </div>
+                </div>
+                <div class="suggestion-admin-actions">
+                    <div class="custom-select custom-select-small" data-suggestion-id="${suggestion.id}" data-current-status="${suggestion.status}">
+                        <button type="button" class="custom-select-trigger" onclick="toggleStatusDropdown(this)">
+                            <span class="status-indicator ${suggestion.status}"></span>
+                            <span class="custom-select-value">${statusLabels[suggestion.status]}</span>
+                            <span class="custom-select-arrow">▼</span>
+                        </button>
+                        <div class="custom-select-dropdown">
+                            <button type="button" class="custom-select-option ${suggestion.status === 'new' ? 'active' : ''}" onclick="updateStatusFromDropdown(this, 'new')">
+                                <span class="status-indicator new"></span>
+                                {{ __('admin.new') }}
+                            </button>
+                            <button type="button" class="custom-select-option ${suggestion.status === 'reviewed' ? 'active' : ''}" onclick="updateStatusFromDropdown(this, 'reviewed')">
+                                <span class="status-indicator reviewed"></span>
+                                {{ __('admin.seen') }}
+                            </button>
+                            <button type="button" class="custom-select-option ${suggestion.status === 'planned' ? 'active' : ''}" onclick="updateStatusFromDropdown(this, 'planned')">
+                                <span class="status-indicator planned"></span>
+                                {{ __('admin.planned') }}
+                            </button>
+                            <button type="button" class="custom-select-option ${suggestion.status === 'done' ? 'active' : ''}" onclick="updateStatusFromDropdown(this, 'done')">
+                                <span class="status-indicator done"></span>
+                                {{ __('admin.done') }}
+                            </button>
+                        </div>
+                    </div>
+                    <button type="button" class="delete-btn" title="{{ __('common.delete') }}" onclick="deleteSuggestion(${suggestion.id}, this)">×</button>
+                </div>
+            </div>
+            <p class="suggestion-admin-content">${escapeHtml(suggestion.content)}</p>
+        </div>
+    `).join('');
+}
 
 function filterByStatus(status) {
     currentFilter = status;
@@ -179,35 +217,15 @@ function filterByStatus(status) {
         btn.classList.toggle('active', btn.dataset.status === status);
     });
 
-    // Filter suggestions
-    const items = document.querySelectorAll('.suggestion-admin-item');
-    let visibleCount = 0;
+    // Filter and render
+    const filtered = status ? allSuggestions.filter(s => s.status === status) : allSuggestions;
+    renderSuggestions(filtered);
+}
 
-    items.forEach(item => {
-        const itemStatus = item.dataset.status;
-        const shouldShow = !status || itemStatus === status;
-
-        if (shouldShow) {
-            item.style.display = '';
-            visibleCount++;
-        } else {
-            item.style.display = 'none';
-        }
-    });
-
-    // Show/hide empty message
-    let emptyMsg = document.querySelector('.suggestions-admin-list .empty-message');
-    if (visibleCount === 0) {
-        if (!emptyMsg) {
-            emptyMsg = document.createElement('p');
-            emptyMsg.className = 'empty-message';
-            document.querySelector('.suggestions-admin-list').appendChild(emptyMsg);
-        }
-        emptyMsg.textContent = status ? '{{ __('admin.no_suggestions_status') }}' : '{{ __('admin.no_suggestions') }}';
-        emptyMsg.style.display = '';
-    } else if (emptyMsg) {
-        emptyMsg.style.display = 'none';
-    }
+function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
 }
 
 function toggleStatusDropdown(btn) {
@@ -262,7 +280,13 @@ async function updateStatusFromDropdown(optionEl, newStatus) {
             // Update item's data-status for filtering
             customSelect.closest('.suggestion-admin-item').dataset.status = newStatus;
 
-            // Re-apply current filter
+            // Update in allSuggestions array
+            const suggestionIndex = allSuggestions.findIndex(s => s.id === parseInt(suggestionId));
+            if (suggestionIndex !== -1) {
+                allSuggestions[suggestionIndex].status = newStatus;
+            }
+
+            // Re-apply current filter if active
             if (currentFilter) {
                 filterByStatus(currentFilter);
             }
@@ -293,54 +317,126 @@ function closeDeleteModal() {
     pendingDeleteBtn = null;
 }
 
-document.getElementById('confirm-delete-btn').addEventListener('click', async function() {
-    if (!pendingDeleteId) return;
+// Add delete confirmation listener (only once)
+if (!window.suggestionsDeleteListenerAdded) {
+    window.suggestionsDeleteListenerAdded = true;
+    document.getElementById('confirm-delete-btn').addEventListener('click', async function() {
+        if (!pendingDeleteId) return;
 
-    try {
-        const res = await fetch(`/admin/suggestions/${pendingDeleteId}`, {
-            method: 'DELETE',
-            headers: {
-                'Accept': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            },
-            credentials: 'include'
-        });
+        try {
+            const res = await fetch(`/admin/suggestions/${pendingDeleteId}`, {
+                method: 'DELETE',
+                headers: {
+                    'Accept': 'application/json',
+                    'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+                },
+                credentials: 'include'
+            });
 
-        if (res.ok) {
-            // Update stats counters
-            const item = pendingDeleteBtn.closest('.suggestion-admin-item');
-            const customSelect = item.querySelector('.custom-select');
-            const currentStatus = customSelect.dataset.currentStatus;
+            if (res.ok) {
+                // Update stats counters
+                const item = pendingDeleteBtn.closest('.suggestion-admin-item');
+                const customSelect = item.querySelector('.custom-select');
+                const currentStatus = customSelect.dataset.currentStatus;
 
-            const totalEl = document.getElementById('stat-total');
-            const statusEl = document.getElementById('stat-' + currentStatus);
-            if (totalEl) totalEl.textContent = parseInt(totalEl.textContent) - 1;
-            if (statusEl) statusEl.textContent = parseInt(statusEl.textContent) - 1;
+                const totalEl = document.getElementById('stat-total');
+                const statusEl = document.getElementById('stat-' + currentStatus);
+                if (totalEl) totalEl.textContent = parseInt(totalEl.textContent) - 1;
+                if (statusEl) statusEl.textContent = parseInt(statusEl.textContent) - 1;
 
-            // Animate out and remove the item
-            item.style.opacity = '0';
-            item.style.transform = 'scale(0.95)';
-            item.style.transition = 'all 0.3s ease';
-            setTimeout(() => item.remove(), 300);
+                // Remove from allSuggestions array
+                allSuggestions = allSuggestions.filter(s => s.id !== pendingDeleteId);
+
+                // Animate out and remove the item
+                item.style.opacity = '0';
+                item.style.transform = 'scale(0.95)';
+                item.style.transition = 'all 0.3s ease';
+                setTimeout(() => {
+                    item.remove();
+                    // Check if list is now empty
+                    if (allSuggestions.length === 0) {
+                        document.querySelector('.suggestions-admin-list').innerHTML = '<p class="empty-message">{{ __('admin.no_suggestions') }}</p>';
+                    }
+                }, 300);
+            }
+        } catch (e) {
+            console.error('Failed to delete suggestion:', e);
         }
-    } catch (e) {
-        console.error('Failed to delete suggestion:', e);
+
+        closeDeleteModal();
+    });
+}
+
+// Close modal when clicking overlay (only once)
+if (!window.suggestionsModalListenerAdded) {
+    window.suggestionsModalListenerAdded = true;
+    document.getElementById('delete-modal').addEventListener('click', function(e) {
+        if (e.target === this) closeDeleteModal();
+    });
+}
+
+// Close all dropdowns when clicking outside (only once)
+if (!window.suggestionsDropdownListenerAdded) {
+    window.suggestionsDropdownListenerAdded = true;
+    document.addEventListener('click', function(e) {
+        if (!e.target.closest('.custom-select')) {
+            document.querySelectorAll('.custom-select-dropdown.show').forEach(dd => dd.classList.remove('show'));
+        }
+    });
+}
+
+// Initialize filter buttons based on URL
+const urlParams = new URLSearchParams(window.location.search);
+const initialStatus = urlParams.get('status') || '';
+if (initialStatus) {
+    currentFilter = initialStatus;
+    document.querySelectorAll('#filter-tags .filter-tag').forEach(btn => {
+        btn.classList.toggle('active', btn.dataset.status === initialStatus);
+    });
+}
+</script>
+
+<script data-always-execute>
+(function() {
+    // Reset animations to show content immediately after page transition
+    const adminHeader = document.querySelector('.admin-header');
+    const adminCard = document.querySelector('.admin-card');
+    const statCards = document.querySelectorAll('.stat-card');
+
+    if (adminHeader) {
+        adminHeader.style.animation = 'none';
+        adminHeader.style.opacity = '1';
+        adminHeader.style.transform = 'translateY(0)';
     }
 
-    closeDeleteModal();
-});
-
-// Close modal when clicking overlay
-document.getElementById('delete-modal').addEventListener('click', function(e) {
-    if (e.target === this) closeDeleteModal();
-});
-
-// Close all dropdowns when clicking outside
-document.addEventListener('click', function(e) {
-    if (!e.target.closest('.custom-select')) {
-        document.querySelectorAll('.custom-select-dropdown.show').forEach(dd => dd.classList.remove('show'));
+    if (adminCard) {
+        adminCard.style.opacity = '1';
+        adminCard.style.transform = 'translateY(0)';
     }
-});
+
+    statCards.forEach(card => {
+        card.style.animation = 'none';
+        card.style.opacity = '1';
+        card.style.transform = 'translateY(0)';
+    });
+
+    // Auto-load suggestions if list is empty
+    setTimeout(() => {
+        const list = document.querySelector('.suggestions-admin-list');
+        const loader = document.getElementById('admin-loader');
+
+        // Make sure we have the elements and loadSuggestions function exists
+        if (list && loader && window.loadSuggestions) {
+            // Check if list is empty and loader is visible
+            if (list.innerHTML.trim() === '' && loader.style.display !== 'none') {
+                // Only load if not already running
+                if (!window.loadSuggestionsRunning) {
+                    window.loadSuggestions();
+                }
+            }
+        }
+    }, 50);
+})();
 </script>
 @endpush
 @endsection

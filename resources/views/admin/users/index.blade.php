@@ -57,41 +57,14 @@
             <div class="error-message">{{ $errors->first() }}</div>
         @endif
 
-        <div class="admin-loader" id="admin-loader">
+        <div class="admin-loader" id="admin-loader" style="display: flex;">
             <div class="loader"></div>
             <p class="loader-text">{{ __('common.loading') }}</p>
         </div>
 
-        <div class="admin-content" id="admin-content">
-            <div class="users-list">
-                @forelse($users as $user)
-                    <a href="{{ route('admin.users.show', $user) }}" class="user-row clickable">
-                        <div class="user-info">
-                            <span class="user-avatar">{{ strtoupper(substr($user->name, 0, 1)) }}</span>
-                            <div class="user-details">
-                                <span class="user-name">{{ $user->name }}</span>
-                                <span class="user-email">{{ $user->email }}</span>
-                            </div>
-                        </div>
-                        <div class="user-stats">
-                            <span class="stat" title="{{ __('admin.ideas') }}">✨ {{ $user->ideas_count }}</span>
-                            <span class="stat" title="{{ __('admin.checklists') }}">📋 {{ $user->todo_lists_count }}</span>
-                        </div>
-                        <div class="user-meta">
-                            <span class="user-role {{ $user->role }}">{{ $user->role }}</span>
-                            <span class="user-date">{{ $user->created_at->translatedFormat('d M Y') }}</span>
-                        </div>
-                    </a>
-                @empty
-                    <p class="empty-message">{{ __('admin.no_users') }}</p>
-                @endforelse
-            </div>
-
-            @if($users->hasPages())
-                <div class="pagination-wrapper">
-                    {{ $users->links() }}
-                </div>
-            @endif
+        <div class="admin-content" id="admin-content" style="display: none;">
+            <div class="users-list"></div>
+            <div class="pagination-wrapper"></div>
         </div>
     </div>
 </div>
@@ -99,12 +72,69 @@
 @push('scripts')
 <script>
 let currentRole = '{{ request('role') }}';
+let currentSearch = '{{ request('search') }}';
 
-// Show content after minimum loading time
-setTimeout(function() {
-    document.getElementById('admin-loader').style.display = 'none';
-    document.getElementById('admin-content').classList.add('loaded');
-}, 300);
+// Make loadUsers globally available (only define once)
+if (!window.loadUsers) {
+    window.loadUsers = async function() {
+        if (window.loadUsersRunning) {
+            return;
+        }
+        window.loadUsersRunning = true;
+
+    const loader = document.getElementById('admin-loader');
+    const content = document.getElementById('admin-content');
+
+    // Show loader
+    loader.style.display = 'flex';
+    content.style.display = 'none';
+
+    // Build URL
+    const params = new URLSearchParams();
+    if (currentSearch) params.append('search', currentSearch);
+    if (currentRole) params.append('role', currentRole);
+
+    try {
+        const res = await fetch(`/admin/users?${params.toString()}`, {
+            headers: {
+                'Accept': 'application/json',
+                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
+            },
+            credentials: 'include'
+        });
+
+        if (res.ok) {
+            const data = await res.json();
+            renderUsers(data.users);
+        }
+    } catch (e) {
+        console.error('Failed to load users:', e);
+    }
+
+    // Hide loader, show content after minimum time for smooth transition
+    setTimeout(() => {
+        loader.style.display = 'none';
+        content.style.display = 'block';
+        content.classList.add('loaded');
+        window.loadUsersRunning = false;
+    }, 300);
+    };
+}
+
+async function searchUsers() {
+    const search = document.getElementById('search-input').value;
+    currentSearch = search;
+
+    // Update URL without reload
+    const params = new URLSearchParams();
+    if (search) params.append('search', search);
+    if (currentRole) params.append('role', currentRole);
+    const newUrl = params.toString() ? `/admin/users?${params.toString()}` : '/admin/users';
+    history.pushState({}, '', newUrl);
+
+    // Reload users with new filters
+    await window.loadUsers();
+}
 
 function toggleDropdown() {
     document.getElementById('role-dropdown').classList.toggle('show');
@@ -124,61 +154,29 @@ function selectRole(role) {
     searchUsers();
 }
 
-// Close dropdown when clicking outside
-document.addEventListener('click', function(e) {
-    const select = document.getElementById('role-select');
-    if (select && !select.contains(e.target)) {
-        document.getElementById('role-dropdown').classList.remove('show');
-    }
-});
-
-// Debounced search on input
-let searchTimeout = null;
-document.getElementById('search-input').addEventListener('input', function() {
-    clearTimeout(searchTimeout);
-    searchTimeout = setTimeout(searchUsers, 300);
-});
-
-async function searchUsers() {
-    const search = document.getElementById('search-input').value;
-    const loader = document.getElementById('admin-loader');
-    const content = document.getElementById('admin-content');
-
-    // Show loader, hide content
-    loader.style.display = 'flex';
-    content.classList.remove('loaded');
-
-    // Build URL
-    const params = new URLSearchParams();
-    if (search) params.append('search', search);
-    if (currentRole) params.append('role', currentRole);
-
-    try {
-        const res = await fetch(`/admin/users?${params.toString()}`, {
-            headers: {
-                'Accept': 'application/json',
-                'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').content
-            },
-            credentials: 'include'
-        });
-
-        if (res.ok) {
-            const data = await res.json();
-            renderUsers(data.users);
-
-            // Update URL without reload
-            const newUrl = params.toString() ? `/admin/users?${params.toString()}` : '/admin/users';
-            history.pushState({}, '', newUrl);
+// Close dropdown when clicking outside (only add once)
+if (!window.usersDropdownListenerAdded) {
+    window.usersDropdownListenerAdded = true;
+    document.addEventListener('click', function(e) {
+        const select = document.getElementById('role-select');
+        if (select && !select.contains(e.target)) {
+            const dropdown = document.getElementById('role-dropdown');
+            if (dropdown) dropdown.classList.remove('show');
         }
-    } catch (e) {
-        console.error('Failed to search users:', e);
-    }
+    });
+}
 
-    // Hide loader, show content
-    setTimeout(() => {
-        loader.style.display = 'none';
-        content.classList.add('loaded');
-    }, 300);
+// Debounced search on input (only add once)
+if (!window.usersSearchListenerAdded) {
+    window.usersSearchListenerAdded = true;
+    let searchTimeout = null;
+    const searchInput = document.getElementById('search-input');
+    if (searchInput) {
+        searchInput.addEventListener('input', function() {
+            clearTimeout(searchTimeout);
+            searchTimeout = setTimeout(searchUsers, 300);
+        });
+    }
 }
 
 function renderUsers(users) {
@@ -219,6 +217,42 @@ function escapeHtml(text) {
     div.textContent = text;
     return div.innerHTML;
 }
+</script>
+
+<script data-always-execute>
+(function() {
+    // Reset animations to show content immediately after page transition
+    const adminHeader = document.querySelector('.admin-header');
+    const adminCard = document.querySelector('.admin-card');
+
+    if (adminHeader) {
+        adminHeader.style.animation = 'none';
+        adminHeader.style.opacity = '1';
+        adminHeader.style.transform = 'translateY(0)';
+    }
+
+    if (adminCard) {
+        adminCard.style.opacity = '1';
+        adminCard.style.transform = 'translateY(0)';
+    }
+
+    // Auto-load users if list is empty
+    setTimeout(() => {
+        const list = document.querySelector('.users-list');
+        const loader = document.getElementById('admin-loader');
+
+        // Make sure we have the elements and loadUsers function exists
+        if (list && loader && window.loadUsers) {
+            // Check if list is empty and loader is visible
+            if (list.innerHTML.trim() === '' && loader.style.display !== 'none') {
+                // Only load if not already running
+                if (!window.loadUsersRunning) {
+                    window.loadUsers();
+                }
+            }
+        }
+    }, 50);
+})();
 </script>
 @endpush
 @endsection

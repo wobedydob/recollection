@@ -116,8 +116,15 @@ window.setLocale = async function(locale) {
     }
 };
 
-// Auto-initialize Vue components on page load
-document.addEventListener('DOMContentLoaded', () => {
+// Initialize Vue apps - can be called after page transitions
+window.initializeVueApps = function() {
+    // Unmount existing apps first (if any)
+    document.querySelectorAll('[data-v-app]').forEach(el => {
+        if (el.__vue_app__) {
+            el.__vue_app__.unmount();
+        }
+    });
+
     // Initialize IdeasApp if the element exists
     const ideasEl = document.getElementById('ideas-app');
     if (ideasEl) {
@@ -180,6 +187,11 @@ document.addEventListener('DOMContentLoaded', () => {
         app.directive('tooltip', tooltip);
         app.mount(form);
     });
+};
+
+// Auto-initialize Vue components on page load
+document.addEventListener('DOMContentLoaded', () => {
+    window.initializeVueApps();
 
     // Close dropdowns when clicking outside
     document.addEventListener('click', (e) => {
