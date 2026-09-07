@@ -15,6 +15,10 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->statefulApi();
+        // Het portal-cookie is een platte JWT (niet door Laravel versleuteld).
+        $middleware->encryptCookies(except: [
+            'wuppo_session',
+        ]);
         $middleware->validateCsrfTokens(except: [
             'api/*',
         ]);
@@ -22,14 +26,24 @@ return Application::configure(basePath: dirname(__DIR__))
             if ($request->is('api/*') || $request->expectsJson()) {
                 return null;
             }
-            return '/login';
+            $login = (string) config('services.wuppo.login_url', 'https://wuppo.dev/login');
+
+            return $login.'?redirect='.rawurlencode($request->fullUrl());
         });
         $middleware->alias([
             'admin' => \App\Http\Middleware\AdminMiddleware::class,
         ]);
         $middleware->web(append: [
+            \App\Http\Middleware\WuppoSsoAuthenticate::class,
             \App\Http\Middleware\SetLocale::class,
         ]);
+        // Draai de SSO-bridge ná StartSession maar vóór de auth-check, anders
+        // sorteert Laravel de auth-middleware ervoor en wordt een geldige
+        // portal-gebruiker toch als gast doorgestuurd.
+        $middleware->prependToPriorityList(
+            \Illuminate\Contracts\Auth\Middleware\AuthenticatesRequests::class,
+            \App\Http\Middleware\WuppoSsoAuthenticate::class,
+        );
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         $exceptions->render(function (AuthenticationException $e, Request $request) {

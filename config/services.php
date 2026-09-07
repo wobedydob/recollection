@@ -35,4 +35,10 @@ return [
         ],
     ],
 
+    // wuppo.dev single-sign-on (gedeeld met hello.wuppo.dev).
+    'wuppo' => [
+        'sso_secret' => env('SSO_SECRET'),
+        'login_url' => env('PORTAL_LOGIN_URL', 'https://hello.wuppo.dev/login'),
+    ],
+
 ];
